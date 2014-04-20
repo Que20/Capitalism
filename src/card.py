@@ -156,7 +156,7 @@ class Card:
 		self.cardData.incomePerTurn = self.computedCard.incomePerTurnModifier * self.cardData.incomePerTurn
 		# Vie --
 		self.cardData.life = self.cardData.life - 1;
-		for card in self.actions
+		for card in self.actions :
 			card.life = card.life - 1;
 			# Si plus de vie, suppression
 			if card.life < 0 :

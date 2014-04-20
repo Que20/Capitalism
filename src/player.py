@@ -37,10 +37,10 @@ class Player:
 		self.deck.append(choice(deck))
 
 	# Action du joueur, retourne la carte affectée ou None si impossible
-	def playerAction(self, action, cardNumber, line=-1, otherPlayer=None, card=None, events):
+	def playerAction(self, action, cardNumber, events, line=-1, otherPlayer=None, card=None):
 		try:
 			# Placement de carte
-			if action = PlayerAction.PLACE_CARD and card != None :
+			if action == PlayerAction.PLACE_CARD and card != None :
 				# Placement sur le joueur adverse
 				if otherPlayer != None :
 					if card.type == Type.ACTION and otherPlayer.gameboard[line][cardNumber] != None :
@@ -72,10 +72,10 @@ class Player:
 					else :
 						events.append(card)
 			# Retirer une carte
-			elif action = PlayerAction.REMOVE_CARD :
+			elif action == PlayerAction.REMOVE_CARD :
 				return removeCard(line, cardNumber)
 			# Retirer une carte
-			elif action = PlayerAction.GET_INFO :
+			elif action == PlayerAction.GET_INFO :
 				# Carte d'un autre joueur (forcément sur sa board)
 				if otherPlayer != None :
 					return otherPlayer.gameboard[line][cardNumber]
@@ -98,10 +98,10 @@ class Player:
 	# Supprime une carte, retourne la carte supprimée ou None si impossible
 	def removeCard(self, line, cardNumber):
 		try:
-			if self.gameboard[line][cardNumber].computedCard.discardCost < self.money
+			if self.gameboard[line][cardNumber].computedCard.discardCost < self.money :
 				self.money = self.money - self.gameboard[line][cardNumber].computedCard.discardCost
 				return self.gameboard[line].pop(cardNumber)
-			else
+			else :
 				return None
 		except Exception as e:
 			return None
@@ -132,7 +132,7 @@ class Player:
 				self.money += card.nexTurn()
 
 				# Si la carte n'a plus de vie après le tour
-				if !card.isAlive() :
+				if card.isAlive() == 0 :
 					self.deleted.append(line.pop(i)) # On met dans la liste deleted
 
 			# Calcul des effet des cartes entres elles
