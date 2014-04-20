@@ -138,3 +138,4 @@ class Player:
 			# Calcul des effet des cartes entres elles
 			for card in line:
 				self.calculateLine(line, events)
+
