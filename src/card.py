@@ -56,7 +56,7 @@ class Action:
 	# Constructeur
 	def __init__(self, id, name, desc, type, life, affectedType, effects):
 		self.id = id                         # ID unique de la carte
-		self.actionType = Type.ACTION        # type Action
+		self.cardType = Type.ACTION          # type Action
 		self.name = name                     # Nom de la carte
 		self.desc = desc                     # Description catre
 		self.type = type                     # Type de la carte (ActionType)
@@ -101,14 +101,21 @@ class Card:
 	"""Classe représentant une carte du jeu"""
 	def __init__(self, id, cardType, name, desc, type, cardData, effects, affectedType):
 		self.id = id                                          # ID unique de la carte
-		self.cardType = Type.CARD                             # type de la carte (CardType)
+		self.cardType = Type.CARD                             # type de la carte (Type)
 		self.name = name                                      # Nom de la carte
 		self.desc = desc                                      # Description catre
-		self.type = type                                      # Type de la carte 
+		self.type = type                                      # Type de la carte (CardType)
 		self.cardData = cardData                              # Données de la carte
 		self.effects = effects                                # Tableau d'effets (Effect[])
 		self.affectedType = affectedType                      # Type affecté (CardType)
 		self.computedCard = CardData(cardData=self.cardData)  # Données calculé de la carte
+		self.actions = []                                     # Cartes actions affectées sur cette carte
+
+	# Ajout d'une carte action
+	def addActionCard(self, actionCard):
+		# Ajout et màj valeurs
+		self.actions.append(actionCard)
+		computeEffects(actionCard)
 
 	# Si cette carte est affectée par celle-ci
 	def isAffectedBy(self, actionCard):
@@ -117,6 +124,9 @@ class Card:
 	# Remet les effets de la carte à zéro
 	def resetEffects(self):
 		self.computedCard.reset(self.cardData)
+		# Pour chaque carte action liée
+		for card in self.actions :
+			computeEffects(card)
 
 	# Calcul les effets d'une carte sur notre carte
 	def computeEffects(self, actionCard):
@@ -146,6 +156,11 @@ class Card:
 		self.cardData.incomePerTurn = self.computedCard.incomePerTurnModifier * self.cardData.incomePerTurn
 		# Vie --
 		self.cardData.life = self.cardData.life - 1;
+		for card in self.actions
+			card.life = card.life - 1;
+			# Si plus de vie, suppression
+			if card.life < 0 :
+				self.actions.remove(card)
 		# Remise à zéro des effets
 		self.resetEffects()
 
