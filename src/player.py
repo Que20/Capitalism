@@ -15,7 +15,7 @@ class Player:
 	"""Représente un des deux joueurs"""
 
 	# Constructeur
-	def __init__(name, startingMoney=10000):
+	def __init__(self, name, startingMoney=10000):
 		self.name = name                                   # Nom du joueur
 		self.money = startingMoney                         # Argent de départ
 		self.deck = []                                     # Cartes en main
