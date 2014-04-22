@@ -54,15 +54,17 @@ class Action:
 	"""Classe représentant une carte action"""
 
 	# Constructeur
-	def __init__(self, id, name, desc, type, life, affectedType, effects, deploymentCost):
-		self.id = id                         # ID unique de la carte
-		self.cardType = Type.ACTION          # type Action
-		self.name = name                     # Nom de la carte
-		self.desc = desc                     # Description catre
-		self.type = type                     # Type de la carte (ActionType)
-		self.life = life                     # Durée de vie de la carte ( -1 = infinie )
-		self.affectedType = affectedType     # Type affecté (CardType)
-		self.effects = effects               # Tableau d'effets (Effect[])
+	def __init__(self, id, name, image, desc, type, life, affectedType, effects, deploymentCost):
+		self.id = id                                          # ID unique de la carte
+		self.cardType = Type.ACTION                           # type Action
+		self.name = name                                      # Nom de la carte
+		sefl.image = cap_Graph_card(image)                    # Background de l'objet graphique de la carte
+		self.desc = desc                                      # Description catre
+		self.type = type                                      # Type de la carte (ActionType)
+		self.life = life                                      # Durée de vie de la carte ( -1 = infinie )
+		self.affectedType = affectedType                      # Type affecté (CardType)
+		self.effects = effects                                # Tableau d'effets (Effect[])
+		sefl.image = cap_Graph_card(image)                    # Background de l'objet graphique de la carte
 
 	# Tour suivant
 	def nextTurn(self):
@@ -99,10 +101,11 @@ class CardData:
 # Carte du jeu
 class Card:
 	"""Classe représentant une carte du jeu"""
-	def __init__(self, id, name, desc, type, cardData, effects, affectedType):
+	def __init__(self, id, name, image, desc, type, cardData, effects, affectedType):
 		self.id = id                                          # ID unique de la carte
 		self.cardType = Type.CARD                             # type de la carte (Type)
 		self.name = name                                      # Nom de la carte
+		sefl.image = cap_Graph_card(image)                    # Background de l'objet graphique de la carte
 		self.desc = desc                                      # Description catre
 		self.type = type                                      # Type de la carte (CardType)
 		self.cardData = cardData                              # Données de la carte
@@ -110,6 +113,7 @@ class Card:
 		self.affectedType = affectedType                      # Type affecté (CardType)
 		self.computedCard = CardData(cardData=self.cardData)  # Données calculé de la carte
 		self.actions = []                                     # Cartes actions affectées sur cette carte
+		sefl.image = cap_Graph_card(image)                    # Background de l'objet graphique de la carte
 
 	# Ajout d'une carte action
 	def addActionCard(self, actionCard):

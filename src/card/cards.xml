@@ -3,6 +3,7 @@
     <item>
         <id>0</id>
         <cardType>1</cardType>
+        <image>x.png</image>
         <name>The Product name</name>
         <description>Yeah, that card roxx, you totaly should peek this one.</description>
         <type>1</type>
@@ -32,6 +33,7 @@
     <item>
         <id>1</id>
         <cardType>2</cardType>
+        <image>x.png</image>
         <type>1</type>
         <name>The Action name</name>
         <description>It's a great Action.</description>

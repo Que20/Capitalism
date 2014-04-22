@@ -49,9 +49,9 @@ def makeDeck(cards) :
 		if card['cardType'] == 1 :
 			data = card['cardData']
 			cardData = c.CardData(card['deploymentCost'], data['costPerTurn'], data['costPerTurnModifier'], data['incomePerTurn'], data['incomePerTurnModifier'], data['discardCost'], card['life'])
-			deck.append(c.Card(card['id'], card['name'], card['description'], card['type'], cardData, effects, card['affectedType']))
+			deck.append(c.Card(card['id'], card['name'], card['image'], card['description'], card['type'], cardData, effects, card['affectedType']))
 		if card['cardType'] == 2 :
-			deck.append(c.Action(card['id'], card['name'], card['description'], card['type'], card['life'], card['affectedType'], effects, card['deploymentCost']))
+			deck.append(c.Action(card['id'], card['name'], card['image'], card['description'], card['type'], card['life'], card['affectedType'], effects, card['deploymentCost']))
 	return deck
 
 # Retourne une carte choisie au hasard sur un deck construit
