@@ -54,7 +54,7 @@ class Action:
 	"""Classe représentant une carte action"""
 
 	# Constructeur
-	def __init__(self, id, name, desc, type, life, affectedType, effects):
+	def __init__(self, id, name, desc, type, life, affectedType, effects, deploymentCost):
 		self.id = id                         # ID unique de la carte
 		self.cardType = Type.ACTION          # type Action
 		self.name = name                     # Nom de la carte
@@ -75,7 +75,7 @@ class Action:
 # Carte de valeur calculé
 class CardData:
 	"""Classe représentant les valeurs calculée pour une carte"""
-	def __init__(self, costPerTurn, costPerTurnModifier, incomePerTurn, incomePerTurnModifier, discardCost, life, cardData=None):
+	def __init__(self, deploymentCost=0, costPerTurn=0, costPerTurnModifier=0, incomePerTurn=0, incomePerTurnModifier=0, discardCost=0, life=0, cardData=None):
 		if cardData :
 			self.reset(cardData)                 
 		else :
@@ -99,7 +99,7 @@ class CardData:
 # Carte du jeu
 class Card:
 	"""Classe représentant une carte du jeu"""
-	def __init__(self, id, cardType, name, desc, type, cardData, effects, affectedType):
+	def __init__(self, id, name, desc, type, cardData, effects, affectedType):
 		self.id = id                                          # ID unique de la carte
 		self.cardType = Type.CARD                             # type de la carte (Type)
 		self.name = name                                      # Nom de la carte
@@ -169,5 +169,3 @@ class Card:
 	# Si la carte à de la vie
 	def isAlive(self):
 		return (self.life > 0)
-
-print("hello")

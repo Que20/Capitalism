@@ -2,10 +2,10 @@
 <data>
     <item>
         <id>0</id>
-        <type>1</type>
+        <cardType>1</cardType>
         <name>The Product name</name>
         <description>Yeah, that card roxx, you totaly should peek this one.</description>
-        <cardType>1</cardType>
+        <type>1</type>
         <cardData>
             <costPerTurn>100</costPerTurn>
             <costPerTurnModifier>0</costPerTurnModifier>
@@ -14,7 +14,13 @@
             <discardCost>3500</discardCost>
         </cardData>
         <life>999</life>
+        <deploymentCost>3500</deploymentCost>
         <effects>
+            <effect>
+                <value>30</value>
+                <modifierType>2</modifierType>
+                <affectedValue>6</affectedValue>
+            </effect>
             <effect>
                 <value>30</value>
                 <modifierType>2</modifierType>
@@ -25,11 +31,13 @@
     </item>
     <item>
         <id>1</id>
-        <type>2</type>
+        <cardType>2</cardType>
+        <type>1</type>
         <name>The Action name</name>
         <description>It's a great Action.</description>
         <actionType>1</actionType>
         <life>999</life>
+        <deploymentCost>3500</deploymentCost>
         <affectedType>0</affectedType>
         <effects>
             <effect>

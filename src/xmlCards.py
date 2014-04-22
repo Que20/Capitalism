@@ -7,26 +7,34 @@ def parseXML(filename) :
 	root = xmlFile.getroot()
 	cards = []
 	for child in root:
-		#print("\t"+child.tag)
+		print("\t"+child.tag)
 		cardDict = {}
 		for card in child :
-			#print("\t\t"+card.tag+" : "+str(card.text))
-			cardDict[card.tag] = str(card.text)
-			if card.tag == "cardData" :
+			# Nom ou descript
+			if card.tag == "name" or card.tag == "description" :
+				print("\t\t"+card.tag+" : "+str(card.text))
+				cardDict[card.tag] = str(card.text)
+			# CardData
+			elif card.tag == "cardData" :
 				cardData = {}
 				for data in card :
-					#print("\t\t\t"+data.tag+" : "+str(data.text))
-					cardData[data.tag] = str(data.text)
+					print("\t\t\t"+data.tag+" : "+str(data.text))
+					cardData[data.tag] = float(data.text)
 				cardDict[card.tag] = cardData
-			if card.tag == "effects" :
+			#Effects
+			elif card.tag == "effects" :
 				cardEffects = []
 				for effect in card :
+					anEffect = {}
 					for eff in effect :
-						anEffect = {}
-						#print("\t\t\t"+eff.tag+" : "+str(eff.text))
-						anEffect[eff.tag] = str(eff.text)
-						cardEffects.append(anEffect)
+						print("\t\t\t"+eff.tag+" : "+str(eff.text))
+						anEffect[eff.tag] = float(eff.text)
+					cardEffects.append(anEffect)
 				cardDict[card.tag] = cardEffects
+			# Autre
+			else :
+				print("\t\t>"+card.tag+" : "+str(card.text))
+				cardDict[card.tag] = float(card.text)
 		cards.append(cardDict)
 	return cards
 
@@ -34,20 +42,18 @@ def parseXML(filename) :
 def makeDeck(cards) :
 	deck = []
 	for card in cards :
+		print(card)
 		effects = []
 		for effect in card['effects'] :
 			effects.append(c.Effect(effect['value'], effect['modifierType'], effect['affectedValue']))
-		if card['type'] == 1 :
+		if card['cardType'] == 1 :
 			data = card['cardData']
-			cardData = c.CardData(data['costPerTurn'], data['costPerTurnModifier'], data['incomePerTurn'], data['incomePerTurnModifier'], data['discardCost'], data['life'])
-			deck.append(c.Card(card['id'], card['name'], card['desc'], cardData, effects, card['affectedType']))
-		if card['type'] == 2 :
-			dock.append(c.Action(card['id'], card['name'], card['desc'], card['type'], card['life'], card['affectedType'], effects))
+			cardData = c.CardData(card['deploymentCost'], data['costPerTurn'], data['costPerTurnModifier'], data['incomePerTurn'], data['incomePerTurnModifier'], data['discardCost'], card['life'])
+			deck.append(c.Card(card['id'], card['name'], card['description'], card['type'], cardData, effects, card['affectedType']))
+		if card['cardType'] == 2 :
+			deck.append(c.Action(card['id'], card['name'], card['description'], card['type'], card['life'], card['affectedType'], effects, card['deploymentCost']))
 	return deck
 
 # Retourne une carte choisie au hasard sur un deck construit
 def pickDeck(deck) :
 	return choice(deck)
-
-# Affiche une carte choisie au hasard sur le deck construit du fichier XML fournis en paramètre
-print(pickDeck(makeDeck(parseXML("file.xml"))))
