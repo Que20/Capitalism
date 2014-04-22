@@ -7,18 +7,18 @@ def parseXML(filename) :
 	root = xmlFile.getroot()
 	cards = []
 	for child in root:
-		print("\t"+child.tag)
+		#print("\t"+child.tag)
 		cardDict = {}
 		for card in child :
 			# Nom ou descript
 			if card.tag == "name" or card.tag == "description" :
-				print("\t\t"+card.tag+" : "+str(card.text))
+				#print("\t\t"+card.tag+" : "+str(card.text))
 				cardDict[card.tag] = str(card.text)
 			# CardData
 			elif card.tag == "cardData" :
 				cardData = {}
 				for data in card :
-					print("\t\t\t"+data.tag+" : "+str(data.text))
+					#print("\t\t\t"+data.tag+" : "+str(data.text))
 					cardData[data.tag] = float(data.text)
 				cardDict[card.tag] = cardData
 			#Effects
@@ -27,13 +27,13 @@ def parseXML(filename) :
 				for effect in card :
 					anEffect = {}
 					for eff in effect :
-						print("\t\t\t"+eff.tag+" : "+str(eff.text))
+						#print("\t\t\t"+eff.tag+" : "+str(eff.text))
 						anEffect[eff.tag] = float(eff.text)
 					cardEffects.append(anEffect)
 				cardDict[card.tag] = cardEffects
 			# Autre
 			else :
-				print("\t\t>"+card.tag+" : "+str(card.text))
+				#print("\t\t>"+card.tag+" : "+str(card.text))
 				cardDict[card.tag] = float(card.text)
 		cards.append(cardDict)
 	return cards
