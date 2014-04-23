@@ -1,5 +1,6 @@
 import card as card
 from card_type import *
+from cap_graph import *
 
 # Actions possibles du joueur
 class PlayerAction:
@@ -28,6 +29,9 @@ class Player:
 		self.selected = None                               # Carte selectionnée 1 = hand / 2 = gameboard
 		self.playing = True                                
 
+		self.graph_player = cap_Graph_playerinfo(cap_Rect(44, 555, 0, 0), self)
+
+	# A virer
 	def addCardDeck(self, card):
 		if card != None :
 			# Graphique
@@ -37,6 +41,7 @@ class Player:
 			# Ajout carte
 			self.deck.append(card)
 
+	# A virer
 	def addCardGameboard(self, card, line, pos):
 		if card != None :
 			if line >= 0 and line < 4 and self.gameboard[line][pos] == None :
@@ -64,27 +69,32 @@ class Player:
 		if self.deck[hand].cardType == Type.CARD :
 			if self.gameboard[x][y] == None :
 				if self.deck[hand].computedCard.deploymentCost < self.money :
-					self.money = self.money - self.deck[hand].computedCard.deploymentCost
+					self.money = self.money - self.deck[hand].computedCard.deploymentCost # Cout de pose
 					# Graphique
 					self.deck[hand].grap_mincard.animate(x * 145 + 350, y * 60 + 438, 500)
 					# On change de zone
 					self.gameboard[x][y] = self.deck.pop(hand)
 					self._shiftDeck(hand)
+					self.graph_player.update()
 				else :
 					print("Erreur : pas assez d'argent pour poser la carte")
 			else :
 				print("Erreur : case déjà occupée")
-		elif self.gameboard[x][y] != None :
-			if self.deck[hand].affectedType == self.gameboard[x][y].type :
-				if self.deck[hand].computedCard.deploymentCost < self.money :
-					self.money = self.money - self.deck[hand].computedCard.deploymentCost
-					print("A faire")
+		elif self.deck[hand].type == ActionType.ACTION :
+			if self.gameboard[x][y] != None :
+				if self.deck[hand].affectedType == self.gameboard[x][y].type :
+					if self.deck[hand].computedCard.deploymentCost < self.money :
+						self.money = self.money - self.deck[hand].computedCard.deploymentCost # Coût de pose
+						self.graph_player.update()
+						print("A faire")
+					else :
+						print("Erreur : pas assez d'argent pour poser la carte")
 				else :
-					print("Erreur : pas assez d'argent pour poser la carte")
+					print("Erreur : type non-affecté")
 			else :
-				print("Erreur : type non-affecté")
+				print("Erreur : impossible de poser une carte action sur une case vide")
 		else :
-			print("Erreur : impossible de poser une carte action sur une case vide")
+			print("Erreur : impossible de placer des events ici")
 
 	# Défausse le carte de la main
 	def _discardHand(self, hand):
@@ -98,11 +108,13 @@ class Player:
 	# Défausse le carte de la main
 	def _discardGameboard(self, x, y):
 		if self.gameboard[x][y].computedCard.discardCost < self.money :
-			self.money = self.money - self.gameboard[x][y].computedCard.discardCost
+			self.money = self.money - self.gameboard[x][y].computedCard.discardCost # Coût défaussement
+			self.graph_player.update()
 			# Graphique
 			self.gameboard[x][y].grap_mincard.animate(1087, 602, 750, -1)
 			# On change de zone
-			self.deleted.append(self.gameboard[x].pop(y))
+			self.deleted.append(self.gameboard[x][y])
+			self.gameboard[x][y] = None
 		else :
 			print("Erreur : pas assez d'argent pour supprimer la carte")
 
@@ -137,7 +149,7 @@ class Player:
 						self._poseCard(self.selected[1], action[2], action[3])
 
 					# On échange les deux cartes de la même colonne
-					elif self.selected[0] == 2 and self.selected[1] == action[2] :
+					elif self.selected[0] == 2 and self.gameboard[action[2]][action[3]] != None and self.selected[1] == action[2] :
 						self._invertGameboardCards(action[2], action[3], self.selected[1], self.selected[2])
 
 				# Selection d'une carte de la main

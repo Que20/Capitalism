@@ -14,6 +14,7 @@ back_bg = pygame.image.load("card/back_bg.png").convert_alpha()
 back_bg_hover = pygame.image.load("card/back_bg_hover.png").convert_alpha()
 
 # Fonts
+player_name_font = pygame.font.Font('card/BebasNeue.otf', 25);
 card_title_font = pygame.font.Font('card/BebasNeue.otf', 22);
 card_mintitle_font = pygame.font.Font('card/BebasNeue.otf', 14);
 card_type_font = pygame.font.Font('card/BebasNeue.otf', 12);
@@ -64,6 +65,9 @@ class cap_Graph_object:
 	# Update le visuel
 	def update(self):
 		pass
+
+	def erase(self):
+		self.to_display.fill(0)
 		
 	# Rend visible ou invisible l'image
 	def visibility(self, visibility):
@@ -101,6 +105,31 @@ class cap_Graph_object:
 
 		if self.visible :
 			cap_blit_alpha(window, self.to_display, (self.rect.x, self.rect.y), self.opacity)
+
+
+# Info joueur
+class cap_Graph_playerinfo(cap_Graph_object):
+	"""docstring for cap_Graph_mincard"""
+	def __init__(self, pos, player):
+		cap_Graph_object.__init__(self, cap_Rect(pos.x, pos.y, 220, 120), cap_Rect(0, 0, 220, 120))
+
+		self.player = player
+
+		# On commence par le fond (qui ne change pas)
+		self.bg = pygame.Surface((self.rect.w, self.rect.h), SRCALPHA, 32).convert_alpha()
+		self.bg.blit(player_name_font.render(self.player.name, 1, black), (5, 0))
+
+		# Update des infos
+		self.update()
+
+	# Update le visuel de la carte pour prendre en compte les changements
+	def update(self):
+		self.erase()
+		self.to_display.blit(self.bg, (0, 0))
+		self.to_display.blit(card_title_font.render( "  Capital : "+str(self.player.money)+"$", 1, green), (5, 30))
+
+
+		print("ici")
 
 
 # Pioche

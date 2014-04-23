@@ -62,7 +62,11 @@ class cap_clickDetector:
 			if self.low_hand.isIn(x, y) :				
 				return ("low", "hand", int((x - self.low_hand.x) / 145))
 			elif self.low_gameboard.isIn(x, y) :
-				return ("low", "gameboard", int((x - self.low_gameboard.x) / 145), int((y - self.low_gameboard.y) / 60))
+				x = int((x - self.low_gameboard.x) / 145)
+				y = int((y - self.low_gameboard.y) / 60)
+				if x > 3 : x = 3
+				if y > 3 : y = 3
+				return ("low", "gameboard", x, y)
 			elif self.low_deck.isIn(x, y) :
 				return ("low", "deck")
 			else :
@@ -80,6 +84,8 @@ deck_defausse.rect.x = 1037
 deck_defausse.rect.y = 552
 
 player1 = Player("Player 1")
+player1.graph_player.init(event_mouse, event_key, display_list)
+player1.graph_player.visibility(True)
 
 # Boucle d'affichage / évenements
 while not quit :
