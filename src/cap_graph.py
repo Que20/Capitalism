@@ -70,7 +70,7 @@ class cap_Graph_object:
 		self.visible = visibility
 
 	# Animation
-	def animate(self, x, y, timer=2000, opacity=False):
+	def animate(self, x, y, timer=2000, opacity=0):
 		self.anim_timer_start = pygame.time.get_ticks()
 		self.anim_start = cap_Rect(self.rect.x, self.rect.y, 0, 0)
 		self.anim_end = cap_Rect(x, y, 0, 0)
@@ -86,12 +86,16 @@ class cap_Graph_object:
 			if(when < 1) :
 				self.rect.x = ((self.anim_end.x - self.anim_start.x) * when) + self.anim_start.x
 				self.rect.y = ((self.anim_end.y - self.anim_start.y) * when) + self.anim_start.y
-				if self.anim_opacity :
+				if self.anim_opacity == -1 :
+					self.opacity = 255 - (255 * when)
+				elif self.anim_opacity == 1 :
 					self.opacity = 255 * when
 			else :
 				self.rect.x = self.anim_end.x
 				self.rect.y = self.anim_end.y
-				if self.anim_opacity :
+				if self.anim_opacity == -1 :
+					self.opacity = 0
+				elif self.anim_opacity == 1 :
 					self.opacity = 255
 				self.inAnim = False
 

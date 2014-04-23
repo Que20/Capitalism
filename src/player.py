@@ -24,9 +24,8 @@ class Player:
 		                  [None, None, None, None], 
 		                  [None, None, None, None]]        # Plateau du joueur
 		self.deleted = []                                  # Cartes supprimées
-		self.selected = None                               # Carte selectionnée
-		self.selected_zone = 0                             # Zone selectionnée
-		self.playing = True
+		self.selected = None                               # Carte selectionnée 1 = hand / 2 = gameboard
+		self.playing = True                                
 
 	def addCardDeck(self, card):
 		if card != None :
@@ -41,7 +40,7 @@ class Player:
 		if card != None :
 			if line >= 0 and line < 4 and self.gameboard[line][pos] == None :
 				# Graphique
-				card.grap_mincard.animate(line * 145 + 350, pos * 60 + 438, 2000, True)
+				card.grap_mincard.animate(line * 145 + 350, pos * 60 + 438, 2000, 1)
 				card.grap_mincard.visibility(True)
 
 				self.gameboard[line][pos] = card
@@ -59,22 +58,42 @@ class Player:
 
 	# Action du joueur, retourne la carte affectée ou None si impossible
 	def playerAction(self, action):
-		if len(action) > 2 :
+		if len(action) > 1 :
 			# Si l'action se passe chez nous
 			if self.playing and action[0] == "low" :
+				print("action")
 				# Selection d'une carte de jeu
 				if action[1] == "gameboard" :
 					# Si on a selectionné aucune carte, on selectione
 					if self.selected == None :
-						pass
+						self.selected = (2, action[2], action[3])
 					else :
 						pass
 				# Selection d'une carte de la main
 				elif action[1] == "hand" :
-					pass
+					# Si on a selectionné aucune carte, on selectione
+					if self.selected == None :
+						self.selected = (1, action[2])
+					else :
+						pass
 				# Selection du deck de defaussement
 				elif action[1] == "deck" :
-					pass
+					print("ici")
+					if self.selected != None :
+						# On détruit une carte de la main
+						if self.selected[0] == 1 :
+							# Graphique
+							self.deck[self.selected[1]].grap_mincard.animate(1087, 602, 1000, -1)
+							# On change de zone
+							self.deleted.append(self.deck.pop(self.selected[1]))
+							# On déplace toutes les cartes après
+							i = self.selected[1]
+							while i < len(self.deck) :
+								self.deck[i].grap_mincard.animate((i)*145 + 60, 712, 500)
+								i += 1
+							self.selected = None
+		else :
+			self.selected = None
 
 
 	# Supprime une carte, retourne la carte supprimée ou None si impossible

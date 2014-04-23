@@ -54,7 +54,7 @@ class cap_clickDetector:
 			elif self.up_gameboard.isIn(x, y) :
 				return ("up", "gameboard", int((x - self.up_gameboard.x) / 145), int((y - self.up_gameboard.y) / 60))
 			elif self.up_deck.isIn(x, y) :
-				return ("up", "gameboard", "deck")
+				return ("up", "deck")
 			else:
 				return ("up")
 		# Bas
@@ -64,7 +64,7 @@ class cap_clickDetector:
 			elif self.low_gameboard.isIn(x, y) :
 				return ("low", "gameboard", int((x - self.low_gameboard.x) / 145), int((y - self.low_gameboard.y) / 60))
 			elif self.low_deck.isIn(x, y) :
-				return ("low", "gameboard", "deck")
+				return ("low", "deck")
 			else :
 				return ("low")
 
@@ -111,6 +111,7 @@ while not quit :
 
 			if event.type == MOUSEBUTTONDOWN :
 				print(clicker_detector.get_zone(event.pos[0], event.pos[1]))
+				player1.playerAction(clicker_detector.get_zone(event.pos[0], event.pos[1]))
 
 			for clbk in event_mouse :
 				# Si l'event se passe dans notre range
