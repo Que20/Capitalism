@@ -14,7 +14,7 @@ class deck:
 		return deck.pop()
 		
 	def shuffleDeck(self):
-		#random.shuffle(self.deck)
+		random.shuffle(self.deck)
 		pass
 		
 	def init(self, event_mouse, event_key, display_list):

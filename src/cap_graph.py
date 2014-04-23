@@ -81,7 +81,12 @@ class cap_Graph_mincard(cap_Graph_object):
 			self.card_bg.blit(card_type_font.render(Type.get_string(self.card_obj.cardType) + " (" + ActionType.get_string(self.card_obj.type) + ")", 1, (255, 255, 255)), (11, 7))
 		elif self.card_obj.cardType == Type.CARD :
 			self.card_bg.blit(card_type_font.render(Type.get_string(self.card_obj.cardType) + " (" + CardType.get_string(self.card_obj.type) + ")", 1, (255, 255, 255)), (11, 7))
-		self.card_bg.blit(card_mintitle_font.render(card_obj.name, 1, (0,0,0)), (15, 20))
+		
+
+		if card_obj.colorname == "white" :
+			self.card_bg.blit(card_mintitle_font.render(card_obj.name, 1, white), (15, 20))
+		else :
+			self.card_bg.blit(card_mintitle_font.render(card_obj.name, 1, black), (15, 20))
 
 		# Update des infos
 		self.update()
@@ -154,19 +159,25 @@ class cap_Graph_card(cap_Graph_object):
 		self.card_bg = pygame.Surface((self.rect.w, self.rect.h), SRCALPHA, 32).convert_alpha()
 		self.card_bg.blit(card_bg, (0, 0))
 		if bg_img_link != None : # Si on a une image de background
+			print(bg_img_link)
 			self.bg_img = pygame.image.load(bg_img_link).convert_alpha()
 			self.card_bg.blit(self.bg_img, (self.rect_click.x, self.rect_click.y), (0, 0, self.rect_click.w, self.rect_click.h))
 		else :
 			self.bg_img = None
 		self.card_bg.blit(card_fg, (0, 0))
 
-		# On ajoute le nom, car lui aussi ne change pas
+		# On ajoute le nom/description, car lui aussi ne change pas
 		if self.card_obj.cardType == Type.ACTION :
 			self.card_bg.blit(card_type_font.render(Type.get_string(self.card_obj.cardType) + " (" + ActionType.get_string(self.card_obj.type) + ")", 1, (255, 255, 255)), (14, 12))
 		elif self.card_obj.cardType == Type.CARD :
 			self.card_bg.blit(card_type_font.render(Type.get_string(self.card_obj.cardType) + " (" + CardType.get_string(self.card_obj.type) + ")", 1, (255, 255, 255)), (14, 12))
-		self.card_bg.blit(card_title_font.render(card_obj.name, 1, (0,0,0)), (20, 25))
-		cap_Graph_print(card_obj.desc, card_small_font, self.card_bg, 10, (0,0,0), 38, 53)
+		
+		if card_obj.colorname == "white" :
+			self.card_bg.blit(card_title_font.render(card_obj.name, 1, white), (20, 25))
+		else :
+			self.card_bg.blit(card_title_font.render(card_obj.name, 1, black), (20, 25))
+
+		cap_Graph_print(card_obj.desc, card_small_font, self.card_bg, 10, black, 38, 53)
 
 		# Update des infos
 		self.update()

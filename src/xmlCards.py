@@ -11,8 +11,17 @@ def parseXML(filename) :
 		#print("\t"+child.tag)
 		cardDict = {}
 		for card in child :
-			# Nom ou descript
-			if card.tag == "name" or card.tag == "description" or card.tag == "image" :
+			# Nom
+			if card.tag == "name" :
+				cardDict["color"] = "black"
+
+				for key,value in card.attrib.items():
+					if key == "color" :
+						cardDict["color"] = card.attrib["color"]
+
+				cardDict[card.tag] = str(card.text).replace("\t", "")
+			# Description et image
+			elif card.tag == "description" or card.tag == "image" :
 				#print("\t\t"+card.tag+" : "+str(card.text))
 				cardDict[card.tag] = str(card.text).replace("\t", "")
 			# CardData
@@ -50,9 +59,9 @@ def makeDeck(cards) :
 		if card['cardType'] == 1 :
 			data = card['cardData']
 			cardData = c.CardData(card['deploymentCost'], data['costPerTurn'], data['costPerTurnModifier'], data['incomePerTurn'], data['incomePerTurnModifier'], data['discardCost'], card['life'])
-			deck.append(c.Card(card['id'], card['name'], card['image'], card['description'], card['type'], cardData, effects, card['affectedType']))
+			deck.append(c.Card(card['id'], card['name'], card['color'], card['image'], card['description'], card['type'], cardData, effects, card['affectedType']))
 		if card['cardType'] == 2 :
-			deck.append(c.Action(card['id'], card['name'], card['image'], card['description'], card['type'], card['life'], card['affectedType'], effects, card['deploymentCost']))
+			deck.append(c.Action(card['id'], card['name'], card['color'], card['image'], card['description'], card['type'], card['life'], card['affectedType'], effects, card['deploymentCost']))
 	return deck
 
 # Retourne une carte choisie au hasard sur un deck construit
