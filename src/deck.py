@@ -11,7 +11,10 @@ class deck:
 		#	print(e)
 	
 	def pickUpCardFromDeck(self):
-		return deck.pop()
+		if len(self.deck) > 0 :
+			return self.deck.pop()
+		else :
+			return None
 		
 	def shuffleDeck(self):
 		random.shuffle(self.deck)

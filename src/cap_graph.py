@@ -9,14 +9,20 @@ card_fg = pygame.image.load("card/card_fg.png").convert_alpha()
 mincard_bg = pygame.image.load("card/mincard_bg.png").convert_alpha()
 mincard_fg = pygame.image.load("card/mincard_fg.png").convert_alpha()
 mincard_bg_selected = pygame.image.load("card/mincard_bg_selected.png").convert_alpha()
+mincard_bg_hovered = pygame.image.load("card/mincard_bg_hover.png").convert_alpha()
+back_bg = pygame.image.load("card/back_bg.png").convert_alpha()
+back_bg_hover = pygame.image.load("card/back_bg_hover.png").convert_alpha()
+
+# Fonts
 card_title_font = pygame.font.Font('card/BebasNeue.otf', 22);
 card_mintitle_font = pygame.font.Font('card/BebasNeue.otf', 14);
 card_type_font = pygame.font.Font('card/BebasNeue.otf', 12);
-card_content_font = pygame.font.Font('card/SugarcubesRegular.ttf', 13);
-card_medium_font = pygame.font.Font('card/SugarcubesRegular.ttf', 11);
-card_small_font = pygame.font.Font('card/SugarcubesRegular.ttf', 10);
+card_content_font = pygame.font.Font('card/SugarcubesBold.ttf', 13);
+card_medium_font = pygame.font.Font('card/SugarcubesBold.ttf', 11);
+card_small_font = pygame.font.Font('card/SugarcubesBold.ttf', 10);
 
 black = (0,0,0)
+grey  = (160,160,160)
 white = (255,255,255)
 green = (14,139,0)
 red   = (166,0,0)
@@ -29,6 +35,15 @@ def cap_Graph_print(str, font, surface, line_height, color=(0,0,0), startx=0, st
 		str = str[pos+1:]
 	surface.blit(font.render(str, 1, color), (startx, starty))
 
+def cap_blit_alpha(target, source, location, opacity):
+        x = location[0]
+        y = location[1]
+        temp = pygame.Surface((source.get_width(), source.get_height())).convert()
+        temp.blit(target, (-x, -y))
+        temp.blit(source, (0, 0))
+        temp.set_alpha(opacity)        
+        target.blit(temp, location)
+
 # Object graphique
 class cap_Graph_object:
 	# Constructeur
@@ -36,7 +51,9 @@ class cap_Graph_object:
 		self.rect = rect                                                                               # Taille de l'image & position
 		self.rect_click = rect_click                                                                   # Zone de detection du clique (None pour aucune)
 		self.visible = False                                                                           # Visibilité de l'image
+		self.inAnim = False
 		self.to_display = pygame.Surface((self.rect.w, self.rect.h), SRCALPHA, 32).convert_alpha()     # Calque de l'image
+		self.opacity = 255
 
 	# Initialisation
 	def init(self, event_mouse, event_key, display_list):
@@ -52,19 +69,95 @@ class cap_Graph_object:
 	def visibility(self, visibility):
 		self.visible = visibility
 
+	# Animation
+	def animate(self, x, y, timer=2000, opacity=False):
+		self.anim_timer_start = pygame.time.get_ticks()
+		self.anim_start = cap_Rect(self.rect.x, self.rect.y, 0, 0)
+		self.anim_end = cap_Rect(x, y, 0, 0)
+		self.anim_timer = timer
+		self.inAnim = True
+		self.anim_opacity = opacity
+
 	# Callback d'affichage
 	def display(self, window):
+		if self.inAnim :
+			when = (pygame.time.get_ticks() - self.anim_timer_start) / self.anim_timer
+
+			if(when < 1) :
+				self.rect.x = ((self.anim_end.x - self.anim_start.x) * when) + self.anim_start.x
+				self.rect.y = ((self.anim_end.y - self.anim_start.y) * when) + self.anim_start.y
+				if self.anim_opacity :
+					self.opacity = 255 * when
+			else :
+				self.rect.x = self.anim_end.x
+				self.rect.y = self.anim_end.y
+				if self.anim_opacity :
+					self.opacity = 255
+				self.inAnim = False
+
 		if self.visible :
-			window.blit(self.to_display, (self.rect.x, self.rect.y))
+			cap_blit_alpha(window, self.to_display, (self.rect.x, self.rect.y), self.opacity)
+
+
+# Pioche
+class cap_Graph_deck(cap_Graph_object):
+	"""docstring for cap_Graph_mincard"""
+	def __init__(self, deck):
+		cap_Graph_object.__init__(self, cap_Rect(0, 0, 200, 143), cap_Rect(11, 9, 178, 125))
+
+		self.deck = deck
+		self.hovered = False
+
+		# On commence par le fond (qui ne change pas)
+		self.card_bg = pygame.Surface((self.rect.w, self.rect.h), SRCALPHA, 32).convert_alpha()
+		self.card_bg.blit(back_bg, (0, 0))
+
+		# Update des infos
+		self.update()
+
+	# Update le visuel de la carte pour prendre en compte les changements
+	def update(self):
+
+		self.to_display.fill(0)
+
+		if self.hovered :
+			self.to_display.blit(back_bg_hover, (0, 0))
+		
+		self.to_display.blit(self.card_bg, (0, 0))
+
+		# Affichage du nombre
+
+	# Initialisation
+	def init(self, event_mouse, event_key, display_list):
+		# On ajoute à la liste d'affichage
+		event_mouse.insert(0, (MOUSEMOTION, 0, self.hover))
+		event_mouse.insert(0, (MOUSEBUTTONUP, 1, self.click))
+
+		display_list.append(self.display)
+		self.display_list = display_list
+
+	def hover(self, event_type, event_code, x, y):
+		if self.rect_click.isIn(x - self.rect.x, y - self.rect.y):
+			if not self.hovered :
+				self.hovered = True
+				self.update()
+		elif self.hovered :
+				self.hovered = False
+				self.update()
+
+	def click(self, event_type, event_code, x, y):
+		pass
+
 
 # Miniature de carte
 class cap_Graph_mincard(cap_Graph_object):
 	"""docstring for cap_Graph_mincard"""
 	def __init__(self, bg_img_link, card_obj):
-		cap_Graph_object.__init__(self, cap_Rect(0, 0, 145, 60), cap_Rect(10, 6, 127, 46))
+		cap_Graph_object.__init__(self, cap_Rect(100, 250, 145, 60), cap_Rect(10, 6, 127, 46))
 
 		self.card_obj = card_obj
 		self.selected = False
+		self.hovered = False
 		
 		# On commence par construire le fond de la carte (celui-ci ne changera pas en cours de jeu)
 		self.card_bg = pygame.Surface((self.rect.w, self.rect.h), SRCALPHA, 32).convert_alpha()
@@ -99,6 +192,9 @@ class cap_Graph_mincard(cap_Graph_object):
 		if self.selected :
 			self.to_display.blit(mincard_bg_selected, (0, 0))
 
+		if self.hovered :
+			self.to_display.blit(mincard_bg_hovered, (0, 0))
+
 		self.to_display.blit(self.card_bg, (0, 0))
 
 		if self.card_obj.cardType == Type.ACTION :
@@ -123,19 +219,25 @@ class cap_Graph_mincard(cap_Graph_object):
 	# Initialisation
 	def init(self, event_mouse, event_key, display_list):
 		# On ajoute à la liste d'affichage
-		event_mouse.insert(0, (MOUSEMOTION, 0, self.show_hover))
-		event_mouse.insert(0, (MOUSEBUTTONUP, 1, self.click_on))
+		event_mouse.insert(0, (MOUSEMOTION, 0, self.hover))
+		event_mouse.insert(0, (MOUSEBUTTONUP, 1, self.click))
 
 		display_list.append(self.display)
 		self.display_list = display_list
 
-	def show_hover(self, event_type, event_code, x, y):
+	def hover(self, event_type, event_code, x, y):
 		if self.rect_click.isIn(x - self.rect.x, y - self.rect.y):
 			self.card_obj.grap_card.visibility(True)
+			if not self.hovered :
+				self.hovered = True
+				self.update()
 		elif self.card_obj.grap_card.visible :
 			self.card_obj.grap_card.visibility(False)
+			if self.hovered :
+				self.hovered = False
+				self.update()
 
-	def click_on(self, event_type, event_code, x, y):
+	def click(self, event_type, event_code, x, y):
 		if self.rect_click.isIn(x - self.rect.x, y - self.rect.y) :
 			if not self.selected:
 				self.selected = True

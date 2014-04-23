@@ -24,6 +24,27 @@ class Player:
 		                  [None, None, None, None], 
 		                  [None, None, None, None]]        # Plateau du joueur
 		self.deleted = []                                  # Cartes supprimées
+		self.selected = None                               # Carte selectionnée
+		self.selected_zone = 0                             # Zone selectionnée
+		self.playing = True
+
+	def addCardDeck(self, card):
+		if card != None :
+			# Graphique
+			card.grap_mincard.animate(len(self.deck)*145 + 60, 712, 2000, True)
+			card.grap_mincard.visibility(True)
+
+			# Ajout carte
+			self.deck.append(card)
+
+	def addCardGameboard(self, card, line, pos):
+		if card != None :
+			if line >= 0 and line < 4 and self.gameboard[line][pos] == None :
+				# Graphique
+				card.grap_mincard.animate(line * 145 + 350, pos * 60 + 438, 2000, True)
+				card.grap_mincard.visibility(True)
+
+				self.gameboard[line][pos] = card
 
 	# Combien a le joueur ?
 	def getMoney(self):
@@ -37,63 +58,24 @@ class Player:
 		self.deck.append(choice(deck))
 
 	# Action du joueur, retourne la carte affectée ou None si impossible
-	def playerAction(self, action, cardNumber, events, line=-1, otherPlayer=None, card=None):
-		try:
-			# Placement de carte
-			if action == PlayerAction.PLACE_CARD and card != None :
-				# Placement sur le joueur adverse
-				if otherPlayer != None :
-					if card.type == Type.ACTION and otherPlayer.gameboard[line][cardNumber] != None :
-						otherPlayer.gameboard[line][cardNumber].addActionCard(card)
-						return otherPlayer.gameboard[line][cardNumber]
+	def playerAction(self, action):
+		if len(action) > 2 :
+			# Si l'action se passe chez nous
+			if self.playing and action[0] == "low" :
+				# Selection d'une carte de jeu
+				if action[1] == "gameboard" :
+					# Si on a selectionné aucune carte, on selectione
+					if self.selected == None :
+						pass
 					else :
-						return None
-				# Placement sur son gameboard/event
-				else :
-					# Placement sur son terrain
-					if cardNumber >= 0 :
-						# Placement carte action
-						if card.type == Type.ACTION :
-							if self.gameboard[line][cardNumber] != None :
-								self.gameboard[line][cardNumber].addActionCard(card)
-								return self.gameboard[line][cardNumber]
-							else :
-								return None
-						# carte normale
-						else :
-							if self.gameboard[line][cardNumber] == None :
-								self.gameboard[line][cardNumber] = card
-								# Calcul des nouveaux effets
-								self.calculateLine(line, self.gameboard[line])
-								return card
-							else :
-								return None
-					# Carte event (prend effet au tour suivant)
-					else :
-						events.append(card)
-			# Retirer une carte
-			elif action == PlayerAction.REMOVE_CARD :
-				return removeCard(line, cardNumber)
-			# Retirer une carte
-			elif action == PlayerAction.GET_INFO :
-				# Carte d'un autre joueur (forcément sur sa board)
-				if otherPlayer != None :
-					return otherPlayer.gameboard[line][cardNumber]
-				# Une carte à nous (ou event)
-				else :
-					# Une carte posée sur le gameboard
-					if line >= 0 :
-						return self.gameboard[line][cardNumber]
-					# Une carte de notre main
-					elif cardNumber >= 0 :
-						return self.deck[cardNumber]
-					# Une carte des events
-					else :
-						return events[-cardNumber]
-			else :
-				return None
-		except Exception as e:
-			return None
+						pass
+				# Selection d'une carte de la main
+				elif action[1] == "hand" :
+					pass
+				# Selection du deck de defaussement
+				elif action[1] == "deck" :
+					pass
+
 
 	# Supprime une carte, retourne la carte supprimée ou None si impossible
 	def removeCard(self, line, cardNumber):

@@ -111,8 +111,8 @@
 		<id>4</id>
 		<cardType>1</cardType>
 		<image>card/imgs/nucleaire.png</image>
-		<name>Usine Nucléaire</name>
-		<description>Elle brille la nuit ! Livré
+		<name>Centrale Nucléaire</name>
+		<description>Elle brille la nuit ! Livrée
 			avec des gélules colorées.</description>
 		<type>1</type>
 		<cardData>
@@ -157,7 +157,7 @@
 		<id>6</id>
 		<cardType>2</cardType>
 		<image>card/imgs/revolutionOuvriere.png</image>
-		<name>Révolution Ouvriere</name>
+		<name color="white">Révolution Ouvriere</name>
 		<description>Le travail appauvrit la 
 			richesse de l'homme libre</description>
 		<type>1</type>

@@ -7,6 +7,7 @@ pygame.display.set_caption("Test pygame")
 
 from cap_graph import *
 from deck import *
+from player import *
 
 # Chargement des cartes
 deck = deck("card/cards.xml")
@@ -21,15 +22,64 @@ event_key   = []
 
 display_list  = []
 
+class cap_clickDetector:
+
+	def __init__(self):
+		# Moitié haute
+		self.up = cap_Rect(0, 0, 1280, 400)
+
+		# Zone de carte haute
+		self.up_hand = cap_Rect(60, 0, 1160, 86)
+
+		# Gameboard haute
+		self.up_gameboard = cap_Rect(350, 120, 580, 240)
+
+		# Deck
+		self.up_deck = cap_Rect(50, 188, 200, 143)
+
+		# Zone de carte basse
+		self.low_hand = cap_Rect(60, 712, 1160, 88)
+
+		# Gameboard basse
+		self.low_gameboard = cap_Rect(350, 449, 580, 240)
+
+		# Deck
+		self.low_deck = cap_Rect(1037, 552, 200, 143)
+
+	def get_zone(self, x, y):
+		# Haut
+		if self.up.isIn(x,y) :
+			if self.up_hand.isIn(x, y) :				
+				return ("up", "hand", int((x - self.up_hand.x) / 145))
+			elif self.up_gameboard.isIn(x, y) :
+				return ("up", "gameboard", int((x - self.up_gameboard.x) / 145), int((y - self.up_gameboard.y) / 60))
+			elif self.up_deck.isIn(x, y) :
+				return ("up", "gameboard", "deck")
+			else:
+				return ("up")
+		# Bas
+		else :
+			if self.low_hand.isIn(x, y) :				
+				return ("low", "hand", int((x - self.low_hand.x) / 145))
+			elif self.low_gameboard.isIn(x, y) :
+				return ("low", "gameboard", int((x - self.low_gameboard.x) / 145), int((y - self.low_gameboard.y) / 60))
+			elif self.low_deck.isIn(x, y) :
+				return ("low", "gameboard", "deck")
+			else :
+				return ("low")
+
+clicker_detector = cap_clickDetector()
+
 # Chargement graphique du deck
 deck.init(event_mouse, event_key, display_list)
 
-deck.deck[0].grap_mincard.visibility(True)
-deck.deck[0].grap_mincard.rect.x = 700
-deck.deck[0].grap_mincard.rect.y = 120
-deck.deck[1].grap_mincard.visibility(True)
-deck.deck[1].grap_mincard.rect.x = 500
-deck.deck[1].grap_mincard.rect.y = 50
+deck_defausse = cap_Graph_deck([])
+deck_defausse.init(event_mouse, event_key, display_list)
+deck_defausse.visibility(True)
+deck_defausse.rect.x = 1037
+deck_defausse.rect.y = 552
+
+player1 = Player("Player 1")
 
 # Boucle d'affichage / évenements
 while not quit :
@@ -53,9 +103,15 @@ while not quit :
 		if event.type == KEYDOWN:
 			if event.key == K_ESCAPE:
 				quit = True
+			else:
+				player1.addCardDeck(deck.pickUpCardFromDeck())
 
 		# Souris
 		if event.type == MOUSEBUTTONDOWN or event.type == MOUSEBUTTONUP or event.type == MOUSEMOTION :
+
+			if event.type == MOUSEBUTTONDOWN :
+				print(clicker_detector.get_zone(event.pos[0], event.pos[1]))
+
 			for clbk in event_mouse :
 				# Si l'event se passe dans notre range
 				if clbk[0] == event.type and ( not hasattr(event, 'button') or clbk[1] == event.button ) :

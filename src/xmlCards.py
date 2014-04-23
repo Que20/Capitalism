@@ -52,7 +52,6 @@ def parseXML(filename) :
 def makeDeck(cards) :
 	deck = []
 	for card in cards :
-		print(card)
 		effects = []
 		for effect in card['effects'] :
 			effects.append(c.Effect(effect['value'], effect['modifierType'], effect['affectedValue']))
