@@ -3,9 +3,9 @@
 	<item>
 		<id>0</id>
 		<cardType>1</cardType>
-		<image>card/imgs/futur.png</image>
-		<name>The Product name</name>
-		<description>Yeah, that card roxx, you totaly should peek this one.</description>
+		<image>card/imgs/futurSmartphone.png</image>
+		<name>Smartphone du Futur</name>
+		<description>Vous inventez l'ultime smartphone.</description>
 		<type>1</type>
 		<cardData>
 			<costPerTurn>-100</costPerTurn>
@@ -22,6 +22,26 @@
 				<modifierType>2</modifierType>
 				<affectedValue>6</affectedValue>
 			</effect>
+		</effects>
+		<affectedType>0</affectedType>
+	</item>
+	<item>
+		<id>1</id>
+		<cardType>1</cardType>
+		<image>card/imgs/avionSousterrain.png</image>
+		<name>L'avion sous-terrain</name>
+		<description>Tout le monde l'attendait. Vous l'avez fait.</description>
+		<type>1</type>
+		<cardData>
+			<costPerTurn>-100</costPerTurn>
+			<costPerTurnModifier>0</costPerTurnModifier>
+			<incomePerTurn>500</incomePerTurn>
+			<incomePerTurnModifier>0</incomePerTurnModifier>
+			<discardCost>3500</discardCost>
+		</cardData>
+		<life>99</life>
+		<deploymentCost>3500</deploymentCost>
+		<effects>
 			<effect>
 				<value>30</value>
 				<modifierType>2</modifierType>
@@ -31,34 +51,182 @@
 		<affectedType>0</affectedType>
 	</item>
 	<item>
-		<id>1</id>
-		<cardType>2</cardType>
-		<image>card/imgs/chinese_invest.jpg</image>
+		<id>2</id>
+		<cardType>1</cardType>
+		<image>card/imgs/batteauTerrestre.png</image>
+		<name>Le Bateau Terrestre</name>
+		<description>Un grand jour pour l'hummanité. Vous réinventez le concept du Bateau.</description>
 		<type>1</type>
-		<name>Investissements chinois</name>
-		<description>Les chinois viennent de se
-			rendre compte qu'ils
-			avaient trop d'argent.</description>
-		<actionType>1</actionType>
-		<life>5</life>
+		<cardData>
+			<costPerTurn>-100</costPerTurn>
+			<costPerTurnModifier>0</costPerTurnModifier>
+			<incomePerTurn>500</incomePerTurn>
+			<incomePerTurnModifier>0</incomePerTurnModifier>
+			<discardCost>3500</discardCost>
+		</cardData>
+		<life>99</life>
 		<deploymentCost>3500</deploymentCost>
-		<affectedType>1</affectedType>
 		<effects>
 			<effect>
-				<value>10</value>
-				<modifierType>1</modifierType>
-				<affectedValue>3</affectedValue>
-			</effect>
-			<effect>
-				<value>-10</value>
-				<modifierType>1</modifierType>
-				<affectedValue>3</affectedValue>
-			</effect>
-			<effect>
-				<value>10</value>
-				<modifierType>1</modifierType>
-				<affectedValue>3</affectedValue>
+				<value>30</value>
+				<modifierType>2</modifierType>
+				<affectedValue>6</affectedValue>
 			</effect>
 		</effects>
+		<affectedType>0</affectedType>
+	</item>
+	<item>
+		<id>3</id>
+		<cardType>1</cardType>
+		<image>card/imgs/nexGenConsole.png</image>
+		<name>Console Next-Gen</name>
+		<description>La console de jeux vidéo protative vient d'être révolutionnée</description>
+		<type>1</type>
+		<cardData>
+			<costPerTurn>-100</costPerTurn>
+			<costPerTurnModifier>0</costPerTurnModifier>
+			<incomePerTurn>500</incomePerTurn>
+			<incomePerTurnModifier>0</incomePerTurnModifier>
+			<discardCost>3500</discardCost>
+		</cardData>
+		<life>99</life>
+		<deploymentCost>3500</deploymentCost>
+		<effects>
+			<effect>
+				<value>30</value>
+				<modifierType>2</modifierType>
+				<affectedValue>6</affectedValue>
+			</effect>
+		</effects>
+		<affectedType>0</affectedType>
+	</item>
+	<item>
+		<id>4</id>
+		<cardType>1</cardType>
+		<image>card/imgs/nucléaire.png</image>
+		<name>Usine Nucléaire</name>
+		<description>Elle brille la nuit §§§</description>
+		<type>1</type>
+		<cardData>
+			<costPerTurn>-100</costPerTurn>
+			<costPerTurnModifier>0</costPerTurnModifier>
+			<incomePerTurn>500</incomePerTurn>
+			<incomePerTurnModifier>0</incomePerTurnModifier>
+			<discardCost>3500</discardCost>
+		</cardData>
+		<life>99</life>
+		<deploymentCost>3500</deploymentCost>
+		<effects>
+			<effect>
+				<value>30</value>
+				<modifierType>2</modifierType>
+				<affectedValue>6</affectedValue>
+			</effect>
+		</effects>
+		<affectedType>0</affectedType>
+	</item>
+	<item>
+		<id>5</id>
+		<cardType>2</cardType>
+		<image>card/imgs/parachutedore.png</image>
+		<name>Parachute Dore</name>
+		<description>Oblige le licenciment d'un employé adverse, avec une jolie prime de départ.</description>
+		<type>1</type>
+		<life>99</life>
+		<deploymentCost>3500</deploymentCost>
+		<effects>
+			<effect>
+				<value>30</value>
+				<modifierType>2</modifierType>
+				<affectedValue>6</affectedValue>
+			</effect>
+		</effects>
+		<affectedType>0</affectedType>
+	</item>
+	<item>
+		<id>6</id>
+		<cardType>2</cardType>
+		<image>card/imgs/revolutionOuvriere.png</image>
+		<name>Révolution Ouvriere</name>
+		<description>Le travail appauvrit la richesse de l'homme libre</description>
+		<type>1</type>
+		<life>99</life>
+		<deploymentCost>3500</deploymentCost>
+		<effects>
+			<effect>
+				<value>30</value>
+				<modifierType>2</modifierType>
+				<affectedValue>6</affectedValue>
+			</effect>
+		</effects>
+		<affectedType>0</affectedType>
+	</item>
+	<item>
+		<id>7</id>
+		<cardType>2</cardType>
+		<image>card/imgs/ScandaleSexuel.png</image>
+		<name>Scandale Sexuel !</name>
+		<description>Obligé de partir la queue entre les jambes...</description>
+		<type>2</type>
+		<life>99</life>
+		<deploymentCost>3500</deploymentCost>
+		<effects>
+			<effect>
+				<value>30</value>
+				<modifierType>2</modifierType>
+				<affectedValue>6</affectedValue>
+			</effect>
+		</effects>
+		<affectedType>0</affectedType>
+	</item>
+	<item>
+		<id>8</id>
+		<cardType>1</cardType>
+		<image>card/imgs/SystemeDeSurveillance.png</image>
+		<name>Systeme de Surveillance</name>
+		<description>Et ils ne se doutent de rien :)</description>
+		<type>1</type>
+		<cardData>
+			<costPerTurn>-100</costPerTurn>
+			<costPerTurnModifier>0</costPerTurnModifier>
+			<incomePerTurn>500</incomePerTurn>
+			<incomePerTurnModifier>0</incomePerTurnModifier>
+			<discardCost>3500</discardCost>
+		</cardData>
+		<life>99</life>
+		<deploymentCost>3500</deploymentCost>
+		<effects>
+			<effect>
+				<value>30</value>
+				<modifierType>2</modifierType>
+				<affectedValue>6</affectedValue>
+			</effect>
+		</effects>
+		<affectedType>0</affectedType>
+	</item>
+	<item>
+		<id>9</id>
+		<cardType>1</cardType>
+		<image>card/imgs/voyageTemporel.png</image>
+		<name>Voyage temporel</name>
+		<description>Le continum espace temps vous appartient !</description>
+		<type>1</type>
+		<cardData>
+			<costPerTurn>-100</costPerTurn>
+			<costPerTurnModifier>0</costPerTurnModifier>
+			<incomePerTurn>500</incomePerTurn>
+			<incomePerTurnModifier>0</incomePerTurnModifier>
+			<discardCost>3500</discardCost>
+		</cardData>
+		<life>99</life>
+		<deploymentCost>3500</deploymentCost>
+		<effects>
+			<effect>
+				<value>30</value>
+				<modifierType>2</modifierType>
+				<affectedValue>6</affectedValue>
+			</effect>
+		</effects>
+		<affectedType>0</affectedType>
 	</item>
 </data>
