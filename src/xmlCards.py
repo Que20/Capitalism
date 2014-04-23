@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as et
 import card as c
+import re
 
 # Parsage du fichier XML fournis en paramètre
 def parseXML(filename) :
@@ -11,9 +12,9 @@ def parseXML(filename) :
 		cardDict = {}
 		for card in child :
 			# Nom ou descript
-			if card.tag == "name" or card.tag == "description" :
+			if card.tag == "name" or card.tag == "description" or card.tag == "image" :
 				#print("\t\t"+card.tag+" : "+str(card.text))
-				cardDict[card.tag] = str(card.text)
+				cardDict[card.tag] = str(card.text).replace("\t", "")
 			# CardData
 			elif card.tag == "cardData" :
 				cardData = {}

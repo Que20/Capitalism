@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 
 from interface_rect import *
+from interface_button import *
 
 w_top = pygame.image.load("w_top.png").convert_alpha()
 w_top_left = pygame.image.load("w_top_left.png").convert_alpha()
@@ -13,10 +14,13 @@ w_left = pygame.image.load("w_left.png").convert_alpha()
 w_right = pygame.image.load("w_right.png").convert_alpha()
 w_center = pygame.image.load("w_center.png").convert_alpha()
 
+w_b1 = pygame.image.load("w_b1.png").convert_alpha()
+w_b2 = pygame.image.load("w_b2.png").convert_alpha()
+
 # Window
 class vz_Window:
 
-	def __init__(self, rect, content, visible=False):
+	def __init__(self, rect, content, name=None, visible=True):
 		
 		self.visible = visible
 		self.rect = rect
@@ -68,6 +72,15 @@ class vz_Window:
 		# Haut gauche
 		self.toDisplay.blit(w_top_left, (0, 0))  
 
+		# Label
+		if name != None :
+			smallText = pygame.font.Font('freesansbold.ttf', 18);
+			label = smallText.render(name, 1, (0,0,0))
+			self.toDisplay.blit(label, (5, 5))
+
+		# Bouton
+		self.button = vz_Button(vz_Rect(rect.x + rect.w - 3 - w_b1.get_width(), rect.y + 3, 0, 0) , w_b1, w_b2)
+
 	# Initialisation
 	def init(self, event_mouse, to_display):
 		# Sur le mouve de la souris, pas de boutton, position, callback
@@ -81,6 +94,7 @@ class vz_Window:
 		event_mouse.insert(0, self.move_up)
 		# On ajoute à la liste d'affichage
 		to_display.append(self.display)
+		self.button.init(event_mouse, to_display)
 
 		self.to_display = to_display
 		self.event_mouse = event_mouse
@@ -132,5 +146,6 @@ class vz_Window:
 
 	# Affichage
 	def display(self, window):
-		window.blit(self.toDisplay, (self.rect.x, self.rect.y))
+		if self.visible :
+			window.blit(self.toDisplay, (self.rect.x, self.rect.y))
 

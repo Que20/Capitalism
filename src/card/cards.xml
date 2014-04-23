@@ -1,52 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data>
-    <item>
-        <id>0</id>
-        <cardType>1</cardType>
-        <image>x.png</image>
-        <name>The Product name</name>
-        <description>Yeah, that card roxx, you totaly should peek this one.</description>
-        <type>1</type>
-        <cardData>
-            <costPerTurn>100</costPerTurn>
-            <costPerTurnModifier>0</costPerTurnModifier>
-            <incomePerTurn>500</incomePerTurn>
-            <incomePerTurnModifier>0</incomePerTurnModifier>
-            <discardCost>3500</discardCost>
-        </cardData>
-        <life>999</life>
-        <deploymentCost>3500</deploymentCost>
-        <effects>
-            <effect>
-                <value>30</value>
-                <modifierType>2</modifierType>
-                <affectedValue>6</affectedValue>
-            </effect>
-            <effect>
-                <value>30</value>
-                <modifierType>2</modifierType>
-                <affectedValue>6</affectedValue>
-            </effect>
-        </effects>
-        <affectedType>0</affectedType>
-    </item>
-    <item>
-        <id>1</id>
-        <cardType>2</cardType>
-        <image>x.png</image>
-        <type>1</type>
-        <name>The Action name</name>
-        <description>It's a great Action.</description>
-        <actionType>1</actionType>
-        <life>999</life>
-        <deploymentCost>3500</deploymentCost>
-        <affectedType>0</affectedType>
-        <effects>
-            <effect>
-                <value>10</value>
-                <modifierType>1</modifierType>
-                <affectedValue>3</affectedValue>
-            </effect>
-        </effects>
-    </item>
+	<item>
+		<id>0</id>
+		<cardType>1</cardType>
+		<image>card/imgs/futur.png</image>
+		<name>The Product name</name>
+		<description>Yeah, that card roxx, you totaly should peek this one.</description>
+		<type>1</type>
+		<cardData>
+			<costPerTurn>-100</costPerTurn>
+			<costPerTurnModifier>0</costPerTurnModifier>
+			<incomePerTurn>500</incomePerTurn>
+			<incomePerTurnModifier>0</incomePerTurnModifier>
+			<discardCost>3500</discardCost>
+		</cardData>
+		<life>99</life>
+		<deploymentCost>3500</deploymentCost>
+		<effects>
+			<effect>
+				<value>30</value>
+				<modifierType>2</modifierType>
+				<affectedValue>6</affectedValue>
+			</effect>
+			<effect>
+				<value>30</value>
+				<modifierType>2</modifierType>
+				<affectedValue>6</affectedValue>
+			</effect>
+		</effects>
+		<affectedType>0</affectedType>
+	</item>
+	<item>
+		<id>1</id>
+		<cardType>2</cardType>
+		<image>card/imgs/chinese_invest.jpg</image>
+		<type>1</type>
+		<name>Investissements chinois</name>
+		<description>Les chinois viennent de se
+			rendre compte qu'ils
+			avaient trop d'argent.</description>
+		<actionType>1</actionType>
+		<life>5</life>
+		<deploymentCost>3500</deploymentCost>
+		<affectedType>1</affectedType>
+		<effects>
+			<effect>
+				<value>10</value>
+				<modifierType>1</modifierType>
+				<affectedValue>3</affectedValue>
+			</effect>
+			<effect>
+				<value>-10</value>
+				<modifierType>1</modifierType>
+				<affectedValue>3</affectedValue>
+			</effect>
+			<effect>
+				<value>10</value>
+				<modifierType>1</modifierType>
+				<affectedValue>3</affectedValue>
+			</effect>
+		</effects>
+	</item>
 </data>

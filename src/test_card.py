@@ -5,10 +5,13 @@ pygame.init()
 window = pygame.display.set_mode((1280, 800))
 pygame.display.set_caption("Test pygame")
 
-from interface_rect import *
-from interface_button import *
-from interface_window import *
+from cap_graph import *
+from deck import *
 
+# Chargement des cartes
+deck = deck("card/cards.xml")
+
+# Initialisation pygame
 background = pygame.image.load("background.jpeg").convert()
 quit = False
 window.blit(background, (0,0))
@@ -16,24 +19,22 @@ window.blit(background, (0,0))
 event_mouse = []
 event_key   = []
 
-to_display  = []
+display_list  = []
 
-# Création bouton
-b = vz_Button(vz_Rect(20, 20, 300, 300), pygame.image.load("b1.png").convert_alpha(), pygame.image.load("b2.png").convert_alpha(), pygame.image.load("b3.png").convert_alpha())
-b.init(event_mouse, to_display)
+# Chargement graphique du deck
+deck.init(event_mouse, event_key, display_list)
 
-# Tests
-test = vz_Window(vz_Rect(150, 150, 800, 600), None, "Fenêtre de test")
-test.init(event_mouse, to_display)
+deck.deck[0].grap_card.visibility(True)
+deck.deck[1].grap_card.visibility(True)
+deck.deck[1].grap_card.rect.x = 220
+deck.deck[1].grap_card.rect.y = 20
 
-test2 = vz_Window(vz_Rect(600, 10, 400, 350), None)
-test2.init(event_mouse, to_display)
-
+# Boucle d'affichage / évenements
 while not quit :
 	window.blit(background, (0,0))
 
 	# Affichage des choses à afficher
-	for clbk in to_display :
+	for clbk in display_list :
 		clbk(window)
 
 	# Refresh

@@ -1,42 +1,5 @@
-# === Enumérations === #
-
-class Type:
-	CARD   = 1
-	ACTION = 2
-
-# Type de carte possible
-class CardType:
-	PRODUCT  = 1    # Type produit
-	CONTRACT = 2    # Type contrat
-	EMPLOYEE = 3    # Type employé
-
-# Type de carte action possible
-class ActionType:
-	EVENT  = 1      # Type event, touche toutes les cartes
-	ACTION = 2      # Type action, touche une seule carte
-
-# Type de valeur affectée possible
-class AffectableValue:
-	COST_PER_TURN             = 1     # Coût par tours
-	COST_PER_TURN_MODIFIER    = 2     # Modificateur du coût par tours
-	INCOME_PER_TURN           = 3     # Revenus par tours
-	INCOME_PER_TURN_MODIFIER  = 4     # Modificateur des revenus par tours
-	DISCARD_COST              = 5     # Coût de suppresion
-	LIFE                      = 6     # Durée de vie de la carte
-
-# Type de carte action possible
-class ModifierType:
-	PERCENT = 1       # Modificateur par pourcentage
-	FIXED   = 2       # Modificateur fixe
-
-	def computeModifiedValue(value, modifier, modifierType):
-		if modifierType == ModifierType.PERCENT :
-			return value * modifier
-		elif modifierType == ModifierType.FIXED :
-			return value + modifier
-		else :
-			return value
-
+from cap_graph import *
+from card_type import *
 
 # === Classes === #
 
@@ -58,13 +21,12 @@ class Action:
 		self.id = id                                          # ID unique de la carte
 		self.cardType = Type.ACTION                           # type Action
 		self.name = name                                      # Nom de la carte
-		sefl.image = cap_Graph_card(image)                    # Background de l'objet graphique de la carte
 		self.desc = desc                                      # Description catre
 		self.type = type                                      # Type de la carte (ActionType)
 		self.life = life                                      # Durée de vie de la carte ( -1 = infinie )
 		self.affectedType = affectedType                      # Type affecté (CardType)
 		self.effects = effects                                # Tableau d'effets (Effect[])
-		sefl.image = cap_Graph_card(image)                    # Background de l'objet graphique de la carte
+		self.grap_card = cap_Graph_card(image, self)          # Background de l'objet graphique de la carte
 
 	# Tour suivant
 	def nextTurn(self):
@@ -105,7 +67,6 @@ class Card:
 		self.id = id                                          # ID unique de la carte
 		self.cardType = Type.CARD                             # type de la carte (Type)
 		self.name = name                                      # Nom de la carte
-		sefl.image = cap_Graph_card(image)                    # Background de l'objet graphique de la carte
 		self.desc = desc                                      # Description catre
 		self.type = type                                      # Type de la carte (CardType)
 		self.cardData = cardData                              # Données de la carte
@@ -113,7 +74,7 @@ class Card:
 		self.affectedType = affectedType                      # Type affecté (CardType)
 		self.computedCard = CardData(cardData=self.cardData)  # Données calculé de la carte
 		self.actions = []                                     # Cartes actions affectées sur cette carte
-		sefl.image = cap_Graph_card(image)                    # Background de l'objet graphique de la carte
+		self.grap_card = cap_Graph_card(image, self)          # Background de l'objet graphique de la carte
 
 	# Ajout d'une carte action
 	def addActionCard(self, actionCard):
