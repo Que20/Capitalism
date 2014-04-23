@@ -12,7 +12,7 @@ from deck import *
 deck = deck("card/cards.xml")
 
 # Initialisation pygame
-background = pygame.image.load("background.jpeg").convert()
+background = pygame.image.load("background.jpg").convert()
 quit = False
 window.blit(background, (0,0))
 
@@ -24,10 +24,12 @@ display_list  = []
 # Chargement graphique du deck
 deck.init(event_mouse, event_key, display_list)
 
-deck.deck[0].grap_card.visibility(True)
-deck.deck[1].grap_card.visibility(True)
-deck.deck[1].grap_card.rect.x = 220
-deck.deck[1].grap_card.rect.y = 20
+deck.deck[0].grap_mincard.visibility(True)
+deck.deck[0].grap_mincard.rect.x = 700
+deck.deck[0].grap_mincard.rect.y = 120
+deck.deck[1].grap_mincard.visibility(True)
+deck.deck[1].grap_mincard.rect.x = 500
+deck.deck[1].grap_mincard.rect.y = 50
 
 # Boucle d'affichage / évenements
 while not quit :

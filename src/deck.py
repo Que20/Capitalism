@@ -14,8 +14,10 @@ class deck:
 		return deck.pop()
 		
 	def shuffleDeck(self):
-		random.shuffle(self.deck)
+		#random.shuffle(self.deck)
+		pass
 		
 	def init(self, event_mouse, event_key, display_list):
 		for card in self.deck:
 			card.grap_card.init(event_mouse, event_key, display_list)
+			card.grap_mincard.init(event_mouse, event_key, display_list)

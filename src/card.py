@@ -26,7 +26,8 @@ class Action:
 		self.life = life                                      # Durée de vie de la carte ( -1 = infinie )
 		self.affectedType = affectedType                      # Type affecté (CardType)
 		self.effects = effects                                # Tableau d'effets (Effect[])
-		self.grap_card = cap_Graph_card(image, self)          # Background de l'objet graphique de la carte
+		self.grap_card = cap_Graph_card(image, self)          # Image de la carte
+		self.grap_mincard = cap_Graph_mincard(image, self)    # Miniature de l'image de la carte
 
 	# Tour suivant
 	def nextTurn(self):
@@ -74,7 +75,8 @@ class Card:
 		self.affectedType = affectedType                      # Type affecté (CardType)
 		self.computedCard = CardData(cardData=self.cardData)  # Données calculé de la carte
 		self.actions = []                                     # Cartes actions affectées sur cette carte
-		self.grap_card = cap_Graph_card(image, self)          # Background de l'objet graphique de la carte
+		self.grap_card = cap_Graph_card(image, self)          # Image de la carte
+		self.grap_mincard = cap_Graph_mincard(image, self)    # Miniature de l'image de la carte
 
 	# Ajout d'une carte action
 	def addActionCard(self, actionCard):
