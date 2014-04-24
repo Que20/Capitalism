@@ -9,6 +9,8 @@ class PlayerAction:
 	REMOVE_CARD = 3 # Retire une carte posée
 	GET_INFO = 4    # Information sur une de ses cartes
 
+red = (150, 0, 0)
+green = (0, 150, 0)
 
 # === Classes === #
 
@@ -17,7 +19,7 @@ class Player:
 	"""Représente un des deux joueurs"""
 
 	# Constructeur
-	def __init__(self, name, startingMoney=100000):
+	def __init__(self, name, log, startingMoney=100000):
 		self.name = name                                   # Nom du joueur
 		self.money = startingMoney                         # Argent de départ
 		self.deck = []                                     # Cartes en main
@@ -27,7 +29,8 @@ class Player:
 		                  [None, None, None, None]]        # Plateau du joueur
 		self.deleted = []                                  # Cartes supprimées
 		self.selected = None                               # Carte selectionnée 1 = hand / 2 = gameboard
-		self.playing = True                                
+		self.playing = True                      
+		self.log = log          
 
 		self.graph_player = cap_Graph_playerinfo(cap_Rect(44, 555, 0, 0), self)
 
@@ -59,8 +62,10 @@ class Player:
 	# Interverti deux cartes du gameboard
 	def _invertGameboardCards(self, x1, y1, x2, y2):
 		# Graphique
-		self.gameboard[x1][y1].grap_mincard.animate(x2 * 145 + 350, y2 * 60 + 438, 500)
-		self.gameboard[x2][y2].grap_mincard.animate(x1 * 145 + 350, y1 * 60 + 438, 500)
+		if self.gameboard[x1][y1] != None :
+			self.gameboard[x1][y1].grap_mincard.animate(x2 * 145 + 350, y2 * 60 + 438, 200)
+		if self.gameboard[x2][y2] != None :
+			self.gameboard[x2][y2].grap_mincard.animate(x1 * 145 + 350, y1 * 60 + 438, 200)
 		# Inversement
 		self.gameboard[x1][y1], self.gameboard[x2][y2] = self.gameboard[x2][y2], self.gameboard[x1][y1]
 
@@ -76,6 +81,9 @@ class Player:
 
 					# Graphique
 					self.deck[hand].grap_mincard.animate(50, 107, 500)
+
+					# Log
+					self.log.log("["+self.name+"] Carte posée : "+self.deck[hand].name+" dans event", green)
 
 					# On change de zone
 					events[0] = self.deck.pop(hand)
@@ -105,9 +113,15 @@ class Player:
 									card.grap_mincard.update()
 				else :
 					print("Erreur : pas assez d'argent pour poser la carte")
+					self.log.msg("Impossible de poser la carte : pas assez d'argent")
+					self.log.log("["+self.name+"] Action impossible : pas assez d'argent", red)
 			else :
 				print("Erreur : type interdit de carte")
+				self.log.msg("Impossible de poser la carte : mauvais type de carte")
+				self.log.log("["+self.name+"] Action impossible : mauvais type", red)
 		else :
+			self.log.msg("Impossible de poser la carte : carte event déjà posée")
+			self.log.log("["+self.name+"] Action impossible : pas de place", red)
 			print("Erreur : carte event déjà posée")
 
 
@@ -125,9 +139,14 @@ class Player:
 					self.graph_player.update()
 					# Màj ligne
 					self.calculateLine(self.gameboard[x], events)
+					self.log.log("["+self.name+"] Carte posée : "+self.gameboard[x][y].name+" sur le board", green)
 				else :
+					self.log.msg("Impossible de poser la carte : pas assez d'argent")
+					self.log.log("["+self.name+"] Action impossible : fond insuffisant", red)
 					print("Erreur : pas assez d'argent pour poser la carte")
 			else :
+				self.log.msg("Impossible de poser la carte : case déjà occupée")
+				self.log.log("["+self.name+"] Action impossible : case occupée", red)
 				print("Erreur : case déjà occupée")
 		elif self.deck[hand].type == ActionType.ACTION :
 			if self.gameboard[x][y] != None :
@@ -138,16 +157,26 @@ class Player:
 						# Màj carte
 						print("A faire")
 					else :
-						print("Erreur : pas assez d'argent pour poser la carte")
+						self.log.msg("Impossible de poser la carte : pas assez d'argent")
+						self.log.log("["+self.name+"] Action impossible : fond insuffisant", red)
+						print("Erreur : pas assez d'argent pour poser la carte")				
 				else :
+					self.log.msg("Impossible de poser la carte : type non-affecté")
+					self.log.log("["+self.name+"] Action impossible : type non-affecté", red)
 					print("Erreur : type non-affecté")
 			else :
+				self.log.msg("Impossible de poser la carte : case vide")
+				self.log.log("["+self.name+"] Action impossible : case vide", (128, 0, 0))
 				print("Erreur : impossible de poser une carte action sur une case vide")
 		else :
+			self.log.msg("Impossible de poser la carte : event interdit")
+			self.log.log("["+self.name+"] Action impossible : event interdit", red)
 			print("Erreur : impossible de placer des events ici")
 
 	# Défausse le carte de la main
 	def _discardHand(self, hand):
+		# Log
+		self.log.log("["+self.name+"] Carte défaussée : "+self.deck[hand].name+" depuis la main", green)
 		# Graphique
 		self.deck[hand].grap_mincard.animate(1087, 602, 750, -1)
 		# On change de zone
@@ -162,10 +191,15 @@ class Player:
 			self.graph_player.update()
 			# Graphique
 			self.gameboard[x][y].grap_mincard.animate(1087, 602, 750, -1)
+			# Log
+			self.log.log("["+self.name+"] Carte défaussée : "+self.gameboard[x][y].name+" depuis le board", green)
+
 			# On change de zone
 			self.deleted.append(self.gameboard[x][y])
 			self.gameboard[x][y] = None
 		else :
+			self.log.msg("Impossible de supprimer la carte : pas assez d'argent")
+			self.log.log("["+self.name+"] Action impossible : pas assez d'argent", red)
 			print("Erreur : pas assez d'argent pour supprimer la carte")
 
 	# Combien a le joueur ?
@@ -199,7 +233,7 @@ class Player:
 						self._poseCard(events, self.selected[1], action[2], action[3])
 
 					# On échange les deux cartes de la même colonne
-					elif self.selected[0] == 2 and self.gameboard[action[2]][action[3]] != None and self.selected[1] == action[2] :
+					elif self.selected[0] == 2 and self.selected[1] == action[2] :
 						self._invertGameboardCards(action[2], action[3], self.selected[1], self.selected[2])
 
 				# Selection d'une carte de la main

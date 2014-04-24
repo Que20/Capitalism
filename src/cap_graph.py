@@ -12,6 +12,7 @@ mincard_bg_selected = pygame.image.load("card/mincard_bg_selected.png").convert_
 mincard_bg_hovered = pygame.image.load("card/mincard_bg_hover.png").convert_alpha()
 back_bg = pygame.image.load("card/back_bg.png").convert_alpha()
 back_bg_hover = pygame.image.load("card/back_bg_hover.png").convert_alpha()
+msg_bg = pygame.image.load("card/msg_bg.png").convert_alpha()
 
 # Fonts
 player_name_font = pygame.font.Font('card/BebasNeue.otf', 25);
@@ -68,7 +69,7 @@ class cap_Graph_object:
 
 	def erase(self):
 		self.to_display.fill(0)
-		
+
 	# Rend visible ou invisible l'image
 	def visibility(self, visibility):
 		self.visible = visibility
@@ -106,6 +107,54 @@ class cap_Graph_object:
 		if self.visible :
 			cap_blit_alpha(window, self.to_display, (self.rect.x, self.rect.y), self.opacity)
 
+
+# Pop-up & log
+class cap_Graph_msg(cap_Graph_object):
+	"""docstring for cap_Graph_mincard"""
+	def __init__(self):
+		cap_Graph_object.__init__(self, cap_Rect(0, 0, 1280, 800), cap_Rect(0, 0, 0, 0))
+
+		self.log_zone = pygame.Surface((321, 140), SRCALPHA, 32).convert_alpha()
+		self.msg_zone = pygame.Surface((600, 200), SRCALPHA, 32).convert_alpha()
+
+		# Update des infos
+		self.update()
+
+	# Affiche un message
+	def msg(self, msg):
+		print("Message : "+msg)
+
+		# On remet à zéro
+		self.msg_zone.fill(0)
+		self.opacity = 255
+		self.msg_zone.blit(msg_bg, (0, 0))
+
+		# On écrit le message
+		self.msg_zone.blit(player_name_font.render(msg, 1, black), (68, 52))
+		self.to_display.blit(self.msg_zone, (0,0))
+
+		# On fait disparaitre
+		self.animate(0, 0, 6000, -1)
+
+	# Ajoute une entrée au log
+	def log(self, msg, color=black):
+
+		# On blit en décalant d'une ligne
+		tmp = pygame.Surface((321, 140), SRCALPHA, 32).convert_alpha()
+		tmp.blit(self.log_zone, (0, 13))
+		self.log_zone = tmp
+
+		# On écrit le message
+		self.log_zone.blit(card_content_font.render(msg, 1, color), (2, 0))
+
+	# Affichage modifié
+	def display(self, window):
+		# On appel l'ancien pour l'animation
+		cap_Graph_object.display(self, window)
+
+		# On affiche notre log
+		if self.visible :
+			window.blit(self.log_zone, (4, 378))
 
 # Info joueur
 class cap_Graph_playerinfo(cap_Graph_object):

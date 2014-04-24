@@ -89,7 +89,11 @@ deck_defausse.visibility(True)
 deck_defausse.rect.x = 1037
 deck_defausse.rect.y = 552
 
-player1 = Player("Player 1")
+log = cap_Graph_msg()
+log.init(event_mouse, event_key, display_list)
+log.visibility(True)
+
+player1 = Player("Player 1", log)
 player1.graph_player.init(event_mouse, event_key, display_list)
 player1.graph_player.visibility(True)
 
