@@ -100,6 +100,7 @@ class cap_Graph_object:
 				self.rect.y = self.anim_end.y
 				if self.anim_opacity == -1 :
 					self.opacity = 0
+					self.visible = False
 				elif self.anim_opacity == 1 :
 					self.opacity = 255
 				self.inAnim = False
@@ -126,6 +127,7 @@ class cap_Graph_msg(cap_Graph_object):
 
 		# On remet à zéro
 		self.msg_zone.fill(0)
+		self.visible = True
 		self.opacity = 255
 		self.msg_zone.blit(msg_bg, (0, 0))
 
@@ -152,9 +154,8 @@ class cap_Graph_msg(cap_Graph_object):
 		# On appel l'ancien pour l'animation
 		cap_Graph_object.display(self, window)
 
-		# On affiche notre log
-		if self.visible :
-			window.blit(self.log_zone, (4, 378))
+		# On affiche notre log=
+		window.blit(self.log_zone, (4, 378))
 
 # Info joueur
 class cap_Graph_playerinfo(cap_Graph_object):
@@ -305,28 +306,33 @@ class cap_Graph_mincard(cap_Graph_object):
 		self.display_list = display_list
 
 	def hover(self, event_type, event_code, x, y):
-		if self.rect_click.isIn(x - self.rect.x, y - self.rect.y):
-			self.card_obj.grap_card.visibility(True)
-			if not self.hovered :
-				self.hovered = True
-				self.update()
-		elif self.card_obj.grap_card.visible :
+		if self.visible :
+			if self.rect_click.isIn(x - self.rect.x, y - self.rect.y):
+				self.card_obj.grap_card.visibility(True)
+				if not self.hovered :
+					self.hovered = True
+					self.update()
+			elif self.card_obj.grap_card.visible :
+				self.card_obj.grap_card.visibility(False)
+				if self.hovered :
+					self.hovered = False
+					self.update()
+		else :
 			self.card_obj.grap_card.visibility(False)
-			if self.hovered :
-				self.hovered = False
-				self.update()
+
 
 	def click(self, event_type, event_code, x, y):
-		if self.rect_click.isIn(x - self.rect.x, y - self.rect.y) :
-			if not self.selected:
-				self.selected = True
-				self.update()
-			else :
+		if self.visible :
+			if self.rect_click.isIn(x - self.rect.x, y - self.rect.y) :
+				if not self.selected:
+					self.selected = True
+					self.update()
+				else :
+					self.selected = False
+					self.update()
+			elif self.selected :
 				self.selected = False
 				self.update()
-		elif self.selected :
-			self.selected = False
-			self.update()
 
 # Carte du jeu
 class cap_Graph_card(cap_Graph_object):
