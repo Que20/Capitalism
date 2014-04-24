@@ -72,9 +72,9 @@
 		<deploymentCost>200</deploymentCost>
 		<effects>
 			<effect>
-				<value>30</value>
-				<modifierType>2</modifierType>
-				<affectedValue>6</affectedValue>
+				<value>0</value>
+				<modifierType>0</modifierType>
+				<affectedValue>0</affectedValue>
 			</effect>
 		</effects>
 		<affectedType>0</affectedType>
@@ -223,9 +223,9 @@
 		<deploymentCost>3500</deploymentCost>
 		<effects>
 			<effect>
-				<value>30</value>
-				<modifierType>2</modifierType>
-				<affectedValue>6</affectedValue>
+				<value>0</value>
+				<modifierType>0</modifierType>
+				<affectedValue>0</affectedValue>
 			</effect>
 		</effects>
 		<affectedType>0</affectedType>
@@ -258,7 +258,7 @@
 	</item>
 	<item>
 		<id>10</id>
-		<cardType>2</cardType>
+		<cardType>1</cardType>
 		<image>card/imgs/chinese_invest.jpg</image>
 		<name>Investissement chinois</name>
 		<description>Le communisme n'a
@@ -410,7 +410,7 @@
 			<incomePerTurnModifier>0.01</incomePerTurnModifier>
 			<discardCost>500</discardCost>
 		</cardData>
-		<life>4</life>
+		<life>14</life>
 		<deploymentCost>150</deploymentCost>
 		<effects>
 			<effect>
@@ -553,7 +553,7 @@ considérables.</description>
 				<affectedValue>6</affectedValue>
 			</effect>
 			<effect>
-				<value>5</value>
+				<value>-5</value>
 				<modifierType>1</modifierType>
 				<affectedValue>2</affectedValue>
 			</effect>
