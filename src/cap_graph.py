@@ -13,6 +13,8 @@ mincard_bg_hovered = pygame.image.load("card/mincard_bg_hover.png").convert_alph
 back_bg = pygame.image.load("card/back_bg.png").convert_alpha()
 back_bg_hover = pygame.image.load("card/back_bg_hover.png").convert_alpha()
 msg_bg = pygame.image.load("card/msg_bg.png").convert_alpha()
+deck_bg = pygame.image.load("card/deck.png").convert_alpha()
+discard_bg = pygame.image.load("card/discard.png").convert_alpha()
 
 # Fonts
 player_name_font = pygame.font.Font('card/BebasNeue.otf', 25);
@@ -190,7 +192,7 @@ class cap_Graph_deck(cap_Graph_object):
 
 		# On commence par le fond (qui ne change pas)
 		self.card_bg = pygame.Surface((self.rect.w, self.rect.h), SRCALPHA, 32).convert_alpha()
-		self.card_bg.blit(back_bg, (0, 0))
+		self.card_bg.blit(discard_bg, (0, 0))
 
 		# Update des infos
 		self.update()
