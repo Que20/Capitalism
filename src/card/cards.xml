@@ -19,11 +19,6 @@
 		<life>99</life>
 		<deploymentCost>1570</deploymentCost>
 		<effects>
-			<effect>
-				<value>0</value>
-				<modifierType>0</modifierType>
-				<affectedValue>0</affectedValue>
-			</effect>
 		</effects>
 		<affectedType>0</affectedType>
 	</item>
@@ -45,11 +40,6 @@
 		<life>99</life>
 		<deploymentCost>250</deploymentCost>
 		<effects>
-			<effect>
-				<value>0</value>
-				<modifierType>0</modifierType>
-				<affectedValue>0</affectedValue>
-			</effect>
 		</effects>
 		<affectedType>0</affectedType>
 	</item>
@@ -71,11 +61,6 @@
 		<life>99</life>
 		<deploymentCost>200</deploymentCost>
 		<effects>
-			<effect>
-				<value>0</value>
-				<modifierType>0</modifierType>
-				<affectedValue>0</affectedValue>
-			</effect>
 		</effects>
 		<affectedType>0</affectedType>
 	</item>
@@ -98,11 +83,6 @@
 		<life>99</life>
 		<deploymentCost>1350</deploymentCost>
 		<effects>
-			<effect>
-				<value>0</value>
-				<modifierType>0</modifierType>
-				<affectedValue>0</affectedValue>
-			</effect>
 		</effects>
 		<affectedType>0</affectedType>
 	</item>
@@ -222,11 +202,6 @@
 		<life>99</life>
 		<deploymentCost>3500</deploymentCost>
 		<effects>
-			<effect>
-				<value>0</value>
-				<modifierType>0</modifierType>
-				<affectedValue>0</affectedValue>
-			</effect>
 		</effects>
 		<affectedType>0</affectedType>
 	</item>
@@ -305,11 +280,6 @@
 		<life>99</life>
 		<deploymentCost>600</deploymentCost>
 		<effects>
-			<effect>
-				<value>0</value>
-				<modifierType>0</modifierType>
-				<affectedValue>0</affectedValue>
-			</effect>
 		</effects>
 		<affectedType>0</affectedType>
 	</item>
@@ -330,11 +300,6 @@
 		<life>99</life>
 		<deploymentCost>320</deploymentCost>
 		<effects>
-			<effect>
-				<value>0</value>
-				<modifierType>0</modifierType>
-				<affectedValue>0</affectedValue>
-			</effect>
 		</effects>
 		<affectedType>0</affectedType>
 	</item>
