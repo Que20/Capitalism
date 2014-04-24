@@ -578,4 +578,152 @@ considérables.</description>
 		</effects>
 		<affectedType>1</affectedType>
 	</item>
+	<item>
+		<id>23</id>
+		<cardType>2</cardType>
+		<image>card/imgs/taxes.jpg</image>
+		<name>Taxe surprise</name>
+		<description>Le type de taxe qui
+			fait le plus mal !</description>
+		<type>2</type>
+		<life>20</life>
+		<deploymentCost>550</deploymentCost>
+		<effects>
+			<effect>
+				<value>20</value>
+				<modifierType>1</modifierType>
+				<affectedValue>1</affectedValue>
+			</effect>
+		</effects>
+		<affectedType>1</affectedType>
+	</item>
+	<item>
+		<id>24</id>
+		<cardType>2</cardType>
+		<image>card/imgs/pub.jpg</image>
+		<name color="white">Publicité aggressive</name>
+		<description>Tout le monde veut
+			votre produit, aussi inutile
+			soit il !</description>
+		<type>2</type>
+		<life>10</life>
+		<deploymentCost>800</deploymentCost>
+		<effects>
+			<effect>
+				<value>45</value>
+				<modifierType>1</modifierType>
+				<affectedValue>3</affectedValue>
+			</effect>
+			<effect>
+				<value>5</value>
+				<modifierType>2</modifierType>
+				<affectedValue>4</affectedValue>
+			</effect>
+		</effects>
+		<affectedType>1</affectedType>
+	</item>
+	<item>
+		<id>24</id>
+		<cardType>2</cardType>
+		<image>card/imgs/pub2.jpg</image>
+		<name>Publicité ciblée</name>
+		<description>Spécialement pour la
+			ménagère de moins de
+			50 ans !</description>
+		<type>2</type>
+		<life>10</life>
+		<deploymentCost>400</deploymentCost>
+		<effects>
+			<effect>
+				<value>10</value>
+				<modifierType>1</modifierType>
+				<affectedValue>3</affectedValue>
+			</effect>
+			<effect>
+				<value>7.5</value>
+				<modifierType>2</modifierType>
+				<affectedValue>4</affectedValue>
+			</effect>
+		</effects>
+		<affectedType>1</affectedType>
+	</item>
+	<item>
+		<id>25</id>
+		<cardType>2</cardType>
+		<image>card/imgs/avocat.jpg</image>
+		<name color="white">Annulation de contrat</name>
+		<description>Un avocat futé pour
+			pouvoir faire annuler
+			un contrat.</description>
+		<type>2</type>
+		<life>10</life>
+		<deploymentCost>500</deploymentCost>
+		<effects>
+			<effect>
+				<value>-100</value>
+				<modifierType>1</modifierType>
+				<affectedValue>5</affectedValue>
+			</effect>
+			<effect>
+				<value>-99</value>
+				<modifierType>2</modifierType>
+				<affectedValue>6</affectedValue>
+			</effect>
+		</effects>
+		<affectedType>2</affectedType>
+	</item>
+	<item>
+		<id>26</id>
+		<cardType>1</cardType>
+		<image>card/imgs/chinese_factory.jpg</image>
+		<name color="black">Usine chinoise</name>
+		<description>Faites baisser les coûts
+			et la qualité de vos
+			produit en même temps !</description>
+		<type>2</type>
+		<cardData>
+			<costPerTurn>120</costPerTurn>
+			<costPerTurnModifier>0</costPerTurnModifier>
+			<incomePerTurn>0</incomePerTurn>
+			<incomePerTurnModifier>0</incomePerTurnModifier>
+			<discardCost>300</discardCost>
+		</cardData>
+		<life>99</life>
+		<deploymentCost>1500</deploymentCost>
+		<effects>
+			<effect>
+				<value>-20</value>
+				<modifierType>1</modifierType>
+				<affectedValue>1</affectedValue>
+			</effect>
+		</effects>
+		<affectedType>1</affectedType>
+	</item>
+	<item>
+		<id>27</id>
+		<cardType>1</cardType>
+		<image>card/imgs/romania.jpg</image>
+		<name color="white">Usine roumaine</name>
+		<description>Un peu plus près
+			(et plus cher) que
+			la chinoise.</description>
+		<type>2</type>
+		<cardData>
+			<costPerTurn>170</costPerTurn>
+			<costPerTurnModifier>0</costPerTurnModifier>
+			<incomePerTurn>0</incomePerTurn>
+			<incomePerTurnModifier>0</incomePerTurnModifier>
+			<discardCost>300</discardCost>
+		</cardData>
+		<life>99</life>
+		<deploymentCost>1600</deploymentCost>
+		<effects>
+			<effect>
+				<value>-15</value>
+				<modifierType>1</modifierType>
+				<affectedValue>1</affectedValue>
+			</effect>
+		</effects>
+		<affectedType>1</affectedType>
+	</item>
 </data>
