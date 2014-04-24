@@ -25,6 +25,7 @@ class Action:
 		self.desc = desc                                      # Description catre
 		self.type = type                                      # Type de la carte (ActionType)
 		self.life = life                                      # Durée de vie de la carte ( -1 = infinie )
+		self.deploymentCost = deploymentCost                  # Cout de pose
 		self.affectedType = affectedType                      # Type affecté (CardType)
 		self.effects = effects                                # Tableau d'effets (Effect[])
 		self.grap_card = cap_Graph_card(image, self)          # Image de la carte
@@ -103,17 +104,17 @@ class Card:
 			# Pour chaque effect de la carte
 			for effect in actionCard.effects :
 				if effect.affectedValue == AffectableValue.COST_PER_TURN :
-	 				self.computedCard.costPerTurn = modifierType.computeModifiedValue(self.computedCard.costPerTurn, effect.value, effect.modifierType)
+	 				self.computedCard.costPerTurn = ModifierType.computeModifiedValue(self.computedCard.costPerTurn, effect.value, effect.modifierType)
 				elif effect.affectedValue == AffectableValue.COST_PER_TURN_MODIFIER :
-	 				self.computedCard.costPerTurnModifier = modifierType.computeModifiedValue(self.computedCard.costPerTurnModifier, effect.value, effect.modifierType)
+	 				self.computedCard.costPerTurnModifier = ModifierType.computeModifiedValue(self.computedCard.costPerTurnModifier, effect.value, effect.modifierType)
 				elif effect.affectedValue == AffectableValue.INCOME_PER_TURN :
-					self.computedCard.incomePerTurn = modifierType.computeModifiedValue(self.computedCard.incomePerTurn, effect.value, effect.modifierType)
+					self.computedCard.incomePerTurn = ModifierType.computeModifiedValue(self.computedCard.incomePerTurn, effect.value, effect.modifierType)
 				elif effect.affectedValue == AffectableValue.INCOME_PER_TURN_MODIFIER :
-					self.computedCard.incomePerTurnModifier = modifierType.computeModifiedValue(self.computedCard.incomePerTurnModifier, effect.value, effect.modifierType)
+					self.computedCard.incomePerTurnModifier = ModifierType.computeModifiedValue(self.computedCard.incomePerTurnModifier, effect.value, effect.modifierType)
 				elif effect.affectedValue == AffectableValue.DISCARD_COST :
-					self.computedCard.discardCost = modifierType.computeModifiedValue(self.computedCard.discardCost, effect.value, effect.modifierType)
+					self.computedCard.discardCost = ModifierType.computeModifiedValue(self.computedCard.discardCost, effect.value, effect.modifierType)
 				elif effect.affectedValue == AffectableValue.LIFE :
-					self.computedCard.life = modifierType.computeModifiedValue(self.computedCard.life, effect.value, effect.modifierType)
+					self.computedCard.life = ModifierType.computeModifiedValue(self.computedCard.life, effect.value, effect.modifierType)
 
 	# Passe un tour sur notre carte
 	def nexTurn(self):

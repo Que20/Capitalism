@@ -74,7 +74,7 @@ class ModifierType:
 
 	def computeModifiedValue(value, modifier, modifierType):
 		if modifierType == ModifierType.PERCENT :
-			return value * modifier
+			return value * (1 + modifier/100)
 		elif modifierType == ModifierType.FIXED :
 			return value + modifier
 		else :

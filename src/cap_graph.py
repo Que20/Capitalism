@@ -129,9 +129,6 @@ class cap_Graph_playerinfo(cap_Graph_object):
 		self.to_display.blit(card_title_font.render( "  Capital : "+str(self.player.money)+"$", 1, green), (5, 30))
 
 
-		print("ici")
-
-
 # Pioche
 class cap_Graph_deck(cap_Graph_object):
 	"""docstring for cap_Graph_mincard"""
@@ -186,7 +183,7 @@ class cap_Graph_deck(cap_Graph_object):
 class cap_Graph_mincard(cap_Graph_object):
 	"""docstring for cap_Graph_mincard"""
 	def __init__(self, bg_img_link, card_obj):
-		cap_Graph_object.__init__(self, cap_Rect(100, 250, 145, 60), cap_Rect(10, 6, 127, 46))
+		cap_Graph_object.__init__(self, cap_Rect(100, 250, 145, 60), cap_Rect(10, 7, 127, 46))
 
 		self.card_obj = card_obj
 		self.selected = False
@@ -243,10 +240,10 @@ class cap_Graph_mincard(cap_Graph_object):
 			total = self.card_obj.computedCard.incomePerTurn - self.card_obj.computedCard.costPerTurn
 
 			if total > 0 :
-				s = "+" + str(total) + "$ (" + str(self.card_obj.computedCard.costPerTurnModifier) + "%)"
+				s = "+" + str('%.2f' % total) + "$ (" + str(self.card_obj.computedCard.costPerTurnModifier) + "%)"
 				self.to_display.blit(card_mintitle_font.render(s, 1, green), (14, 34))
 			else :
-				s = str(total) + "$ (" + str(self.card_obj.computedCard.costPerTurnModifier) + "%)"
+				s = str('%.2f' % total) + "$ (" + str(self.card_obj.computedCard.costPerTurnModifier) + "%)"
 				self.to_display.blit(card_mintitle_font.render(s, 1, red), (14, 34))
 
 	# Initialisation
@@ -332,12 +329,12 @@ class cap_Graph_card(cap_Graph_object):
 
 			self.to_display.blit(card_type_font.render(str(int(self.card_obj.computedCard.life)), 1, white), (186, 265))
 
-			s = "+" + str(self.card_obj.computedCard.incomePerTurn)
-			s += "$ (" + str(self.card_obj.computedCard.costPerTurnModifier) + "%)"
+			s = "+" + str('%.2f' % self.card_obj.computedCard.incomePerTurn)
+			s += "$ (" + str('%.2f' % self.card_obj.computedCard.costPerTurnModifier) + "%)"
 			self.to_display.blit(card_title_font.render(s, 1, green), (34, 135))
 
-			s = "-" + str(self.card_obj.computedCard.costPerTurn)
-			s += "$ (" + str(self.card_obj.computedCard.costPerTurnModifier) + "%)"
+			s = "-" + str('%.2f' % self.card_obj.computedCard.costPerTurn)
+			s += "$ (" + str('%.2f' % self.card_obj.computedCard.costPerTurnModifier) + "%)"
 			self.to_display.blit(card_title_font.render(s, 1, red), (34, 159))
 
 		i = 192

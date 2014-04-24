@@ -64,8 +64,55 @@ class Player:
 		# Inversement
 		self.gameboard[x1][y1], self.gameboard[x2][y2] = self.gameboard[x2][y2], self.gameboard[x1][y1]
 
+	# Pose une carte event
+	def _posEventCard(self, events, hand, other_player):
+		if events[0] == None :
+			if self.deck[hand].cardType == Type.ACTION and self.deck[hand].type == ActionType.EVENT :
+				# On a le bon type
+				if self.deck[hand].deploymentCost < self.money :
+
+					# Cout de pose
+					self.money = self.money - self.deck[hand].deploymentCost 
+
+					# Graphique
+					self.deck[hand].grap_mincard.animate(50, 107, 500)
+
+					# On change de zone
+					events[0] = self.deck.pop(hand)
+					self._shiftDeck(hand)
+					self.graph_player.update()
+
+					# Update de toutes les cartes
+					for line in self.gameboard:
+						self.calculateLine(line, events)
+					for card in self.deck:
+						for event in events :
+							if card.cardType == Type.CARD and event != None : 
+								card.computeEffects(event)
+								# Update visuel après le calcul
+								card.grap_card.update()
+								card.grap_mincard.update()
+
+					if other_player != None :
+						for line in other_player.gameboard: 
+							other_player.calculateLine(line, events)
+						for card in other_player.deck:
+							for event in events :
+								if card.cardType == Type.CARD and event != None : 
+									card.computeEffects(event)
+									# Update visuel après le calcul
+									card.grap_card.update()
+									card.grap_mincard.update()
+				else :
+					print("Erreur : pas assez d'argent pour poser la carte")
+			else :
+				print("Erreur : type interdit de carte")
+		else :
+			print("Erreur : carte event déjà posée")
+
+
 	# Pose la carte de la main dans le gameboard
-	def _poseCard(self, hand, x, y):
+	def _poseCard(self, events, hand, x, y):
 		if self.deck[hand].cardType == Type.CARD :
 			if self.gameboard[x][y] == None :
 				if self.deck[hand].computedCard.deploymentCost < self.money :
@@ -76,6 +123,8 @@ class Player:
 					self.gameboard[x][y] = self.deck.pop(hand)
 					self._shiftDeck(hand)
 					self.graph_player.update()
+					# Màj ligne
+					self.calculateLine(self.gameboard[x], events)
 				else :
 					print("Erreur : pas assez d'argent pour poser la carte")
 			else :
@@ -86,6 +135,7 @@ class Player:
 					if self.deck[hand].computedCard.deploymentCost < self.money :
 						self.money = self.money - self.deck[hand].computedCard.deploymentCost # Coût de pose
 						self.graph_player.update()
+						# Màj carte
 						print("A faire")
 					else :
 						print("Erreur : pas assez d'argent pour poser la carte")
@@ -130,7 +180,7 @@ class Player:
 		self.deck.append(choice(deck))
 
 	# Action du joueur, retourne la carte affectée ou None si impossible
-	def playerAction(self, action):
+	def playerAction(self, action, events, other_player):
 		if len(action) > 1 :
 			# Si l'action se passe chez nous
 			if self.playing and action[0] == "low" :
@@ -146,7 +196,7 @@ class Player:
 
 					# Sinon on doit poser la carte de la main selectionnée
 					elif self.selected[0] == 1 :
-						self._poseCard(self.selected[1], action[2], action[3])
+						self._poseCard(events, self.selected[1], action[2], action[3])
 
 					# On échange les deux cartes de la même colonne
 					elif self.selected[0] == 2 and self.gameboard[action[2]][action[3]] != None and self.selected[1] == action[2] :
@@ -169,22 +219,47 @@ class Player:
 						elif self.selected[0] == 2 :
 							self._discardGameboard(self.selected[1], self.selected[2])
 
+			# Dans la zone adverse
+			elif action[0] == "up" :
+				# On clique sur les events
+				if action[1] == "event" :
+					# Si on a selectionné une carte de la main
+					if self.selected != None and self.selected[0] == 1 :
+						self._posEventCard(events, self.selected[1], other_player)
+
+
 		self.selected = None
 
 	# Calcul les effets pour une ligne du gameboard
 	def calculateLine(self, line, events):
-		for card in line :
-			# Si on a des effets sur la carte
-			if len(card.effects) > 0 :
-				# Pour chaque carte
-				for other_card in line :
-					# Différente de card & affectée
-					if other_card != card and card.affectedType == other_card.type :
-						other_card.computeEffects(card)
 
-			# Calcul avec les cartes event
-			for event in events :
-				card.computeEffects(event)
+		# Reset des données
+		for card in line :
+			if card != None : card.resetEffects()
+
+		# Calcul
+		for card in line :
+			if card != None :
+				# Si on a des effets sur la carte
+				if len(card.effects) > 0 :
+					print("La carte "+card.name+" a des effets sur "+CardType.get_string(card.affectedType))
+					# Pour chaque carte
+					for other_card in line :
+						if other_card != None :
+							# Différente de card & affectée
+							if other_card != card and card.affectedType == other_card.type :
+								other_card.computeEffects(card)
+
+				# Calcul avec les cartes event
+				for event in events :
+					if event != None :
+						card.computeEffects(event)
+
+		# Update visuel après le calcul
+		for card in line :
+			if card != None : 
+				card.grap_card.update()
+				card.grap_mincard.update()
 
 	# Termine un tour
 	def endTurn(self, events):

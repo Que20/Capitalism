@@ -11,6 +11,7 @@ from player import *
 
 # Chargement des cartes
 deck = deck("card/cards.xml")
+events = [ None ]
 
 # Initialisation pygame
 background = pygame.image.load("background.jpg").convert()
@@ -37,6 +38,9 @@ class cap_clickDetector:
 		# Deck
 		self.up_deck = cap_Rect(50, 188, 200, 143)
 
+		# Event
+		self.up_event = cap_Rect(50, 107, 145, 60)
+
 		# Zone de carte basse
 		self.low_hand = cap_Rect(60, 712, 1160, 88)
 
@@ -55,6 +59,8 @@ class cap_clickDetector:
 				return ("up", "gameboard", int((x - self.up_gameboard.x) / 145), int((y - self.up_gameboard.y) / 60))
 			elif self.up_deck.isIn(x, y) :
 				return ("up", "deck")
+			elif self.up_event.isIn(x, y) :
+				return ("up", "event")
 			else:
 				return ("up")
 		# Bas
@@ -109,7 +115,7 @@ while not quit :
 		if event.type == KEYDOWN:
 			if event.key == K_ESCAPE:
 				quit = True
-			else:
+			else :
 				player1.addCardDeck(deck.pickUpCardFromDeck())
 
 		# Souris
@@ -117,7 +123,7 @@ while not quit :
 
 			if event.type == MOUSEBUTTONDOWN :
 				print(clicker_detector.get_zone(event.pos[0], event.pos[1]))
-				player1.playerAction(clicker_detector.get_zone(event.pos[0], event.pos[1]))
+				player1.playerAction(clicker_detector.get_zone(event.pos[0], event.pos[1]), events, None)
 
 			for clbk in event_mouse :
 				# Si l'event se passe dans notre range

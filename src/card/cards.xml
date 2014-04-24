@@ -99,11 +99,6 @@
 		<life>99</life>
 		<deploymentCost>3500</deploymentCost>
 		<effects>
-			<effect>
-				<value>30</value>
-				<modifierType>2</modifierType>
-				<affectedValue>6</affectedValue>
-			</effect>
 		</effects>
 		<affectedType>0</affectedType>
 	</item>
@@ -161,16 +156,21 @@
 		<description>Le travail appauvrit la 
 			richesse de l'homme libre</description>
 		<type>1</type>
-		<life>99</life>
+		<life>4</life>
 		<deploymentCost>3500</deploymentCost>
 		<effects>
 			<effect>
-				<value>30</value>
+				<value>10</value>
+				<modifierType>1</modifierType>
+				<affectedValue>1</affectedValue>
+			</effect>
+			<effect>
+				<value>5</value>
 				<modifierType>2</modifierType>
-				<affectedValue>6</affectedValue>
+				<affectedValue>2</affectedValue>
 			</effect>
 		</effects>
-		<affectedType>0</affectedType>
+		<affectedType>1</affectedType>
 	</item>
 	<item>
 		<id>7</id>
@@ -241,5 +241,36 @@
 			</effect>
 		</effects>
 		<affectedType>0</affectedType>
+	</item>
+	<item>
+		<id>10</id>
+		<cardType>1</cardType>
+		<image>card/imgs/chinese_invest.jpg</image>
+		<name>Investissement chinois</name>
+		<description>Le communisme n'a
+			jamais été aussi rentable !</description>
+		<type>2</type>
+		<cardData>
+			<costPerTurn>100</costPerTurn>
+			<costPerTurnModifier>0</costPerTurnModifier>
+			<incomePerTurn>0</incomePerTurn>
+			<incomePerTurnModifier>0</incomePerTurnModifier>
+			<discardCost>3500</discardCost>
+		</cardData>
+		<life>5</life>
+		<deploymentCost>500</deploymentCost>
+		<effects>
+			<effect>
+				<value>15</value>
+				<modifierType>1</modifierType>
+				<affectedValue>3</affectedValue>
+			</effect>
+			<effect>
+				<value>-10</value>
+				<modifierType>1</modifierType>
+				<affectedValue>1</affectedValue>
+			</effect>
+		</effects>
+		<affectedType>1</affectedType>
 	</item>
 </data>
