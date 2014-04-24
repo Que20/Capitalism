@@ -96,10 +96,10 @@ class Player:
 					for card in self.deck:
 						for event in events :
 							if card.cardType == Type.CARD and event != None : 
-								card.computeEffects(event)
+								self.card.computeEffects(event)
 								# Update visuel après le calcul
-								card.grap_card.update()
-								card.grap_mincard.update()
+								self.card.grap_card.update()
+								self.card.grap_mincard.update()
 
 					if other_player != None :
 						for line in other_player.gameboard: 
@@ -124,6 +124,21 @@ class Player:
 			self.log.log("["+self.name+"] Action impossible : pas de place", red)
 			print("Erreur : carte event déjà posée")
 
+	# Ajouter une action à une carte
+	def addAction(self, x, y):
+		hand = self.deck[self.selected[1]]
+		self.money = self.money - hand.deploymentCost # Coût de pose
+		self.graph_player.update()
+		# Glisse la carte sur la carte de type produit (erreur si pas produit)
+		hand.grap_mincard.animate(x * 145 + 350, y * 60 + 438, 500, -1)
+		# Shift du deck
+		self.gameboard[x][y].actions.append(self.deck.pop(self.selected[1]))
+		self._shiftDeck(self.selected[1])
+		# Màj données carte
+		self.gameboard[x][y].computeEffects(self.gameboard[x][y].actions[-1])
+		# MàJ graphique de la carte
+		self.gameboard[x][y].grap_card.update()
+		self.gameboard[x][y].grap_mincard.update()
 
 	# Pose la carte de la main dans le gameboard
 	def _poseCard(self, events, hand, x, y):
@@ -151,11 +166,9 @@ class Player:
 		elif self.deck[hand].type == ActionType.ACTION :
 			if self.gameboard[x][y] != None :
 				if self.deck[hand].affectedType == self.gameboard[x][y].type :
-					if self.deck[hand].computedCard.deploymentCost < self.money :
-						self.money = self.money - self.deck[hand].computedCard.deploymentCost # Coût de pose
-						self.graph_player.update()
-						# Màj carte
-						print("A faire")
+					if self.deck[hand].deploymentCost < self.money :
+						self.addAction(x, y)
+						self.log.log("["+self.name+"] Carte action posée : "+self.gameboard[x][y].actions[-1].name+" sur carte produit : "+self.gameboard[x][y].name, green)
 					else :
 						self.log.msg("Impossible de poser la carte : pas assez d'argent")
 						self.log.log("["+self.name+"] Action impossible : fond insuffisant", red)
@@ -186,6 +199,7 @@ class Player:
 
 	# Défausse le carte de la main
 	def _discardGameboard(self, x, y):
+		print(self.gameboard[x][y].name)
 		if self.gameboard[x][y].computedCard.discardCost < self.money :
 			self.money = self.money - self.gameboard[x][y].computedCard.discardCost # Coût défaussement
 			self.graph_player.update()
