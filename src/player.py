@@ -96,10 +96,10 @@ class Player:
 					for card in self.deck:
 						for event in events :
 							if card.cardType == Type.CARD and event != None : 
-								self.card.computeEffects(event)
+								card.computeEffects(event)
 								# Update visuel après le calcul
-								self.card.grap_card.update()
-								self.card.grap_mincard.update()
+								card.grap_card.update()
+								card.grap_mincard.update()
 
 					if other_player != None :
 						for line in other_player.gameboard: 

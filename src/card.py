@@ -96,7 +96,7 @@ class Card:
 		self.computedCard.reset(self.cardData)
 		# Pour chaque carte action liée
 		for card in self.actions :
-			computeEffects(card)
+			self.computeEffects(card)
 
 	# Calcul les effets d'une carte sur notre carte
 	def computeEffects(self, actionCard):
