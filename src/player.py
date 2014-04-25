@@ -336,9 +336,9 @@ class Player:
 					if not card.isAlive() :
 						self.deleted.append(line.pop(i)) # On met dans la liste deleted
 						# Graphique
-						self.gameboard[x][y].grap_mincard.animate(1087, 602, 750, -1)
+						self.deleted[-1].grap_mincard.animate(1087, 602, 750, -1)
 						# Log
-						self.log.log("["+self.name+"] Fin de vie : "+self.gameboard[x][y].name+" depuis le board")
+						self.log.log("["+self.name+"] Fin de vie : "+self.deleted[-1].name+" depuis le board")
 				i = i + 1
 
 		return total

@@ -116,6 +116,7 @@ class cap_Graph_object:
 			cap_blit_alpha(window, self.to_display, (self.rect.x, self.rect.y), self.opacity)
 
 
+
 class cap_graph_Button(cap_Graph_object):
 	def __init__(self, rect, rect_click, bg_image, bg_image_hover, bg_image_click, callback):
 		cap_Graph_object.__init__(self, rect, rect_click)
