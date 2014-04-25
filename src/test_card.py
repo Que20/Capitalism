@@ -83,21 +83,34 @@ clicker_detector = cap_clickDetector()
 # Chargement graphique du deck
 deck.init(event_mouse, event_key, display_list)
 
+# Zone de défaussement
 deck_defausse = cap_Graph_discard([])
 deck_defausse.init(event_mouse, event_key, display_list)
 deck_defausse.visibility(True)
 
+# Zone de pioche
 deck_deck = cap_Graph_deck(deck)
 deck_deck.init(event_mouse, event_key, display_list)
 deck_deck.visibility(True)
 
+# Log
 log = cap_Graph_msg()
 log.init(event_mouse, event_key, display_list)
 log.visibility(True)
 
-player1 = Player("Player 1", log)
+# Joueurs
+player1 = Player("Player 1", log, 1)
 player1.graph_player.init(event_mouse, event_key, display_list)
 player1.graph_player.visibility(True)
+
+player2 = Player("Player 2", log, 2)
+player2.graph_player.init(event_mouse, event_key, display_list)
+player2.graph_player.visibility(True)
+
+# Cartes de départ
+for i in range(1, 4):
+	player1.addCardDeck(deck.pickUpCardFromDeck())
+	player2.addCardDeck(deck.pickUpCardFromDeck())
 
 # Boucle d'affichage / évenements
 while not quit :

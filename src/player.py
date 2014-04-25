@@ -19,7 +19,7 @@ class Player:
 	"""Représente un des deux joueurs"""
 
 	# Constructeur
-	def __init__(self, name, log, startingMoney=100000):
+	def __init__(self, name, log, number, startingMoney=100000):
 		self.name = name                                   # Nom du joueur
 		self.money = startingMoney                         # Argent de départ
 		self.deck = []                                     # Cartes en main
@@ -28,17 +28,24 @@ class Player:
 		                  [None, None, None, None], 
 		                  [None, None, None, None]]        # Plateau du joueur
 		self.deleted = []                                  # Cartes supprimées
-		self.selected = None                               # Carte selectionnée 1 = hand / 2 = gameboard
-		self.playing = True                      
+		self.selected = None                               # Carte selectionnée 1 = hand / 2 = gameboard                   
 		self.log = log          
 
-		self.graph_player = cap_Graph_playerinfo(cap_Rect(44, 555, 0, 0), self)
+		if number == 1 :
+			self.graph_player = cap_Graph_playerinfo(cap_Rect(44, 555, 0, 0), self)
+			self.playing = True   
+		else :
+			self.graph_player = cap_Graph_playerinfo(cap_Rect(1035, 110, 0, 0), self)
+			self.playing = False   
 
 	# A virer
 	def addCardDeck(self, card):
 		if card != None :
 			# Graphique
-			card.grap_mincard.animate(len(self.deck)*145 + 60, 712, 1000, True)
+			if self.playing :
+				card.grap_mincard.animate(len(self.deck)*145 + 60, 712, 750, True)
+			else :
+				card.grap_mincard.animate(len(self.deck)*145 + 60, 25, 750, True)
 			card.grap_mincard.visibility(True)
 
 			# Ajout carte
@@ -49,7 +56,7 @@ class Player:
 		if card != None :
 			if line >= 0 and line < 4 and self.gameboard[line][pos] == None :
 				# Graphique
-				card.grap_mincard.animate(line * 145 + 350, pos * 60 + 438, 1000, 1)
+				card.grap_mincard.animate(line * 145 + 350, pos * 60 + 438, 500, 1)
 				card.grap_mincard.visibility(True)
 
 				self.gameboard[line][pos] = card
