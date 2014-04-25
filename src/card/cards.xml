@@ -322,12 +322,12 @@
 		<deploymentCost>800</deploymentCost>
 		<effects>
 			<effect>
-				<value>70</value>
+				<value>-70</value>
 				<modifierType>1</modifierType>
 				<affectedValue>3</affectedValue>
 			</effect>
 			<effect>
-				<value>20</value>
+				<value>-20</value>
 				<modifierType>2</modifierType>
 				<affectedValue>6</affectedValue>
 			</effect>
