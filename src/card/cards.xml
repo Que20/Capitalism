@@ -194,7 +194,7 @@
 		<type>1</type>
 		<cardData>
 			<costPerTurn>320</costPerTurn>
-			<costPerTurnModifier>-9</costPerTurnModifier>
+			<costPerTurnModifier>9</costPerTurnModifier>
 			<incomePerTurn>500</incomePerTurn>
 			<incomePerTurnModifier>0</incomePerTurnModifier>
 			<discardCost>480</discardCost>

@@ -150,6 +150,13 @@ while not quit :
 
 		# Modal
 		if modal.visible :
+
+			# Clavier
+			if event.type == KEYUP:
+
+				for clbk in event_modal_key :
+					if clbk[2](event.type, event.key, 0, 0):
+							break
 			# Souris
 			if event.type == MOUSEBUTTONDOWN or event.type == MOUSEBUTTONUP or event.type == MOUSEMOTION :
 
@@ -160,7 +167,7 @@ while not quit :
 							button = event.button
 						else :
 							button = 0
-						if clbk[2](event.type, button, event.pos[0], event.pos[1]):
+						if clbk[2](event.type, event.button, event.pos[0], event.pos[1]):
 							break
 		# Jeu
 		else :

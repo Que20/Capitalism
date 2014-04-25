@@ -141,6 +141,7 @@ class cap_graph_Modal(cap_Graph_object):
 		self.display_list = display_list
 		# Button
 		event_mouse.append((MOUSEBUTTONUP, 1, self.buttons_check))
+		event_key.append((KEYDOWN, K_RETURN, self.buttons_key))
 
 	def set_msg(self, msg, onYes, onNo):
 	
@@ -172,6 +173,13 @@ class cap_graph_Modal(cap_Graph_object):
 			if self.onNo != None : self.onNo()
 			self.visible = False
 
+	def buttons_key(self, event_type, event_code, x, y):
+		if event_code == K_ESCAPE :
+			if self.onNo != None : self.onNo()
+			self.visible = False
+		elif event_code == K_RETURN :
+			if self.onYes != None : self.onYes()
+			self.visible = False
 
 class cap_graph_Button(cap_Graph_object):
 	def __init__(self, rect, rect_click, bg_image, bg_image_hover, bg_image_click, callback):
@@ -506,7 +514,7 @@ class cap_Graph_card(cap_Graph_object):
 			self.to_display.blit(card_type_font.render(str(int(self.card_obj.computedCard.life)), 1, white), (186, 265))
 
 			s = "+" + ('%.2f' % self.card_obj.computedCard.incomePerTurn)
-			s += "$ (" + ('%.2f' % self.card_obj.computedCard.costPerTurnModifier) + "%)"
+			s += "$ (" + ('%.2f' % self.card_obj.computedCard.incomePerTurnModifier) + "%)"
 			self.to_display.blit(card_title_font.render(s, 1, green), (34, 135))
 
 			s = "-" + ('%.2f' % self.card_obj.computedCard.costPerTurn)
