@@ -60,7 +60,11 @@ class cap_clickDetector:
 			if self.up_hand.isIn(x, y) :				
 				return ("up", "hand", int((x - self.up_hand.x) / 145))
 			elif self.up_gameboard.isIn(x, y) :
-				return ("up", "gameboard", int((x - self.up_gameboard.x) / 145), int((y - self.up_gameboard.y) / 60))
+				x = int((x - self.up_gameboard.x) / 145)
+				y = int((y - self.up_gameboard.y) / 60)
+				if x > 3 : x = 3
+				if y > 3 : y = 3
+				return ("up", "gameboard", x, 3 - y)
 			elif self.up_deck.isIn(x, y) :
 				return ("up", "deck")
 			elif self.up_event.isIn(x, y) :
@@ -152,7 +156,7 @@ while not quit :
 		if modal.visible :
 
 			# Clavier
-			if event.type == KEYUP:
+			if event.type == KEYDOWN:
 
 				for clbk in event_modal_key :
 					if clbk[2](event.type, event.key, 0, 0):
@@ -188,7 +192,7 @@ while not quit :
 
 				if event.type == MOUSEBUTTONDOWN :
 					print(clicker_detector.get_zone(event.pos[0], event.pos[1]))
-					player1.playerAction(clicker_detector.get_zone(event.pos[0], event.pos[1]), events, None)
+					player1.playerAction(clicker_detector.get_zone(event.pos[0], event.pos[1]), events, player2)
 
 				for clbk in event_mouse :
 					# Si l'event se passe dans notre range

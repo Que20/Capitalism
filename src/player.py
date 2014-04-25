@@ -94,6 +94,7 @@ class Player:
 					self.money = self.money - self.deck[hand].deploymentCost 
 
 					# Graphique
+					self.graph_player.changeMoney(- self.deck[hand].deploymentCost)
 					self.deck[hand].grap_mincard.animate(50, 107, 500)
 
 					# Log
@@ -143,7 +144,7 @@ class Player:
 	def _addAction(self, x, y):
 		hand = self.deck[self.selected[1]]
 		self.money = self.money - hand.deploymentCost # Coût de pose
-		self.graph_player.update()
+		self.graph_player.changeMoney(- hand.deploymentCost)
 		# Glisse la carte sur la carte de type produit (erreur si pas produit)
 		hand.grap_mincard.animate(x * 145 + 350, y * 60 + 438, 500, -1)
 		# Shift du deck
@@ -154,6 +155,58 @@ class Player:
 		# MàJ graphique de la carte
 		self.gameboard[x][y].grap_card.update()
 		self.gameboard[x][y].grap_mincard.update()
+		# Màj joueur
+		self.graph_player.update()
+
+
+	# Ajouter une action à une carte
+	def _addActionOtherPlayer(self, x, y, card):
+		# Glisse la carte sur la carte de type produit (erreur si pas produit)
+		card.grap_mincard.animate(x * 145 + 350, y * 60 + 438, 500, -1)
+		# Shift du deck
+		self.gameboard[x][y].actions.append(card)
+		# Màj données carte
+		self.gameboard[x][y].computeEffects(self.gameboard[x][y].actions[-1])
+		# MàJ graphique de la carte
+		self.gameboard[x][y].grap_card.update()
+		self.gameboard[x][y].grap_mincard.update()
+		# Màj joueur
+		self.graph_player.update()
+
+
+	# Pose la carte de la main dans le gameboard adverse
+	def _poseCardOtherPlayer(self, events, hand, x, y, other_player):
+		if self.deck[hand].cardType == Type.ACTION and self.deck[hand].type == ActionType.ACTION :
+			if other_player.gameboard[x][y] != None :
+				print("bonjour ici : "+other_player.gameboard[x][y].name)
+				if self.deck[hand].affectedType == other_player.gameboard[x][y].type :
+
+					if self.deck[hand].deploymentCost < self.money :
+
+						self.log.log("["+self.name+"] Carte action posée : "+self.deck[hand].name+" sur carte produit : "+other_player.gameboard[x][y].name, green)
+						self.graph_player.update()
+
+						self.money = self.money - self.deck[self.selected[1]].deploymentCost # Coût de pose
+						self.graph_player.changeMoney(- self.deck[self.selected[1]].deploymentCost)
+						other_player._addActionOtherPlayer(x, y, self.deck.pop(self.selected[1]))
+						self._shiftDeck(self.selected[1])
+
+					else :
+						self.log.msg("Impossible de poser la carte : pas assez d'argent")
+						self.log.log("["+self.name+"] Action impossible : fond insuffisant", red)
+						print("Erreur : pas assez d'argent pour poser la carte")				
+				else :
+					self.log.msg("Impossible de poser la carte : type non-affecté")
+					self.log.log("["+self.name+"] Action impossible : type non-affecté", red)
+					print("Erreur : type non-affecté")
+			else :
+				self.log.msg("Impossible de poser la carte : case vide")
+				self.log.log("["+self.name+"] Action impossible : case vide", (128, 0, 0))
+				print("Erreur : impossible de poser une carte action sur une case vide")
+		else :
+			self.log.msg("Impossible de poser la carte : seules les cartes actions peuvent être posée là")
+			self.log.log("["+self.name+"] Action impossible : carte interdite", red)
+			print("Erreur : impossible de placer des events ici")
 
 
 	# Pose la carte de la main dans le gameboard
@@ -163,6 +216,7 @@ class Player:
 				if self.deck[hand].computedCard.deploymentCost < self.money :
 					self.money = self.money - self.deck[hand].computedCard.deploymentCost # Cout de pose
 					# Graphique
+					self.graph_player.changeMoney(- self.deck[hand].computedCard.deploymentCost)
 					self.deck[hand].grap_mincard.animate(x * 145 + 350, y * 60 + 438, 500)
 					# On change de zone
 					self.gameboard[x][y] = self.deck.pop(hand)
@@ -230,6 +284,7 @@ class Player:
 
 			def yes():
 				self.money = self.money - self.gameboard[x][y].computedCard.discardCost # Coût défaussement
+				self.graph_player.changeMoney(- self.gameboard[x][y].computedCard.discardCost)
 				self.graph_player.update()
 				# Graphique
 				self.gameboard[x][y].grap_mincard.animate(1087, 602, 750, -1)
@@ -303,6 +358,12 @@ class Player:
 					# Si on a selectionné une carte de la main
 					if self.selected != None and self.selected[0] == 1 :
 						self._posEventCard(events, self.selected[1], other_player)
+
+				# On clique sur le gameboard adverse
+				if action[1] == "gameboard" :
+					# On pose une carte action sur l'adversaire de notre main
+					if self.selected != None and self.selected[0] == 1 :
+						self._poseCardOtherPlayer(events, self.selected[1], action[2], action[3], other_player)
 
 
 		self.selected = None
@@ -415,6 +476,8 @@ class Player:
 			# Log
 			self.log.log("["+self.name+"] Coût entreprise ce tour : "+('%.2f' % self.cost)+"$")
 			self.log.log("["+self.name+"] Revenus du tour : "+('%.2f' % total)+"$")
+
+			self.graph_player.changeMoney(total, True)
 			
 			# Coût total
 			self.money += total
@@ -448,6 +511,9 @@ class Player:
 							self.deleted[-1].grap_mincard.animate(1087, 602, 750, -1)
 							# Log
 							self.log.log("["+self.name+"] Fin d'event : "+self.deleted[-1].name)
+						event.life -= 1
+						event.grap_card.update()
+						event.grap_mincard.update()
 
 			# Màj des cartes
 			for line in self.gameboard:

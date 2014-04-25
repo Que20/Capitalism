@@ -267,7 +267,7 @@ class cap_Graph_msg(cap_Graph_object):
 		# On appel l'ancien pour l'animation
 		cap_Graph_object.display(self, window)
 
-		# On affiche notre log=
+		# On affiche notre log
 		window.blit(self.log_zone, (4, 378))
 
 # Info joueur
@@ -279,11 +279,39 @@ class cap_Graph_playerinfo(cap_Graph_object):
 		self.player = player
 
 		# On commence par le fond (qui ne change pas)
+		self.anim = cap_Graph_object(cap_Rect(141, 574, 150, 25), cap_Rect(0, 0, 150, 25))
 		self.bg = pygame.Surface((self.rect.w, self.rect.h), SRCALPHA, 32).convert_alpha()
 		self.bg.blit(player_name_font.render(self.player.name, 1, black), (0, 0))
 
 		# Update des infos
 		self.update()
+
+	# Animation cool
+	def changeMoney(self, howMuch, otherPlayer=False):
+		self.anim.to_display.fill(0)
+
+		if not otherPlayer:
+			self.anim.rect.x = 141
+			if howMuch >= 0:
+				self.anim.to_display.blit(card_title_font.render( '+%.2f$' % howMuch, 1, green), (0, 0))
+				self.anim.rect.y = 560
+				self.anim.animate(141, 584, 2000, -1)
+			else :
+				self.anim.to_display.blit(card_title_font.render( '%.2f$' % howMuch, 1, red), (0, 0))
+				self.anim.rect.y = 574
+				self.anim.animate(141, 435, 2000, -1)
+		else:
+			self.anim.rect.x = 1134
+			if howMuch >= 0:
+				self.anim.to_display.blit(card_title_font.render( '+%.2f$' % howMuch, 1, green), (0, 0))
+				self.anim.rect.y = 90
+				self.anim.animate(1134, 136, 2000, -1)
+			else :
+				self.anim.to_display.blit(card_title_font.render( '%.2f$' % howMuch, 1, red), (0, 0))
+				self.anim.rect.y = 136
+				self.anim.animate(1134, 80, 2000, -1)
+
+		self.anim.visibility(True)
 
 	# Update le visuel de la carte pour prendre en compte les changements
 	def update(self):
@@ -295,6 +323,12 @@ class cap_Graph_playerinfo(cap_Graph_object):
 			self.to_display.blit(card_title_font.render( "  Prévisions : "+('%.2f' % total)+"$", 1, green), (5, 41))
 		else :
 			self.to_display.blit(card_title_font.render( "  Prévisions : "+('%.2f' % total)+"$", 1, red), (5, 41))
+
+
+	def init(self, event_mouse, event_key, display_list):
+		display_list.append(self.display)
+		self.display_list = display_list
+		self.anim.init(event_mouse, event_key, display_list)
 
 # Pioche
 class cap_Graph_deck_base(cap_Graph_object):
@@ -506,22 +540,38 @@ class cap_Graph_card(cap_Graph_object):
 		if self.card_obj.cardType == Type.ACTION :
 
 			self.to_display.blit(card_type_font.render(str(int(self.card_obj.life)), 1, white), (186, 265))
-			self.to_display.blit(card_content_font.render("Cible : "+ CardType.get_string(self.card_obj.affectedType), 1, black), (34, 165))
+			self.to_display.blit(card_content_font.render("Cible : "+ CardType.get_string(self.card_obj.affectedType), 1, black), (34, 140))
 
+			self.to_display.blit(card_medium_font.render("Coût pose    :", 1, black), (34, 175))
+			self.to_display.blit(card_medium_font.render('%.2f$' % self.card_obj.deploymentCost, 1, red), (114, 175))
 	
 		elif self.card_obj.cardType == Type.CARD :
 
 			self.to_display.blit(card_type_font.render(str(int(self.card_obj.computedCard.life)), 1, white), (186, 265))
 
-			s = "+" + ('%.2f' % self.card_obj.computedCard.incomePerTurn)
-			s += "$ (" + ('%.2f' % self.card_obj.computedCard.incomePerTurnModifier) + "%)"
-			self.to_display.blit(card_title_font.render(s, 1, green), (34, 135))
+			if self.card_obj.type == CardType.CONTRACT :
 
-			s = "-" + ('%.2f' % self.card_obj.computedCard.costPerTurn)
-			s += "$ (" + ('%.2f' % self.card_obj.computedCard.costPerTurnModifier) + "%)"
-			self.to_display.blit(card_title_font.render(s, 1, red), (34, 159))
+				self.to_display.blit(card_content_font.render("Cible : "+ CardType.get_string(self.card_obj.affectedType), 1, black), (34, 140))
 
-		i = 192
+				s = "-" + ('%.2f' % self.card_obj.computedCard.costPerTurn)
+				s += "$ (" + ('%.2f' % self.card_obj.computedCard.costPerTurnModifier) + "%)"
+				self.to_display.blit(card_title_font.render(s, 1, red), (34, 159))
+
+			else :
+				s = "+" + ('%.2f' % self.card_obj.computedCard.incomePerTurn)
+				s += "$ (" + ('%.2f' % self.card_obj.computedCard.incomePerTurnModifier) + "%)"
+				self.to_display.blit(card_title_font.render(s, 1, green), (34, 135))
+
+				s = "-" + ('%.2f' % self.card_obj.computedCard.costPerTurn)
+				s += "$ (" + ('%.2f' % self.card_obj.computedCard.costPerTurnModifier) + "%)"
+				self.to_display.blit(card_title_font.render(s, 1, red), (34, 157))
+
+			self.to_display.blit(card_medium_font.render("Coût pose    :", 1, black), (34, 181))
+			self.to_display.blit(card_medium_font.render('%.2f$' % self.card_obj.computedCard.deploymentCost, 1, red), (114, 181))
+			self.to_display.blit(card_medium_font.render("Coût retrait :", 1, black), (34, 194))
+			self.to_display.blit(card_medium_font.render('%.2f$' % self.card_obj.computedCard.discardCost, 1, red), (114, 194))
+
+		i = 214
 		for effect in self.card_obj.effects:
 			self.to_display.blit(card_medium_font.render( AffectableValue.get_string(effect.affectedValue) + " :", 1, black), (34, i))
 			i += 11
