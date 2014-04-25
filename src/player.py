@@ -362,7 +362,10 @@ class Player:
 		self.playing = True
 
 		# On pioche une carte
-		self.addCardDeck(deck.pickUpCardFromDeck())
+		card = deck.pickUpCardFromDeck()
+		# Log
+		self.log.log("["+self.name+"] Pioche : "+card.name)
+		self.addCardDeck(card)
 
 		self.graph_player.rect.x = 1035
 		self.graph_player.rect.y = 110
