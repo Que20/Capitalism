@@ -29,7 +29,8 @@ class Player:
 		                  [None, None, None, None]]        # Plateau du joueur
 		self.deleted = []                                  # Cartes supprimées
 		self.selected = None                               # Carte selectionnée 1 = hand / 2 = gameboard                   
-		self.log = log          
+		self.log = log                                     # Log
+		self.cost = 100                                    # Coût de départ de l'entreprise
 
 		if number == 1 :
 			self.graph_player = cap_Graph_playerinfo(cap_Rect(44, 555, 0, 0), self)
@@ -61,10 +62,12 @@ class Player:
 
 				self.gameboard[line][pos] = card
 
+
 	def _shiftDeck(self, i):
 		while i < len(self.deck) :
 			self.deck[i].grap_mincard.animate((i)*145 + 60, 712, 500)
 			i += 1
+
 
 	# Interverti deux cartes du gameboard
 	def _invertGameboardCards(self, x1, y1, x2, y2):
@@ -75,6 +78,7 @@ class Player:
 			self.gameboard[x2][y2].grap_mincard.animate(x1 * 145 + 350, y1 * 60 + 438, 200)
 		# Inversement
 		self.gameboard[x1][y1], self.gameboard[x2][y2] = self.gameboard[x2][y2], self.gameboard[x1][y1]
+
 
 	# Pose une carte event
 	def _posEventCard(self, events, hand, other_player):
@@ -131,8 +135,9 @@ class Player:
 			self.log.log("["+self.name+"] Action impossible : pas de place", red)
 			print("Erreur : carte event déjà posée")
 
+
 	# Ajouter une action à une carte
-	def addAction(self, x, y):
+	def _addAction(self, x, y):
 		hand = self.deck[self.selected[1]]
 		self.money = self.money - hand.deploymentCost # Coût de pose
 		self.graph_player.update()
@@ -146,6 +151,7 @@ class Player:
 		# MàJ graphique de la carte
 		self.gameboard[x][y].grap_card.update()
 		self.gameboard[x][y].grap_mincard.update()
+
 
 	# Pose la carte de la main dans le gameboard
 	def _poseCard(self, events, hand, x, y):
@@ -174,7 +180,7 @@ class Player:
 			if self.gameboard[x][y] != None :
 				if self.deck[hand].affectedType == self.gameboard[x][y].type :
 					if self.deck[hand].deploymentCost < self.money :
-						self.addAction(x, y)
+						self._addAction(x, y)
 						self.log.log("["+self.name+"] Carte action posée : "+self.gameboard[x][y].actions[-1].name+" sur carte produit : "+self.gameboard[x][y].name, green)
 					else :
 						self.log.msg("Impossible de poser la carte : pas assez d'argent")
@@ -193,6 +199,7 @@ class Player:
 			self.log.log("["+self.name+"] Action impossible : event interdit", red)
 			print("Erreur : impossible de placer des events ici")
 
+
 	# Défausse le carte de la main
 	def _discardHand(self, hand):
 		# Log
@@ -203,6 +210,7 @@ class Player:
 		self.deleted.append(self.deck.pop(hand))
 		# On déplace toutes les cartes après
 		self._shiftDeck(hand)
+
 
 	# Défausse le carte de la main
 	def _discardGameboard(self, x, y):
@@ -223,16 +231,11 @@ class Player:
 			self.log.log("["+self.name+"] Action impossible : pas assez d'argent", red)
 			print("Erreur : pas assez d'argent pour supprimer la carte")
 
+
 	# Combien a le joueur ?
 	def getMoney(self):
 		return self.money
 
-	# Débute un tour
-	def startTurn(self, deck):
-		# Pas besoin de recalculer, les calculs s'effectuent en fin de tour
-
-		# On pioche une carte
-		self.deck.append(choice(deck))
 
 	# Action du joueur, retourne la carte affectée ou None si impossible
 	def playerAction(self, action, events, other_player):
@@ -285,6 +288,7 @@ class Player:
 
 		self.selected = None
 
+
 	# Calcul les effets pour une ligne du gameboard
 	def calculateLine(self, line, events):
 
@@ -316,21 +320,103 @@ class Player:
 				card.grap_card.update()
 				card.grap_mincard.update()
 
-	# Termine un tour
-	def endTurn(self, events):
-		# récupération des revenus
+
+	def getNextIncome(self):
+
+		total = 0
+
 		for line in self.gameboard:
 			i = 0
 			# Calcul des revenus et suppresion si carte trop ancienne
 			for card in line:
 				i = i + 1
-				self.money += card.nexTurn()
+				if card != None :
+					total += card.nexTurn()
 
-				# Si la carte n'a plus de vie après le tour
-				if card.isAlive() == 0 :
-					self.deleted.append(line.pop(i)) # On met dans la liste deleted
+					# Si la carte n'a plus de vie après le tour
+					if not card.isAlive() :
+						self.deleted.append(line.pop(i)) # On met dans la liste deleted
+						# Graphique
+						self.gameboard[x][y].grap_mincard.animate(1087, 602, 750, -1)
+						# Log
+						self.log.log("["+self.name+"] Fin de vie : "+self.gameboard[x][y].name+" depuis le board")
 
-			# Calcul des effet des cartes entres elles
-			for card in line:
+		return total
+
+
+	# Débute un tour
+	def startTurn(self, deck):
+		# Graphique, changement de cartes dans tout les sens
+		j = 0
+		for line in self.gameboard :
+			i = 0
+			for card in line :
+				if card != None :
+					card.grap_mincard.animate(j*145 + 350, i*60 + 438, 300)
+					i += 1
+			j += 1
+
+		for card in self.deck :
+			card.grap_mincard.animate(card.grap_mincard.rect.x, 712, 300)
+
+		self.playing = True
+
+		# On pioche une carte
+		self.addCardDeck(deck.pickUpCardFromDeck())
+
+		self.graph_player.rect.x = 1035
+		self.graph_player.rect.y = 110
+
+
+	# Termine un tour
+	def endTurn(self, events):
+
+		if len(self.deck) < 8:
+
+			# récupération des revenus
+			total = self.getNextIncome()
+
+			# Log
+			self.log.log("["+self.name+"] Coût entreprise ce tour : "+str(self.cost)+"$")
+			self.log.log("["+self.name+"] Revenus du tour : "+str(total)+"$")
+			
+			# Coût total
+			self.money += total - self.cost
+			self.cost *= 2
+
+			# Graphique, changement de cartes dans tout les sens
+			j = 0
+			for line in self.gameboard:
+				i = 3
+				for card in line :
+					if card != None :
+						card.grap_mincard.animate(j*145 + 350, i*60 + 120, 300)
+						i -= 1
+				j += 1
+
+			i = 0
+			for card in self.deck :
+				card.grap_mincard.animate(i*145 + 60, 25, 300)
+				i += 1
+
+			self.graph_player.update()
+
+			# Màj des cartes
+			for line in self.gameboard:
 				self.calculateLine(line, events)
 
+			self.playing = False
+
+			self.graph_player.rect.x = 44
+			self.graph_player.rect.y = 555
+
+			return True
+
+		else:
+			self.log.log("["+self.name+"] Impossible de finir le tour : trop de carte en main", red)
+			self.log.msg("Impossible de finir le tour : trop de carte en main")
+
+			return False
+
+
+	

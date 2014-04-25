@@ -134,7 +134,11 @@ while not quit :
 		if event.type == KEYDOWN:
 			if event.key == K_ESCAPE:
 				quit = True
-			else :
+			elif event.key == K_SPACE:
+				if player1.endTurn(events) :
+					player2.startTurn(deck)
+					player1, player2 = player2, player1
+			elif event.key == K_p:
 				player1.addCardDeck(deck.pickUpCardFromDeck())
 
 		# Souris

@@ -85,6 +85,11 @@ class cap_Graph_object:
 		self.inAnim = True
 		self.anim_opacity = opacity
 
+		if opacity == -1 :
+			self.opacity = 0
+		else :
+			self.opacity = 255
+
 	# Callback d'affichage
 	def display(self, window):
 		if self.inAnim :

@@ -121,9 +121,9 @@ class Card:
 		# Revenus du tour
 		income = self.computedCard.incomePerTurn - self.computedCard.costPerTurn
 		# Modification des coût par tours
-		self.cardData.costPerTurn = self.computedCard.costPerTurnModifier * self.cardData.costPerTurn
+		self.cardData.costPerTurn = ((self.computedCard.costPerTurnModifier + 100)/100) * self.computedCard.costPerTurn
 		# Modification des revenus par tours
-		self.cardData.incomePerTurn = self.computedCard.incomePerTurnModifier * self.cardData.incomePerTurn
+		self.cardData.incomePerTurn = ((self.computedCard.incomePerTurnModifier + 100)/100) * self.computedCard.incomePerTurn
 		# Vie --
 		self.cardData.life = self.cardData.life - 1;
 		for card in self.actions :
@@ -138,4 +138,4 @@ class Card:
 
 	# Si la carte à de la vie
 	def isAlive(self):
-		return (self.life > 0)
+		return (self.computedCard.life > 0)
