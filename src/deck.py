@@ -4,14 +4,18 @@ import random
 
 class deck:
 	def __init__(self, fileName):
-		#try:
-		self.deck = makeDeck(parseXML(fileName))
+		try:
+			self.tmp = parseXML(fileName)
+		except Exception as e:
+			print(e)
+
+	def load(self):
+		self.deck = makeDeck(self.tmp)
 		self.shuffleDeck()
-		#except Exception as e:
-		#	print(e)
 	
 	def pickUpCardFromDeck(self):
 		if len(self.deck) > 0 :
+			print("Card in deck : ", len(self.deck))
 			return self.deck.pop()
 		else :
 			return None

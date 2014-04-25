@@ -18,6 +18,8 @@ discard_bg = pygame.image.load("card/discard.png").convert_alpha()
 modal_bg = pygame.image.load("modal_bg.png").convert_alpha()
 modal_bt1 = pygame.image.load("oui.png").convert_alpha()
 modal_bt2 = pygame.image.load("non.png").convert_alpha()
+depos_bilan_but = pygame.image.load("card/bilan.png").convert_alpha()
+pass_turn_but = pygame.image.load("card/fin_tour.png").convert_alpha()
 
 # Fonts
 modal_font = pygame.font.Font('card/BebasNeue.otf', 30);
@@ -228,7 +230,7 @@ class cap_Graph_msg(cap_Graph_object):
 	def __init__(self):
 		cap_Graph_object.__init__(self, cap_Rect(0, 0, 1280, 800), cap_Rect(0, 0, 0, 0))
 
-		self.log_zone = pygame.Surface((321, 140), SRCALPHA, 32).convert_alpha()
+		self.log_zone = pygame.Surface((315, 146), SRCALPHA, 32).convert_alpha()
 		self.msg_zone = pygame.Surface((600, 200), SRCALPHA, 32).convert_alpha()
 
 		# Update des infos
@@ -255,7 +257,7 @@ class cap_Graph_msg(cap_Graph_object):
 	def log(self, msg, color=black):
 
 		# On blit en décalant d'une ligne
-		tmp = pygame.Surface((321, 140), SRCALPHA, 32).convert_alpha()
+		tmp = pygame.Surface((315, 146), SRCALPHA, 32).convert_alpha()
 		tmp.blit(self.log_zone, (0, 13))
 		self.log_zone = tmp
 
@@ -268,7 +270,7 @@ class cap_Graph_msg(cap_Graph_object):
 		cap_Graph_object.display(self, window)
 
 		# On affiche notre log
-		window.blit(self.log_zone, (4, 378))
+		window.blit(self.log_zone, (9, 370))
 
 # Info joueur
 class cap_Graph_playerinfo(cap_Graph_object):
