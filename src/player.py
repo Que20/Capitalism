@@ -19,7 +19,7 @@ class Player:
 	"""Représente un des deux joueurs"""
 
 	# Constructeur
-	def __init__(self, name, log, number, startingMoney=100000):
+	def __init__(self, name, log, modal, number, startingMoney=100000):
 		self.name = name                                   # Nom du joueur
 		self.money = startingMoney                         # Argent de départ
 		self.deck = []                                     # Cartes en main
@@ -30,14 +30,17 @@ class Player:
 		self.deleted = []                                  # Cartes supprimées
 		self.selected = None                               # Carte selectionnée 1 = hand / 2 = gameboard                   
 		self.log = log                                     # Log
+		self.modal = modal                                 # Fenêtre modale
 		self.cost = 100                                    # Coût de départ de l'entreprise
 
 		if number == 1 :
-			self.graph_player = cap_Graph_playerinfo(cap_Rect(44, 555, 0, 0), self)
-			self.playing = True   
+			self.graph_player = cap_Graph_playerinfo(cap_Rect(44, 548, 0, 0), self)
+			self.playing = True
+			self.number = 1
 		else :
 			self.graph_player = cap_Graph_playerinfo(cap_Rect(1035, 110, 0, 0), self)
-			self.playing = False   
+			self.playing = False
+			self.number = 2
 
 	# A virer
 	def addCardDeck(self, card):
@@ -201,31 +204,47 @@ class Player:
 
 
 	# Défausse le carte de la main
-	def _discardHand(self, hand):
-		# Log
-		self.log.log("["+self.name+"] Carte défaussée : "+self.deck[hand].name+" depuis la main", green)
-		# Graphique
-		self.deck[hand].grap_mincard.animate(1087, 602, 750, -1)
-		# On change de zone
-		self.deleted.append(self.deck.pop(hand))
-		# On déplace toutes les cartes après
-		self._shiftDeck(hand)
+	def _discardHand(self, hand):		
+
+		def yes() :
+			# Log
+			self.log.log("["+self.name+"] Carte défaussée : "+self.deck[hand].name+" depuis la main", green)
+			# Graphique
+			self.deck[hand].grap_mincard.animate(1087, 602, 750, -1)
+			# On change de zone
+			self.deleted.append(self.deck.pop(hand))
+			# On déplace toutes les cartes après
+			self._shiftDeck(hand)
+	
+		def no() :
+			self.selected = None
+			pass # Rien si on annule
+
+		self.modal.set_msg("Êtes vous certain de vouloir défausser la carte '"+self.deck[hand].name+"'?\nCelle-ci ne sera plus récupérable.", yes, no)
 
 
 	# Défausse le carte de la main
 	def _discardGameboard(self, x, y):
-		print(self.gameboard[x][y].name)
-		if self.gameboard[x][y].computedCard.discardCost < self.money :
-			self.money = self.money - self.gameboard[x][y].computedCard.discardCost # Coût défaussement
-			self.graph_player.update()
-			# Graphique
-			self.gameboard[x][y].grap_mincard.animate(1087, 602, 750, -1)
-			# Log
-			self.log.log("["+self.name+"] Carte défaussée : "+self.gameboard[x][y].name+" depuis le board", green)
 
-			# On change de zone
-			self.deleted.append(self.gameboard[x][y])
-			self.gameboard[x][y] = None
+		if self.gameboard[x][y].computedCard.discardCost < self.money :
+
+			def yes():
+				self.money = self.money - self.gameboard[x][y].computedCard.discardCost # Coût défaussement
+				self.graph_player.update()
+				# Graphique
+				self.gameboard[x][y].grap_mincard.animate(1087, 602, 750, -1)
+				# Log
+				self.log.log("["+self.name+"] Carte défaussée : "+self.gameboard[x][y].name+" depuis le board", green)
+
+				# On change de zone
+				self.deleted.append(self.gameboard[x][y])
+				self.gameboard[x][y] = None
+
+			def no():
+				self.selected = None
+
+			self.modal.set_msg("Êtes vous certain de vouloir défausser la carte '"+self.gameboard[x][y].name+"'?\nCelle-ci ne sera plus récupérable, et cette action vous coûtera "+('%.2f' % self.gameboard[x][y].computedCard.discardCost)+"$.", yes, no)
+
 		else :
 			self.log.msg("Impossible de supprimer la carte : pas assez d'argent")
 			self.log.log("["+self.name+"] Action impossible : pas assez d'argent", red)
@@ -320,6 +339,16 @@ class Player:
 				card.grap_card.update()
 				card.grap_mincard.update()
 
+	def estimateNextIncome(self):
+
+		total = 0
+
+		for line in self.gameboard:
+			for card in line:
+				if card != None :
+					total += card.estimateNextTurn()
+
+		return total - self.cost
 
 	def getNextIncome(self):
 
@@ -341,7 +370,7 @@ class Player:
 						self.log.log("["+self.name+"] Fin de vie : "+self.deleted[-1].name+" depuis le board")
 				i = i + 1
 
-		return total
+		return total - self.cost
 
 
 	# Débute un tour
@@ -370,7 +399,7 @@ class Player:
 		self.addCardDeck(card)
 
 		self.graph_player.rect.x = 44
-		self.graph_player.rect.y = 555
+		self.graph_player.rect.y = 548
 
 
 	# Termine un tour
@@ -386,7 +415,7 @@ class Player:
 			self.log.log("["+self.name+"] Revenus du tour : "+('%.2f' % total)+"$")
 			
 			# Coût total
-			self.money += total - self.cost
+			self.money += total
 			self.cost *= 2
 
 			# Graphique, changement de cartes dans tout les sens
@@ -405,6 +434,18 @@ class Player:
 				i += 1
 
 			self.graph_player.update()
+
+			# Màj des events si joueur 2
+			if self.number == 2 :
+				for event in events :
+					if event != None :
+						# Si la carte n'a plus de vie après le tour
+						if not event.isAlive() :
+							self.deleted.append(events.pop()) # On met dans la liste deleted
+							# Graphique
+							self.deleted[-1].grap_mincard.animate(1087, 602, 750, -1)
+							# Log
+							self.log.log("["+self.name+"] Fin d'event : "+self.deleted[-1].name)
 
 			# Màj des cartes
 			for line in self.gameboard:

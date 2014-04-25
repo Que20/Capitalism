@@ -116,6 +116,10 @@ class Card:
 				elif effect.affectedValue == AffectableValue.LIFE :
 					self.computedCard.life = ModifierType.computeModifiedValue(self.computedCard.life, effect.value, effect.modifierType)
 
+	# Estimation
+	def estimateNextTurn(self):
+		return self.computedCard.incomePerTurn - self.computedCard.costPerTurn
+
 	# Passe un tour sur notre carte
 	def nexTurn(self):
 		# Revenus du tour

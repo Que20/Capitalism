@@ -15,8 +15,12 @@ back_bg_hover = pygame.image.load("card/back_bg_hover.png").convert_alpha()
 msg_bg = pygame.image.load("card/msg_bg.png").convert_alpha()
 deck_bg = pygame.image.load("card/deck.png").convert_alpha()
 discard_bg = pygame.image.load("card/discard.png").convert_alpha()
+modal_bg = pygame.image.load("modal_bg.png").convert_alpha()
+modal_bt1 = pygame.image.load("oui.png").convert_alpha()
+modal_bt2 = pygame.image.load("non.png").convert_alpha()
 
 # Fonts
+modal_font = pygame.font.Font('card/BebasNeue.otf', 30);
 player_name_font = pygame.font.Font('card/BebasNeue.otf', 25);
 card_title_font = pygame.font.Font('card/BebasNeue.otf', 22);
 card_mintitle_font = pygame.font.Font('card/BebasNeue.otf', 14);
@@ -115,6 +119,58 @@ class cap_Graph_object:
 		if self.visible :
 			cap_blit_alpha(window, self.to_display, (self.rect.x, self.rect.y), self.opacity)
 
+# Fenêtre modale
+class cap_graph_Modal(cap_Graph_object):
+	def __init__(self):
+		cap_Graph_object.__init__(self, cap_Rect(0,0,1280,800), cap_Rect(0,0,1280,800))
+		self.bg_image = modal_bg
+
+		self.msg = ""
+		self.onYes = None
+		self.onYesRect = cap_Rect(410, 545, 62, 44)
+		self.onNo = None
+		self.onNoRect = cap_Rect(785, 545, 62, 44)
+
+		self.bg = pygame.Surface((1280, 800), SRCALPHA, 32).convert_alpha()
+		self.bg.blit(modal_bg, (0, 0))
+
+	# Initialisation
+	def init(self, event_mouse, event_key, display_list):
+		# On ajoute à la liste d'affichage
+		display_list.append(self.display)
+		self.display_list = display_list
+		# Button
+		event_mouse.append((MOUSEBUTTONUP, 1, self.buttons_check))
+
+	def set_msg(self, msg, onYes, onNo):
+	
+		self.onYes = onYes
+		self.onNo = onNo
+		self.msg = msg
+		self.visible = True
+
+		self.update()
+
+	def update(self):
+
+		self.erase()
+
+		self.to_display.blit(self.bg, (0, 0))
+		cap_Graph_print(self.msg, modal_font, self.to_display, 28, black, 219, 181)
+
+		self.to_display.blit(modal_bt1, (self.onYesRect.x, self.onYesRect.y))
+		self.to_display.blit(modal_bt2, (self.onNoRect.x, self.onNoRect.y))
+
+
+	def buttons_check(self, event_type, event_code, x, y):
+		# Oui
+		if self.onYesRect.isIn(x, y):
+			if self.onYes != None : self.onYes()
+			self.visible = False
+		# Non
+		elif self.onNoRect.isIn(x, y):
+			if self.onNo != None : self.onNo()
+			self.visible = False
 
 
 class cap_graph_Button(cap_Graph_object):
@@ -216,7 +272,7 @@ class cap_Graph_playerinfo(cap_Graph_object):
 
 		# On commence par le fond (qui ne change pas)
 		self.bg = pygame.Surface((self.rect.w, self.rect.h), SRCALPHA, 32).convert_alpha()
-		self.bg.blit(player_name_font.render(self.player.name, 1, black), (5, 0))
+		self.bg.blit(player_name_font.render(self.player.name, 1, black), (0, 0))
 
 		# Update des infos
 		self.update()
@@ -225,7 +281,12 @@ class cap_Graph_playerinfo(cap_Graph_object):
 	def update(self):
 		self.erase()
 		self.to_display.blit(self.bg, (0, 0))
-		self.to_display.blit(card_title_font.render( "  Capital : "+('%.2f' % self.player.money)+"$", 1, green), (5, 30))
+		self.to_display.blit(card_title_font.render( "  Capital         : "+('%.2f' % self.player.money)+"$", 1, green), (5, 23))
+		total = self.player.estimateNextIncome()
+		if total >= 0 :
+			self.to_display.blit(card_title_font.render( "  Prévisions : "+('%.2f' % total)+"$", 1, green), (5, 41))
+		else :
+			self.to_display.blit(card_title_font.render( "  Prévisions : "+('%.2f' % total)+"$", 1, red), (5, 41))
 
 # Pioche
 class cap_Graph_deck_base(cap_Graph_object):

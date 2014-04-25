@@ -15,11 +15,15 @@ events = [ None ]
 
 # Initialisation pygame
 background = pygame.image.load("background.jpg").convert()
+global quit
 quit = False
 window.blit(background, (0,0))
 
 event_mouse = []
+event_modal_mouse = []
+
 event_key   = []
+event_modal_key   = []
 
 display_list  = []
 
@@ -98,19 +102,33 @@ log = cap_Graph_msg()
 log.init(event_mouse, event_key, display_list)
 log.visibility(True)
 
+# Fenêtre modale
+modal = cap_graph_Modal()
+
 # Joueurs
-player1 = Player("Player 1", log, 1)
+player1 = Player("Player 1", log, modal, 1)
 player1.graph_player.init(event_mouse, event_key, display_list)
 player1.graph_player.visibility(True)
 
-player2 = Player("Player 2", log, 2)
+player2 = Player("Player 2", log, modal, 2)
 player2.graph_player.init(event_mouse, event_key, display_list)
 player2.graph_player.visibility(True)
 
+modal.init(event_modal_mouse, event_modal_key, display_list)
+
 # Cartes de départ
-for i in range(1, 4):
+for i in range(1, 3):
 	player1.addCardDeck(deck.pickUpCardFromDeck())
 	player2.addCardDeck(deck.pickUpCardFromDeck())
+# Carte en plus pour valoir la pioche du joueur 2
+player1.addCardDeck(deck.pickUpCardFromDeck())
+
+def yes():
+	global quit 
+	quit = True
+
+def no():
+	pass
 
 # Boucle d'affichage / évenements
 while not quit :
@@ -128,34 +146,51 @@ while not quit :
 
 		# Boutons fenêtre
 		if event.type == QUIT:
-			quit = True
+			modal.set_msg("Êtes vous certain de vouloir quitter le jeu ?\nLa partie en cours sera perdu.", yes, no)
 
-		# Clavier
-		if event.type == KEYDOWN:
-			if event.key == K_ESCAPE:
-				quit = True
-			elif event.key == K_SPACE:
-				if player1.endTurn(events) :
-					player2.startTurn(deck)
-					player1, player2 = player2, player1
-			elif event.key == K_p:
-				player1.addCardDeck(deck.pickUpCardFromDeck())
+		# Modal
+		if modal.visible :
+			# Souris
+			if event.type == MOUSEBUTTONDOWN or event.type == MOUSEBUTTONUP or event.type == MOUSEMOTION :
 
-		# Souris
-		if event.type == MOUSEBUTTONDOWN or event.type == MOUSEBUTTONUP or event.type == MOUSEMOTION :
+				for clbk in event_modal_mouse :
+					# Si l'event se passe dans notre range
+					if clbk[0] == event.type and ( not hasattr(event, 'button') or clbk[1] == event.button ) :
+						if hasattr(event, 'button') :
+							button = event.button
+						else :
+							button = 0
+						if clbk[2](event.type, button, event.pos[0], event.pos[1]):
+							break
+		# Jeu
+		else :
 
-			if event.type == MOUSEBUTTONDOWN :
-				print(clicker_detector.get_zone(event.pos[0], event.pos[1]))
-				player1.playerAction(clicker_detector.get_zone(event.pos[0], event.pos[1]), events, None)
+			# Clavier
+			if event.type == KEYDOWN:
+				if event.key == K_ESCAPE:
+					modal.set_msg("Êtes vous certain de vouloir quitter le jeu ?\nLa partie en cours sera perdu.", yes, no)
+				elif event.key == K_SPACE:
+					if player1.endTurn(events) :
+						player2.startTurn(deck)
+						player1, player2 = player2, player1
+				elif event.key == K_p:
+					player1.addCardDeck(deck.pickUpCardFromDeck())
 
-			for clbk in event_mouse :
-				# Si l'event se passe dans notre range
-				if clbk[0] == event.type and ( not hasattr(event, 'button') or clbk[1] == event.button ) :
-					if hasattr(event, 'button') :
-						button = event.button
-					else :
-						button = 0
-					if clbk[2](event.type, button, event.pos[0], event.pos[1]):
-						break
+			# Souris
+			if event.type == MOUSEBUTTONDOWN or event.type == MOUSEBUTTONUP or event.type == MOUSEMOTION :
+
+				if event.type == MOUSEBUTTONDOWN :
+					print(clicker_detector.get_zone(event.pos[0], event.pos[1]))
+					player1.playerAction(clicker_detector.get_zone(event.pos[0], event.pos[1]), events, None)
+
+				for clbk in event_mouse :
+					# Si l'event se passe dans notre range
+					if clbk[0] == event.type and ( not hasattr(event, 'button') or clbk[1] == event.button ) :
+						if hasattr(event, 'button') :
+							button = event.button
+						else :
+							button = 0
+						if clbk[2](event.type, button, event.pos[0], event.pos[1]):
+							break
 
 	pass
