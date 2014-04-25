@@ -6,7 +6,7 @@ pygame.init()
 wh = (300, 400)
 screen = pygame.display.set_mode(wh)
 background_colour = (255,255,255)
-pygame.display.set_caption('Capitalism Launcher')
+pygame.display.set_caption('Capitalism - Launcher')
 
 from cap_rect import *
 from cap_graph import *

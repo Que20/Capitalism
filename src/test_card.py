@@ -3,7 +3,7 @@ from pygame.locals import *
 
 pygame.init()
 window = pygame.display.set_mode((1280, 800))
-pygame.display.set_caption("Test pygame")
+pygame.display.set_caption('Capitalism - Jeu')
 
 from cap_graph import *
 from deck import *

@@ -394,9 +394,11 @@ class Player:
 
 		# On pioche une carte
 		card = deck.pickUpCardFromDeck()
-		# Log
-		self.log.log("["+self.name+"] Pioche : "+card.name)
-		self.addCardDeck(card)
+
+		if card != None :
+			# Log
+			self.log.log("["+self.name+"] Pioche : "+card.name)
+			self.addCardDeck(card)
 
 		self.graph_player.rect.x = 44
 		self.graph_player.rect.y = 548
@@ -416,7 +418,7 @@ class Player:
 			
 			# Coût total
 			self.money += total
-			self.cost *= 2
+			self.cost *= 1.2
 
 			# Graphique, changement de cartes dans tout les sens
 			j = 0
