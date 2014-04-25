@@ -115,6 +115,46 @@ class cap_Graph_object:
 		if self.visible :
 			cap_blit_alpha(window, self.to_display, (self.rect.x, self.rect.y), self.opacity)
 
+class cap_graph_Button(cap_Graph_object):
+	def __init__(self, rect, rect_click, bg_image, bg_image_hover, bg_image_click, callback):
+		cap_Graph_object.__init__(self, rect, rect_click)
+		self.bg_image = bg_image
+		self.bg_image_click = bg_image_click
+		self.bg_image_hover = bg_image_hover
+		self.callback = callback
+		self.state = 0 # 0 = rien, 1 = hover, 2 = click
+
+	def onClick(self, event_type, event_code, x, y):
+		if self.rect_click.isIn(x-self.rect.x, y-self.rect.y):
+			self.state = 2
+		else:
+			self.state = 0
+
+	def onHover(self, event_type, event_code, x, y):
+		if self.rect_click.isIn(x-self.rect.x, y-self.rect.y):
+			self.state = 1
+		else:
+			self.state = 0
+
+	def update(self):
+		self.erase()
+		if self.state == 0:
+			self.to_display.blit(self.bg_image, (0, 0))
+		elif self.state == 1:
+			self.to_display.blit(self.bg_image_hover, (0, 0))
+		elif self.state == 2:
+			self.to_display.blit(self.bg_image_click, (0, 0))
+
+	def init(self, event_mouse, event_key, display_list):
+		cap_Graph_object.init(self, event_mouse, event_key, display_list)
+		event_mouse.insert(0, (MOUSEMOTION, 0, self.onHover))
+		event_mouse.insert(0, (MOUSEBUTTONDOWN, 1, self.onClick))
+		event_mouse.insert(0, (MOUSEBUTTONUP, 1, self.onAction))
+		self.update()
+
+	def onAction(self, event_type, event_code, x, y):
+		if self.rect_click.isIn(x-self.rect.x, y-self.rect.y):
+			self.callback()
 
 # Pop-up & log
 class cap_Graph_msg(cap_Graph_object):
