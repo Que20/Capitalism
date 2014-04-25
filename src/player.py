@@ -424,7 +424,8 @@ class Player:
 
 					# Si la carte n'a plus de vie après le tour
 					if not card.isAlive() :
-						self.deleted.append(line.pop(i)) # On met dans la liste deleted
+						self.deleted.append(card) # On met dans la liste deleted
+						line[i] = None
 						# Graphique
 						self.deleted[-1].grap_mincard.animate(1087, 602, 750, -1)
 						# Log

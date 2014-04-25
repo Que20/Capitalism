@@ -10,12 +10,14 @@ pygame.display.set_caption('Capitalism - Launcher')
 
 from cap_rect import *
 from cap_graph import *
+from game_engine import *
 
+game = game_engine()
 
 def start():
 	print("start")
-	pygame.display.quit()
-	os.system("py test_card.py")
+	game.new_game("Player1", "Player2")
+	pygame.display.set_mode(wh)
 
 def quit():
 	print("quit")
