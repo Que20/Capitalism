@@ -42,25 +42,31 @@ while not quit :
 	# Events de la fenêtre
 	for event in pygame.event.get():
 
-		# Boutons fenêtre
-		if event.type == QUIT:
-			quit = True
+		# Fenêtre modale affichée
+		if dialog.visible :
+			
 
-		# Clavier
-		if event.type == KEYDOWN:
-			if event.key == K_ESCAPE:
+		# Le jeu
+		else :
+			# Boutons fenêtre
+			if event.type == QUIT:
 				quit = True
 
-		# Souris
-		if event.type == MOUSEBUTTONDOWN or event.type == MOUSEBUTTONUP or event.type == MOUSEMOTION :
-			for clbk in event_mouse :
-				# Si l'event se passe dans notre range
-				if clbk[0] == event.type and ( not hasattr(event, 'button') or clbk[1] == event.button ) :
-					if hasattr(event, 'button') :
-						button = event.button
-					else :
-						button = 0
-					if clbk[2](event.type, button, event.pos[0], event.pos[1]):
-						break
+			# Clavier
+			if event.type == KEYDOWN:
+				if event.key == K_ESCAPE:
+					quit = True
+
+			# Souris
+			if event.type == MOUSEBUTTONDOWN or event.type == MOUSEBUTTONUP or event.type == MOUSEMOTION :
+				for clbk in event_mouse :
+					# Si l'event se passe dans notre range
+					if clbk[0] == event.type and ( not hasattr(event, 'button') or clbk[1] == event.button ) :
+						if hasattr(event, 'button') :
+							button = event.button
+						else :
+							button = 0
+						if clbk[2](event.type, button, event.pos[0], event.pos[1]):
+							break
 
 	pass

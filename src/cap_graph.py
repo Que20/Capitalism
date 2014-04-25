@@ -115,6 +115,7 @@ class cap_Graph_object:
 		if self.visible :
 			cap_blit_alpha(window, self.to_display, (self.rect.x, self.rect.y), self.opacity)
 
+
 class cap_graph_Button(cap_Graph_object):
 	def __init__(self, rect, rect_click, bg_image, bg_image_hover, bg_image_click, callback):
 		cap_Graph_object.__init__(self, rect, rect_click)
@@ -223,7 +224,7 @@ class cap_Graph_playerinfo(cap_Graph_object):
 	def update(self):
 		self.erase()
 		self.to_display.blit(self.bg, (0, 0))
-		self.to_display.blit(card_title_font.render( "  Capital : "+str(self.player.money)+"$", 1, green), (5, 30))
+		self.to_display.blit(card_title_font.render( "  Capital : "+('%.2f' % self.player.money)+"$", 1, green), (5, 30))
 
 # Pioche
 class cap_Graph_deck_base(cap_Graph_object):
@@ -348,10 +349,10 @@ class cap_Graph_mincard(cap_Graph_object):
 			total = self.card_obj.computedCard.incomePerTurn - self.card_obj.computedCard.costPerTurn
 
 			if total > 0 :
-				s = "+" + str('%.2f' % total) + "$ (" + str(self.card_obj.computedCard.costPerTurnModifier) + "%)"
+				s = "+" + ('%.2f' % total) + "$ (" + ('%.2f' % self.card_obj.computedCard.costPerTurnModifier) + "%)"
 				self.to_display.blit(card_mintitle_font.render(s, 1, green), (14, 34))
 			else :
-				s = str('%.2f' % total) + "$ (" + str(self.card_obj.computedCard.costPerTurnModifier) + "%)"
+				s = ('%.2f' % total) + "$ (" + ('%.2f' % self.card_obj.computedCard.costPerTurnModifier) + "%)"
 				self.to_display.blit(card_mintitle_font.render(s, 1, red), (14, 34))
 
 	# Initialisation
@@ -442,12 +443,12 @@ class cap_Graph_card(cap_Graph_object):
 
 			self.to_display.blit(card_type_font.render(str(int(self.card_obj.computedCard.life)), 1, white), (186, 265))
 
-			s = "+" + str('%.2f' % self.card_obj.computedCard.incomePerTurn)
-			s += "$ (" + str('%.2f' % self.card_obj.computedCard.costPerTurnModifier) + "%)"
+			s = "+" + ('%.2f' % self.card_obj.computedCard.incomePerTurn)
+			s += "$ (" + ('%.2f' % self.card_obj.computedCard.costPerTurnModifier) + "%)"
 			self.to_display.blit(card_title_font.render(s, 1, green), (34, 135))
 
-			s = "-" + str('%.2f' % self.card_obj.computedCard.costPerTurn)
-			s += "$ (" + str('%.2f' % self.card_obj.computedCard.costPerTurnModifier) + "%)"
+			s = "-" + ('%.2f' % self.card_obj.computedCard.costPerTurn)
+			s += "$ (" + ('%.2f' % self.card_obj.computedCard.costPerTurnModifier) + "%)"
 			self.to_display.blit(card_title_font.render(s, 1, red), (34, 159))
 
 		i = 192
@@ -457,7 +458,7 @@ class cap_Graph_card(cap_Graph_object):
 			s = ""
 			if effect.value > 0 :
 				s = s + "+"
-			s = s + str(effect.value)
+			s = s + ('%.2f' % effect.value)
 			if effect.modifierType == ModifierType.PERCENT:
 				s = s + " %"
 			if effect.modifierType > 0:

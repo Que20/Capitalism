@@ -329,7 +329,6 @@ class Player:
 			i = 0
 			# Calcul des revenus et suppresion si carte trop ancienne
 			for card in line:
-				i = i + 1
 				if card != None :
 					total += card.nexTurn()
 
@@ -340,6 +339,7 @@ class Player:
 						self.gameboard[x][y].grap_mincard.animate(1087, 602, 750, -1)
 						# Log
 						self.log.log("["+self.name+"] Fin de vie : "+self.gameboard[x][y].name+" depuis le board")
+				i = i + 1
 
 		return total
 
@@ -382,8 +382,8 @@ class Player:
 			total = self.getNextIncome()
 
 			# Log
-			self.log.log("["+self.name+"] Coût entreprise ce tour : "+str(self.cost)+"$")
-			self.log.log("["+self.name+"] Revenus du tour : "+str(total)+"$")
+			self.log.log("["+self.name+"] Coût entreprise ce tour : "+('%.2f' % self.cost)+"$")
+			self.log.log("["+self.name+"] Revenus du tour : "+('%.2f' % total)+"$")
 			
 			# Coût total
 			self.money += total - self.cost
