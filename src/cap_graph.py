@@ -180,19 +180,18 @@ class cap_Graph_playerinfo(cap_Graph_object):
 		self.to_display.blit(self.bg, (0, 0))
 		self.to_display.blit(card_title_font.render( "  Capital : "+str(self.player.money)+"$", 1, green), (5, 30))
 
-
 # Pioche
-class cap_Graph_deck(cap_Graph_object):
-	"""docstring for cap_Graph_mincard"""
-	def __init__(self, deck):
-		cap_Graph_object.__init__(self, cap_Rect(0, 0, 200, 143), cap_Rect(11, 9, 178, 125))
+class cap_Graph_deck_base(cap_Graph_object):
+
+	def __init__(self, deck, bg, pos):
+		cap_Graph_object.__init__(self, pos, cap_Rect(11, 9, 178, 125))
 
 		self.deck = deck
 		self.hovered = False
 
 		# On commence par le fond (qui ne change pas)
 		self.card_bg = pygame.Surface((self.rect.w, self.rect.h), SRCALPHA, 32).convert_alpha()
-		self.card_bg.blit(discard_bg, (0, 0))
+		self.card_bg.blit(bg, (0, 0))
 
 		# Update des infos
 		self.update()
@@ -229,6 +228,18 @@ class cap_Graph_deck(cap_Graph_object):
 
 	def click(self, event_type, event_code, x, y):
 		pass
+
+
+class cap_Graph_deck(cap_Graph_deck_base):
+
+	def __init__(self, deck):
+		cap_Graph_deck_base.__init__(self, deck, deck_bg, cap_Rect(50, 188, 200, 143))
+
+
+class cap_Graph_discard(cap_Graph_deck_base):
+
+	def __init__(self, deck):
+		cap_Graph_deck_base.__init__(self, deck, discard_bg, cap_Rect(1037, 552, 200, 143))
 
 
 # Miniature de carte

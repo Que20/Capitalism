@@ -83,11 +83,9 @@ clicker_detector = cap_clickDetector()
 # Chargement graphique du deck
 deck.init(event_mouse, event_key, display_list)
 
-deck_defausse = cap_Graph_deck([], )
+deck_defausse = cap_Graph_discard(deck)
 deck_defausse.init(event_mouse, event_key, display_list)
 deck_defausse.visibility(True)
-deck_defausse.rect.x = 1037
-deck_defausse.rect.y = 552
 
 log = cap_Graph_msg()
 log.init(event_mouse, event_key, display_list)
