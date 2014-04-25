@@ -356,8 +356,10 @@ class Player:
 					i += 1
 			j += 1
 
+		i = 0
 		for card in self.deck :
-			card.grap_mincard.animate(card.grap_mincard.rect.x, 712, 300)
+			card.grap_mincard.animate(i*145 + 60, 712, 300)
+			i += 1
 
 		self.playing = True
 
@@ -367,8 +369,8 @@ class Player:
 		self.log.log("["+self.name+"] Pioche : "+card.name)
 		self.addCardDeck(card)
 
-		self.graph_player.rect.x = 1035
-		self.graph_player.rect.y = 110
+		self.graph_player.rect.x = 44
+		self.graph_player.rect.y = 555
 
 
 	# Termine un tour
@@ -410,8 +412,8 @@ class Player:
 
 			self.playing = False
 
-			self.graph_player.rect.x = 44
-			self.graph_player.rect.y = 555
+			self.graph_player.rect.x = 1035
+			self.graph_player.rect.y = 110
 
 			return True
 
