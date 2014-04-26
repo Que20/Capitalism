@@ -67,7 +67,6 @@ class game_engine:
 					return ("low")
 
 	def __init__(self):
-		self.background = pygame.image.load("background.jpg").convert()
 		self.clicker_detector = self.cap_clickDetector()
 		self.deck = deck("card/cards.xml")
 
@@ -78,7 +77,7 @@ class game_engine:
 		window = pygame.display.set_mode((1280, 800))
 
 		# En attendant le load
-		window.blit(self.background, (0,0))
+		window.blit(background, (0,0))
 		pygame.display.flip()
 
 		# Chargement des cartes
@@ -196,7 +195,7 @@ class game_engine:
 
 		# Boucle d'affichage / évenements
 		while not self.quit :
-			window.blit(self.background, (0,0))
+			window.blit(background, (0,0))
 
 			# Affichage des choses à afficher
 			for clbk in display_list :

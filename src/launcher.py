@@ -33,13 +33,13 @@ event_key = []
 display_list = []
 
 # Graphique
-menu_logo = pygame.image.load("card/menu_logo.png").convert_alpha()
-menu_start = pygame.image.load("card/menu_start.png").convert_alpha()
-menu_quit = pygame.image.load("card/menu_quit.png").convert_alpha()
-menu_about = pygame.image.load("card/menu_about.png").convert_alpha()
-menu_start_ho = pygame.image.load("card/menu_start_ho.png").convert_alpha()
-menu_quit_ho = pygame.image.load("card/menu_quit_ho.png").convert_alpha()
-menu_about_ho = pygame.image.load("card/menu_about_ho.png").convert_alpha()
+menu_logo = pygame.image.load("imgs/menu_logo.png").convert_alpha()
+menu_start = pygame.image.load("imgs/menu_start.png").convert_alpha()
+menu_quit = pygame.image.load("imgs/menu_quit.png").convert_alpha()
+menu_about = pygame.image.load("imgs/menu_about.png").convert_alpha()
+menu_start_ho = pygame.image.load("imgs/menu_start_ho.png").convert_alpha()
+menu_quit_ho = pygame.image.load("imgs/menu_quit_ho.png").convert_alpha()
+menu_about_ho = pygame.image.load("imgs/menu_about_ho.png").convert_alpha()
 
 b1 = cap_graph_Button(cap_Rect(26,200,247,59), cap_Rect(15,8,217,38), menu_start, menu_start_ho, menu_start_ho, start)
 b1.init(event_mouse, event_key, display_list)

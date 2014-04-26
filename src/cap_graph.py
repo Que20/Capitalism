@@ -8,6 +8,7 @@ sound_pay = pygame.mixer.Sound("soundAndMusic/money.wav")
 sound_get_money = pygame.mixer.Sound("soundAndMusic/caisse_enregistr.wav")
 
 # Graphique
+background = pygame.image.load("imgs/background.jpg").convert()
 card_bg = pygame.image.load("card/card_bg.png").convert_alpha()
 card_fg = pygame.image.load("card/card_fg.png").convert_alpha()
 mincard_bg = pygame.image.load("card/mincard_bg.png").convert_alpha()
@@ -19,26 +20,26 @@ back_bg_hover = pygame.image.load("card/back_bg_hover.png").convert_alpha()
 msg_bg = pygame.image.load("card/msg_bg.png").convert_alpha()
 deck_bg = pygame.image.load("card/deck.png").convert_alpha()
 discard_bg = pygame.image.load("card/discard.png").convert_alpha()
-modal_bg = pygame.image.load("modal_bg.png").convert_alpha()
-modal_bt1 = pygame.image.load("oui.png").convert_alpha()
-modal_bt2 = pygame.image.load("non.png").convert_alpha()
-depos_bilan_but = pygame.image.load("card/bilan.png").convert_alpha()
-pass_turn_but = pygame.image.load("card/fin_tour.png").convert_alpha()
-opa_but = pygame.image.load("card/opa.png").convert_alpha()
-pass_turn_but_hovered = pygame.image.load("card/fin_tour_ho.png").convert_alpha()
-opa_but_hovered = pygame.image.load("card/opa_ho.png").convert_alpha()
-modal_bt1_hovered = pygame.image.load("oui_ho.png").convert_alpha()
-modal_bt2_hovered = pygame.image.load("non_ho.png").convert_alpha()
+modal_bg = pygame.image.load("imgs/modal_bg.png").convert_alpha()
+modal_bt1 = pygame.image.load("imgs/oui.png").convert_alpha()
+modal_bt2 = pygame.image.load("imgs/non.png").convert_alpha()
+depos_bilan_but = pygame.image.load("imgs/bilan.png").convert_alpha()
+pass_turn_but = pygame.image.load("imgs/fin_tour.png").convert_alpha()
+opa_but = pygame.image.load("imgs/opa.png").convert_alpha()
+pass_turn_but_hovered = pygame.image.load("imgs/fin_tour_ho.png").convert_alpha()
+opa_but_hovered = pygame.image.load("imgs/opa_ho.png").convert_alpha()
+modal_bt1_hovered = pygame.image.load("imgs/oui_ho.png").convert_alpha()
+modal_bt2_hovered = pygame.image.load("imgs/non_ho.png").convert_alpha()
 
 # Fonts
-modal_font = pygame.font.Font('card/BebasNeue.otf', 30);
-player_name_font = pygame.font.Font('card/BebasNeue.otf', 25);
-card_title_font = pygame.font.Font('card/BebasNeue.otf', 22);
-card_mintitle_font = pygame.font.Font('card/BebasNeue.otf', 14);
-card_type_font = pygame.font.Font('card/BebasNeue.otf', 12);
-card_content_font = pygame.font.Font('card/SugarcubesBold.ttf', 13);
-card_medium_font = pygame.font.Font('card/SugarcubesBold.ttf', 11);
-card_small_font = pygame.font.Font('card/SugarcubesBold.ttf', 10);
+modal_font = pygame.font.Font('font/BebasNeue.otf', 30);
+player_name_font = pygame.font.Font('font/BebasNeue.otf', 25);
+card_title_font = pygame.font.Font('font/BebasNeue.otf', 22);
+card_mintitle_font = pygame.font.Font('font/BebasNeue.otf', 14);
+card_type_font = pygame.font.Font('font/BebasNeue.otf', 12);
+card_content_font = pygame.font.Font('font/SugarcubesBold.ttf', 13);
+card_medium_font = pygame.font.Font('font/SugarcubesBold.ttf', 11);
+card_small_font = pygame.font.Font('font/SugarcubesBold.ttf', 10);
 
 black = (0,0,0)
 grey  = (160,160,160)
