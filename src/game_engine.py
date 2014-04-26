@@ -209,7 +209,7 @@ class game_engine:
 
 				# Boutons fenêtre
 				if event.type == QUIT:
-					modal.set_msg("Êtes vous certain de vouloir quitter le jeu ?\nLa partie en cours sera perdu.", yes, no)
+					modal.set_msg("Êtes vous certain de vouloir quitter le jeu ?\nLa partie en cours sera perdue.", yes, no)
 
 				# Modal
 				if modal.visible :
