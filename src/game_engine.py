@@ -161,7 +161,7 @@ class game_engine:
 			self.player1.OPA(self.player2, yes_opa, no_opa)
 
 
-		button_OPA = cap_graph_Button(cap_Rect(350,373,247,59), cap_Rect(0,0,247,59), opa_but, opa_but, opa_but, opa)
+		button_OPA = cap_graph_Button(cap_Rect(350,373,247,59), cap_Rect(22,7,199,38), opa_but, opa_but_hovered, opa_but, opa)
 		button_OPA.init(event_mouse, event_key, display_list)
 		button_OPA.visibility(True)
 
@@ -175,7 +175,7 @@ class game_engine:
 					self.player2.startTurn(self.deck)
 					self.player1, self.player2 = self.player2, self.player1
 
-		button_pass = cap_graph_Button(cap_Rect(750,373,247,59), cap_Rect(0,0,247,59), pass_turn_but, pass_turn_but, pass_turn_but, endturn)
+		button_pass = cap_graph_Button(cap_Rect(720,373,247,59), cap_Rect(47,7,145,38), pass_turn_but, pass_turn_but_hovered, pass_turn_but, endturn)
 		button_pass.init(event_mouse, event_key, display_list)
 		button_pass.visibility(True)
 
@@ -231,7 +231,7 @@ class game_engine:
 									button = event.button
 								else :
 									button = 0
-								if clbk[2](event.type, event.button, event.pos[0], event.pos[1]):
+								if clbk[2](event.type, button, event.pos[0], event.pos[1]):
 									break
 				# Jeu
 				else :

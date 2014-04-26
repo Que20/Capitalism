@@ -25,6 +25,10 @@ modal_bt2 = pygame.image.load("non.png").convert_alpha()
 depos_bilan_but = pygame.image.load("card/bilan.png").convert_alpha()
 pass_turn_but = pygame.image.load("card/fin_tour.png").convert_alpha()
 opa_but = pygame.image.load("card/opa.png").convert_alpha()
+pass_turn_but_hovered = pygame.image.load("card/fin_tour_ho.png").convert_alpha()
+opa_but_hovered = pygame.image.load("card/opa_ho.png").convert_alpha()
+modal_bt1_hovered = pygame.image.load("oui_ho.png").convert_alpha()
+modal_bt2_hovered = pygame.image.load("non_ho.png").convert_alpha()
 
 # Fonts
 modal_font = pygame.font.Font('card/BebasNeue.otf', 30);
@@ -138,6 +142,7 @@ class cap_graph_Modal(cap_Graph_object):
 		self.onNo = None
 		self.onNoRect = cap_Rect(785, 545, 62, 44)
 		self.ignoreNext = False
+		self.hovered = 0
 
 		self.bg = pygame.Surface((1280, 800), SRCALPHA, 32).convert_alpha()
 		self.bg.blit(modal_bg, (0, 0))
@@ -149,6 +154,7 @@ class cap_graph_Modal(cap_Graph_object):
 		self.display_list = display_list
 		# Button
 		event_mouse.append((MOUSEBUTTONUP, 1, self.buttons_check))
+		event_mouse.append((MOUSEMOTION, 0, self.buttons_hover))
 		event_key.append((KEYDOWN, K_RETURN, self.buttons_key))
 
 	def set_msg(self, msg, onYes, onNo, ignoreNext=False):
@@ -168,9 +174,15 @@ class cap_graph_Modal(cap_Graph_object):
 		self.to_display.blit(self.bg, (0, 0))
 		cap_Graph_print(self.msg, modal_font, self.to_display, 28, black, 219, 181)
 
-		self.to_display.blit(modal_bt1, (self.onYesRect.x, self.onYesRect.y))
-		self.to_display.blit(modal_bt2, (self.onNoRect.x, self.onNoRect.y))
-
+	def buttons_hover(self, event_type, event_code, x, y):
+		# Oui
+		if self.onYesRect.isIn(x, y):
+			self.hovered = 1
+		# Non
+		elif self.onNoRect.isIn(x, y):
+			self.hovered = 2
+		else :
+			self.hovered = 0
 
 	def buttons_check(self, event_type, event_code, x, y):
 		# Oui
@@ -196,6 +208,19 @@ class cap_graph_Modal(cap_Graph_object):
 				self.visible = False
 		self.ignoreNext = False
 
+	def display(self, window):
+		cap_Graph_object.display(self, window)
+
+		if self.visible:
+			if self.hovered == 1 :
+				window.blit(modal_bt1_hovered, (self.onYesRect.x, self.onYesRect.y))
+			else :
+				window.blit(modal_bt1, (self.onYesRect.x, self.onYesRect.y))
+
+			if self.hovered == 2 :
+				window.blit(modal_bt2_hovered, (self.onNoRect.x, self.onNoRect.y))
+			else :
+				window.blit(modal_bt2, (self.onNoRect.x, self.onNoRect.y))
 
 class cap_graph_Button(cap_Graph_object):
 	def __init__(self, rect, rect_click, bg_image, bg_image_hover, bg_image_click, callback):
