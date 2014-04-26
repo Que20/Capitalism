@@ -10,14 +10,15 @@ pygame.display.set_caption('Capitalism - Launcher')
 
 from cap_rect import *
 from cap_graph import *
-from game_engine import *
+import game_engine
 
-game = game_engine()
+game = game_engine.game_engine()
 
 def start():
 	print("start")
 	game.new_game("Player1", "Player2")
 	pygame.display.set_mode(wh)
+	pygame.display.set_caption('Capitalism - Launcher')
 
 def quit():
 	print("quit")
@@ -36,16 +37,19 @@ menu_logo = pygame.image.load("card/menu_logo.png").convert_alpha()
 menu_start = pygame.image.load("card/menu_start.png").convert_alpha()
 menu_quit = pygame.image.load("card/menu_quit.png").convert_alpha()
 menu_about = pygame.image.load("card/menu_about.png").convert_alpha()
+menu_start_ho = pygame.image.load("card/menu_start_ho.png").convert_alpha()
+menu_quit_ho = pygame.image.load("card/menu_quit_ho.png").convert_alpha()
+menu_about_ho = pygame.image.load("card/menu_about_ho.png").convert_alpha()
 
-b1 = cap_graph_Button(cap_Rect(26,200,247,59), cap_Rect(0,0,247,59), menu_start, menu_start, menu_start, start)
+b1 = cap_graph_Button(cap_Rect(26,200,247,59), cap_Rect(15,8,217,38), menu_start, menu_start_ho, menu_start_ho, start)
 b1.init(event_mouse, event_key, display_list)
 b1.visibility(True)
 
-b2 = cap_graph_Button(cap_Rect(26,260,247,59), cap_Rect(0,0,247,59), menu_quit, menu_quit, menu_quit, quit)
+b2 = cap_graph_Button(cap_Rect(26,260,247,59), cap_Rect(15,8,217,38), menu_quit, menu_quit_ho, menu_quit_ho, quit)
 b2.init(event_mouse, event_key, display_list)
 b2.visibility(True)
 
-b3 = cap_graph_Button(cap_Rect(26,320,247,59), cap_Rect(0,0,247,59), menu_about, menu_about, menu_about, about)
+b3 = cap_graph_Button(cap_Rect(26,320,247,59), cap_Rect(15,8,217,38), menu_about, menu_about_ho, menu_about_ho, about)
 b3.init(event_mouse, event_key, display_list)
 b3.visibility(True)
 

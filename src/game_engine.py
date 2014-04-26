@@ -29,7 +29,7 @@ class game_engine:
 			self.low_hand = cap_Rect(60, 712, 1160, 88)
 
 			# Gameboard basse
-			self.low_gameboard = cap_Rect(350, 449, 580, 240)
+			self.low_gameboard = cap_Rect(350, 441, 580, 240)
 
 			# Deck
 			self.low_deck = cap_Rect(1037, 552, 200, 143)
@@ -129,6 +129,13 @@ class game_engine:
 		self.player2.graph_player.visibility(True)
 
 		# Boutons
+		def opa():
+			self.player1.OPA(self.player2)
+
+		button_OPA = cap_graph_Button(cap_Rect(350,373,247,59), cap_Rect(0,0,247,59), opa_but, opa_but, opa_but, opa)
+		button_OPA.init(event_mouse, event_key, display_list)
+		button_OPA.visibility(True)
+
 		def endturn():
 			if self.player1.endTurn(events) :
 				self.player2.startTurn(self.deck)

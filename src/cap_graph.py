@@ -3,6 +3,10 @@ from pygame.locals import *
 from cap_rect import *
 from card_type import *
 
+#sound
+sound_pay = pygame.mixer.Sound("soundAndMusic/money.wav")
+sound_get_money = pygame.mixer.Sound("soundAndMusic/caisse_enregistr.wav")
+
 # Graphique
 card_bg = pygame.image.load("card/card_bg.png").convert_alpha()
 card_fg = pygame.image.load("card/card_fg.png").convert_alpha()
@@ -20,6 +24,7 @@ modal_bt1 = pygame.image.load("oui.png").convert_alpha()
 modal_bt2 = pygame.image.load("non.png").convert_alpha()
 depos_bilan_but = pygame.image.load("card/bilan.png").convert_alpha()
 pass_turn_but = pygame.image.load("card/fin_tour.png").convert_alpha()
+opa_but = pygame.image.load("card/opa.png").convert_alpha()
 
 # Fonts
 modal_font = pygame.font.Font('card/BebasNeue.otf', 30);
@@ -183,6 +188,7 @@ class cap_graph_Modal(cap_Graph_object):
 			if self.onYes != None : self.onYes()
 			self.visible = False
 
+
 class cap_graph_Button(cap_Graph_object):
 	def __init__(self, rect, rect_click, bg_image, bg_image_hover, bg_image_click, callback):
 		cap_Graph_object.__init__(self, rect, rect_click)
@@ -195,14 +201,18 @@ class cap_graph_Button(cap_Graph_object):
 	def onClick(self, event_type, event_code, x, y):
 		if self.rect_click.isIn(x-self.rect.x, y-self.rect.y):
 			self.state = 2
+			self.update()
 		else:
 			self.state = 0
+			self.update()
 
 	def onHover(self, event_type, event_code, x, y):
 		if self.rect_click.isIn(x-self.rect.x, y-self.rect.y):
 			self.state = 1
+			self.update()
 		else:
 			self.state = 0
+			self.update()
 
 	def update(self):
 		self.erase()
@@ -255,6 +265,7 @@ class cap_Graph_msg(cap_Graph_object):
 
 	# Ajoute une entrée au log
 	def log(self, msg, color=black):
+		print("Log : "+msg)
 
 		# On blit en décalant d'une ligne
 		tmp = pygame.Surface((315, 146), SRCALPHA, 32).convert_alpha()
@@ -295,20 +306,24 @@ class cap_Graph_playerinfo(cap_Graph_object):
 		if not otherPlayer:
 			self.anim.rect.x = 141
 			if howMuch >= 0:
+				sound_get_money.play()
 				self.anim.to_display.blit(card_title_font.render( '+%.2f$' % howMuch, 1, green), (0, 0))
 				self.anim.rect.y = 560
 				self.anim.animate(141, 584, 2000, -1)
 			else :
+				sound_pay.play()
 				self.anim.to_display.blit(card_title_font.render( '%.2f$' % howMuch, 1, red), (0, 0))
 				self.anim.rect.y = 574
 				self.anim.animate(141, 435, 2000, -1)
 		else:
 			self.anim.rect.x = 1134
 			if howMuch >= 0:
+				sound_get_money.play()
 				self.anim.to_display.blit(card_title_font.render( '+%.2f$' % howMuch, 1, green), (0, 0))
 				self.anim.rect.y = 90
 				self.anim.animate(1134, 136, 2000, -1)
 			else :
+				sound_pay.play()
 				self.anim.to_display.blit(card_title_font.render( '%.2f$' % howMuch, 1, red), (0, 0))
 				self.anim.rect.y = 136
 				self.anim.animate(1134, 80, 2000, -1)
@@ -511,7 +526,6 @@ class cap_Graph_card(cap_Graph_object):
 		self.card_bg = pygame.Surface((self.rect.w, self.rect.h), SRCALPHA, 32).convert_alpha()
 		self.card_bg.blit(card_bg, (0, 0))
 		if bg_img_link != None : # Si on a une image de background
-			print(bg_img_link)
 			self.bg_img = pygame.image.load(bg_img_link).convert_alpha()
 			self.card_bg.blit(self.bg_img, (self.rect_click.x, self.rect_click.y), (0, 0, self.rect_click.w, self.rect_click.h))
 		else :

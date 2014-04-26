@@ -695,30 +695,59 @@ considérables.</description>
 		<affectedType>1</affectedType>
 	</item>
 	<item>
+		<!-- id  -->
 		<id>27</id>
+		<!-- Type général ( 1 = CARD, 2 = ACTION) -->
 		<cardType>1</cardType>
+		<!-- Chemin image -->
 		<image>card/imgs/romania.jpg</image>
+		<!-- Nom de la carte -->
 		<name color="white">Usine roumaine</name>
+		<!-- Description -->
 		<description>Un peu plus près
 			(et plus cher) que
 			la chinoise.</description>
+		<!-- Sous-type de la carte : 
+			si type = 1 : 1 = EVENT, 2 = ACTION
+			si type = 2 : 1 = PRODUCT, 2 = CONTRACT, 3 = EMPLOYEE -->
 		<type>2</type>
+		<!-- Données de la carte -->
 		<cardData>
+			<!-- Coût par tour -->
 			<costPerTurn>170</costPerTurn>
+			<!-- Modifieur du coût (%) -->
 			<costPerTurnModifier>0</costPerTurnModifier>
+			<!-- Revenus par tour -->
 			<incomePerTurn>0</incomePerTurn>
+			<!-- Modifieur des revenus (%) -->
 			<incomePerTurnModifier>0</incomePerTurnModifier>
+			<!-- Coût de suppression -->
 			<discardCost>300</discardCost>
 		</cardData>
+		<!-- Durée de vie de la carte -->
 		<life>15</life>
+		<!-- Coût de pose -->
 		<deploymentCost>1600</deploymentCost>
+		<!-- Liste des effets -->
 		<effects>
+			<!-- Un effet -->
 			<effect>
+				<!-- Valeur de l'effet -->
 				<value>-15</value>
+				<!-- 1 = Pourcentage, 2 = fixe -->
 				<modifierType>1</modifierType>
+				<!-- Valeur affectée : 
+					COST_PER_TURN             = 1     # Coût par tours
+					COST_PER_TURN_MODIFIER    = 2     # Modificateur du coût par tours
+					INCOME_PER_TURN           = 3     # Revenus par tours
+					INCOME_PER_TURN_MODIFIER  = 4     # Modificateur des revenus par tours
+					DISCARD_COST              = 5     # Coût de suppresion
+					LIFE                      = 6     # Durée de vie de la carte
+				-->
 				<affectedValue>1</affectedValue>
 			</effect>
 		</effects>
+		<!-- Type de CARD affecté : 1 = PRODUCT, 2 = CONTRACT, 3 = EMPLOYEE -->
 		<affectedType>1</affectedType>
 	</item>
 </data>

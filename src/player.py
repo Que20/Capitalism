@@ -1,4 +1,5 @@
 import card as card
+import random as random
 from card_type import *
 from cap_graph import *
 
@@ -19,7 +20,7 @@ class Player:
 	"""Représente un des deux joueurs"""
 
 	# Constructeur
-	def __init__(self, name, log, modal, number, startingMoney=100000):
+	def __init__(self, name, log, modal, number, startingMoney=10000):
 		self.name = name                                   # Nom du joueur
 		self.money = startingMoney                         # Argent de départ
 		self.deck = []                                     # Cartes en main
@@ -277,7 +278,7 @@ class Player:
 		self.modal.set_msg("Êtes vous certain de vouloir défausser la carte '"+self.deck[hand].name+"'?\nCelle-ci ne sera plus récupérable.", yes, no)
 
 
-	# Défausse le carte de la main
+	# Défausse la carte de la main
 	def _discardGameboard(self, x, y):
 
 		if self.gameboard[x][y].computedCard.discardCost < self.money :
@@ -465,6 +466,39 @@ class Player:
 		self.graph_player.rect.x = 44
 		self.graph_player.rect.y = 548
 
+	# OPA
+	def OPA(self, other_player):
+
+		ret = False
+
+		if self.money/2 >= other_player.money :
+
+			chance = (((self.money / other_player.money) / 2) - 0.5) * 100
+
+			def yes():
+				tirage = random.randrange(0, 100)
+				print(tirage)
+				if tirage <= chance :
+					self.log.log("["+self.name+"] OPA réussie !", green)
+					ret = True
+				else :
+					self.graph_player.changeMoney(-(self.money*0.25))
+					self.money *= 0.75
+					self.graph_player.update()
+					self.log.msg("Echec de votre OPA !")
+					self.log.log("["+self.name+"] OPA raté : malus de "+('%.2f' % (self.money*0.25))+"$", red)
+
+			def no():
+				pass
+
+			self.modal.set_msg("Êtes vous certain de vouloir tenter cette OPA ?\nVous avez "+('%.2f' % chance)+"% de chance de réussite.\n\nEn cas d'échec, vous perdrez "+('%.2f' % (self.money*0.25))+"$ (soit 1/4 de votre capital) à cause des\nactionaires mécontents...", yes, no)
+
+		else :
+			self.log.msg("Vous n'avez pas assez d'argent pour une OPA")
+			self.log.log("["+self.name+"] Action impossible : pas assez d'argent", red)
+
+		return ret
+
 
 	# Termine un tour
 	def endTurn(self, events):
@@ -491,7 +525,7 @@ class Player:
 				for card in line :
 					if card != None :
 						card.grap_mincard.animate(j*145 + 350, i*60 + 120, 300)
-						i -= 1
+					i -= 1
 				j += 1
 
 			i = 0
@@ -503,18 +537,19 @@ class Player:
 
 			# Màj des events si joueur 2
 			if self.number == 2 :
-				for event in events :
-					if event != None :
-						# Si la carte n'a plus de vie après le tour
-						if not event.isAlive() :
-							self.deleted.append(events.pop()) # On met dans la liste deleted
-							# Graphique
-							self.deleted[-1].grap_mincard.animate(1087, 602, 750, -1)
-							# Log
-							self.log.log("["+self.name+"] Fin d'event : "+self.deleted[-1].name)
-						event.life -= 1
-						event.grap_card.update()
-						event.grap_mincard.update()
+				if events[0] != None :
+					# Si la carte n'a plus de vie après le tour
+					if not events[0].isAlive() :
+						self.deleted.append(events[0]) # On met dans la liste deleted
+						events[0] = None
+						# Graphique
+						self.deleted[-1].grap_mincard.animate(1087, 602, 750, -1)
+						# Log
+						self.log.log("["+self.name+"] Fin d'event : "+self.deleted[-1].name)
+					else :
+						events[0].life -= 1
+						events[0].grap_card.update()
+						events[0].grap_mincard.update()
 
 			# Màj des cartes
 			for line in self.gameboard:
