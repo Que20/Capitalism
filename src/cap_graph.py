@@ -6,6 +6,9 @@ from card_type import *
 #sound
 sound_pay = pygame.mixer.Sound("soundAndMusic/money.wav")
 sound_get_money = pygame.mixer.Sound("soundAndMusic/caisse_enregistr.wav")
+clicSound1  = pygame.mixer.Sound("soundAndMusic/bip01.wav")
+clicSound2  = pygame.mixer.Sound("soundAndMusic/bip02.wav")
+music1  = pygame.mixer.Sound("soundAndMusic/music.wav")
 
 # Graphique
 background = pygame.image.load("imgs/background.jpg").convert()
@@ -46,6 +49,13 @@ grey  = (160,160,160)
 white = (255,255,255)
 green = (14,139,0)
 red   = (166,0,0)
+
+def launch_music():
+	music1.set_volume(0.3)
+	music1.play(-1,0,0)
+
+def stop_music():
+	music1.stop()
 
 def cap_Graph_print(str, font, surface, line_height, color=(0,0,0), startx=0, starty=0):
 	while "\n" in str :
@@ -188,11 +198,13 @@ class cap_graph_Modal(cap_Graph_object):
 	def buttons_check(self, event_type, event_code, x, y):
 		# Oui
 		if self.onYesRect.isIn(x, y):
+			clicSound1.play()
 			if self.onYes != None : self.onYes()
 			if not self.ignoreNext :
 				self.visible = False
 		# Non
 		elif self.onNoRect.isIn(x, y):
+			clicSound1.play()
 			if self.onNo != None : self.onNo()
 			if not self.ignoreNext :
 				self.visible = False
@@ -200,10 +212,12 @@ class cap_graph_Modal(cap_Graph_object):
 
 	def buttons_key(self, event_type, event_code, x, y):
 		if event_code == K_ESCAPE :
+			clicSound1.play()
 			if self.onNo != None : self.onNo()
 			if not self.ignoreNext :
 				self.visible = False
 		elif event_code == K_RETURN :
+			clicSound1.play()
 			if self.onYes != None : self.onYes()
 			if not self.ignoreNext :
 				self.visible = False
@@ -234,6 +248,7 @@ class cap_graph_Button(cap_Graph_object):
 
 	def onClick(self, event_type, event_code, x, y):
 		if self.rect_click.isIn(x-self.rect.x, y-self.rect.y):
+			clicSound1.play()
 			self.state = 2
 			self.update()
 		else:

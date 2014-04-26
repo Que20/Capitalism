@@ -16,9 +16,11 @@ game = game_engine.game_engine()
 
 def start():
 	print("start")
+	launch_music()
 	game.new_game("Player1", "Player2")
 	pygame.display.set_mode(wh)
 	pygame.display.set_caption('Capitalism - Launcher')
+	stop_music()
 
 def quit():
 	print("quit")
