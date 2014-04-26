@@ -23,8 +23,6 @@ class Player:
 	def __init__(self, name, log, modal, number, startingMoney=10000):
 		self.name = name                                   # Nom du joueur
 		self.money = startingMoney                         # Argent de départ
-		if number == 2 :
-			self.money /= 10;
 		self.deck = []                                     # Cartes en main
 		self.gameboard = [[None, None, None, None], 
 		                  [None, None, None, None], 
