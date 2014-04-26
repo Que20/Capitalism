@@ -137,6 +137,7 @@ class cap_graph_Modal(cap_Graph_object):
 		self.onYesRect = cap_Rect(410, 545, 62, 44)
 		self.onNo = None
 		self.onNoRect = cap_Rect(785, 545, 62, 44)
+		self.ignoreNext = False
 
 		self.bg = pygame.Surface((1280, 800), SRCALPHA, 32).convert_alpha()
 		self.bg.blit(modal_bg, (0, 0))
@@ -150,12 +151,13 @@ class cap_graph_Modal(cap_Graph_object):
 		event_mouse.append((MOUSEBUTTONUP, 1, self.buttons_check))
 		event_key.append((KEYDOWN, K_RETURN, self.buttons_key))
 
-	def set_msg(self, msg, onYes, onNo):
+	def set_msg(self, msg, onYes, onNo, ignoreNext=False):
 	
 		self.onYes = onYes
 		self.onNo = onNo
 		self.msg = msg
 		self.visible = True
+		self.ignoreNext = ignoreNext
 
 		self.update()
 
@@ -174,19 +176,25 @@ class cap_graph_Modal(cap_Graph_object):
 		# Oui
 		if self.onYesRect.isIn(x, y):
 			if self.onYes != None : self.onYes()
-			self.visible = False
+			if not self.ignoreNext :
+				self.visible = False
 		# Non
 		elif self.onNoRect.isIn(x, y):
 			if self.onNo != None : self.onNo()
-			self.visible = False
+			if not self.ignoreNext :
+				self.visible = False
+		self.ignoreNext = False
 
 	def buttons_key(self, event_type, event_code, x, y):
 		if event_code == K_ESCAPE :
 			if self.onNo != None : self.onNo()
-			self.visible = False
+			if not self.ignoreNext :
+				self.visible = False
 		elif event_code == K_RETURN :
 			if self.onYes != None : self.onYes()
-			self.visible = False
+			if not self.ignoreNext :
+				self.visible = False
+		self.ignoreNext = False
 
 
 class cap_graph_Button(cap_Graph_object):

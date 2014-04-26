@@ -128,9 +128,38 @@ class game_engine:
 		self.player2.graph_player.init(event_mouse, event_key, display_list)
 		self.player2.graph_player.visibility(True)
 
+		def yes_end():
+			# Un peu bourrin mais ça marche
+			self.new_game(self.player1.name, self.player2.name)
+			self.quit = True
+
+		def no_end():
+			self.quit = True
+
+		def yes_opa():
+
+			tirage = random.randrange(0, 100)
+			chance = (((self.player1.money / self.player2.money) / 2) - 0.5) * 100
+
+			if tirage <= chance :
+				self.player1.log.log("["+self.player1.name+"] OPA réussie !", green)
+
+				modal.set_msg("Le joueur "+self.player1.name+" gagne la partie en achetant l'entreprise du\njoueur "+self.player2.name+" durant une OPA !\n\nVoulez-vous relancer une partie ?", yes_end, no_end, True)
+			else :
+				self.player1.graph_player.changeMoney(-(self.player1.money*0.25))
+				self.player1.money *= 0.75
+				self.player1.graph_player.update()
+				self.player1.log.msg("Echec de votre OPA !")
+				self.player1.log.log("["+self.player1.name+"] OPA raté : malus de "+('%.2f' % (self.player1.money*0.25))+"$", red)
+
+
+		def no_opa():
+			pass
+
 		# Boutons
 		def opa():
-			self.player1.OPA(self.player2)
+			self.player1.OPA(self.player2, yes_opa, no_opa)
+
 
 		button_OPA = cap_graph_Button(cap_Rect(350,373,247,59), cap_Rect(0,0,247,59), opa_but, opa_but, opa_but, opa)
 		button_OPA.init(event_mouse, event_key, display_list)
@@ -138,8 +167,13 @@ class game_engine:
 
 		def endturn():
 			if self.player1.endTurn(events) :
-				self.player2.startTurn(self.deck)
-				self.player1, self.player2 = self.player2, self.player1
+				if self.player1.money <= 0 :
+					self.player2.startTurn(self.deck)
+					# Plus de sous, fin de la partie
+					modal.set_msg("Le joueur "+self.player1.name+" est en banqueroute ("+('%.2f$' % self.player1.money)+") !\nLe joueur "+self.player2.name+" gagne la partie avec "+('%.2f$' % self.player2.money)+" !\n\nVoulez-vous relancer une partie ?", yes_end, no_end)
+				else :
+					self.player2.startTurn(self.deck)
+					self.player1, self.player2 = self.player2, self.player1
 
 		button_pass = cap_graph_Button(cap_Rect(750,373,247,59), cap_Rect(0,0,247,59), pass_turn_but, pass_turn_but, pass_turn_but, endturn)
 		button_pass.init(event_mouse, event_key, display_list)

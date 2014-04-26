@@ -23,6 +23,8 @@ class Player:
 	def __init__(self, name, log, modal, number, startingMoney=10000):
 		self.name = name                                   # Nom du joueur
 		self.money = startingMoney                         # Argent de départ
+		if number == 2 :
+			self.money /= 10;
 		self.deck = []                                     # Cartes en main
 		self.gameboard = [[None, None, None, None], 
 		                  [None, None, None, None], 
@@ -296,6 +298,8 @@ class Player:
 				self.deleted.append(self.gameboard[x][y])
 				self.gameboard[x][y] = None
 
+				self.graph_player.update()
+
 			def no():
 				self.selected = None
 
@@ -467,38 +471,15 @@ class Player:
 		self.graph_player.rect.y = 548
 
 	# OPA
-	def OPA(self, other_player):
-
-		ret = False
+	def OPA(self, other_player, yes, no):
 
 		if self.money/2 >= other_player.money :
-
 			chance = (((self.money / other_player.money) / 2) - 0.5) * 100
-
-			def yes():
-				tirage = random.randrange(0, 100)
-				print(tirage)
-				if tirage <= chance :
-					self.log.log("["+self.name+"] OPA réussie !", green)
-					ret = True
-				else :
-					self.graph_player.changeMoney(-(self.money*0.25))
-					self.money *= 0.75
-					self.graph_player.update()
-					self.log.msg("Echec de votre OPA !")
-					self.log.log("["+self.name+"] OPA raté : malus de "+('%.2f' % (self.money*0.25))+"$", red)
-
-			def no():
-				pass
-
 			self.modal.set_msg("Êtes vous certain de vouloir tenter cette OPA ?\nVous avez "+('%.2f' % chance)+"% de chance de réussite.\n\nEn cas d'échec, vous perdrez "+('%.2f' % (self.money*0.25))+"$ (soit 1/4 de votre capital) à cause des\nactionaires mécontents...", yes, no)
 
 		else :
 			self.log.msg("Vous n'avez pas assez d'argent pour une OPA")
 			self.log.log("["+self.name+"] Action impossible : pas assez d'argent", red)
-
-		return ret
-
 
 	# Termine un tour
 	def endTurn(self, events):
